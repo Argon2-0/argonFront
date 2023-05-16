@@ -1,0 +1,10 @@
+.Container {
+    background: rgb(227, 228, 229);
+    min-height: 730px;
+    display: flex;
+    width: 100%;
+  }
+.leftabsolute {
+  position: relative;
+  left: 23%;
+}

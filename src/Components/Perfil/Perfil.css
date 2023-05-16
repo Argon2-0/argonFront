@@ -1,0 +1,38 @@
+.card{
+    background:  #fff  ;
+    box-shadow: 0 8px 2px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 12px );
+    -webkit-backdrop-filter: blur( 12px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    padding:20px;
+    width:fit-content;
+    height: fit-content;
+  }
+  .sidebarIcon {
+    margin-right: 15px;
+  }
+  
+  .button{
+      border-radius: 50px;
+      background: #7f8d8e ;
+      border-style: outset;
+      border-color: Teal;
+      white-space: nowrap;
+      padding: 10px 22px;
+      color: #010606;
+      font-size: 16px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      text-decoration: none;
+      font-weight:bold;
+  }
+  
+  .button:hover{
+     background: #fff;
+     color: #000000 ;
+  }
+  
+  
+  
