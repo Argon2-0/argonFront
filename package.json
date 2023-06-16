@@ -18,17 +18,27 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.3.0",
     "dayjs": "^1.11.7",
+    "export-from-json": "^1.7.2",
+    "file-saver": "^2.0.5",
     "grid": "^4.10.8",
     "paper": "^0.12.17",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
+    "react-chartjs-2": "^5.2.0",
     "react-date-picker": "^10.0.3",
     "react-dom": "^18.2.0",
+    "react-excel-renderer": "^1.1.0",
     "react-pro-sidebar": "^1.0.0",
+    "react-qr-barcode-scanner": "^1.0.6",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.2",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "source-map-loader": "^4.0.1",
     "sweetalert2-react": "^0.8.3",
     "use-history": "^1.4.1",
     "web-vitals": "^2.1.4",
@@ -36,8 +46,8 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "cross-env GENERATE_SOURCEMAP=false react-scripts start",
+    "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -58,5 +68,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "crypto": "npm:crypto-browserify",
+    "stream": "npm:stream-browserify"
   }
 }

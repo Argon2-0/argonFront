@@ -18,7 +18,7 @@ import CrearTipoServicio from "../../Components/TipoServicio/TipoServicioCrear/T
 import ListarPrestamos from "../../Components/PrestamoComputadores/ListarPrestamos/ListarPrestamos";
 import PrestarComputadores from "../../Components/PrestamoComputadores/PrestarComputadores/PrestarComputadores";
 import DevolverComputadores from "../../Components/PrestamoComputadores/DevolverComputadores/DevolverComputadores";
-
+import '../../App.css';
 const Home = () => {
   let history = useNavigate();
   const [section, setSection] = useState("Dasboard");
@@ -70,12 +70,21 @@ const Home = () => {
 
   return (
     <div>
-      <div className="fondo" />
-      {showSidebar &&
+      <div className="Container">
+        {showSidebar &&
 
-        <Leftbar changeSection={changeSection} />}
-      {!showSidebar && <Button><MenuOpen></MenuOpen></Button>}
-      <div className="leftabsolute">{switchSection(section)}</div>
+          <Leftbar changeSection={changeSection} />}
+        {!showSidebar && <Button><MenuOpen></MenuOpen></Button>}
+      </div>
+      <div className="rightside">
+        <div className="topbar"></div>
+        <div className="leftabsolute">
+          <center>
+            {switchSection(section)}
+          </center>
+        </div>
+      </div>
+
     </div>
   );
 };

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Participante } from "../../../Data/Participante";
 import './ListarPrestamos.css';
 import { HerramientaParticipante } from "../../../Data/HerramientaParticipante";
+import '../../../App.css'
+
 const ListarPrestamos = () => {
     const [rows, setRows] = useState([]);
     useEffect(() => {
@@ -99,6 +101,7 @@ const ListarPrestamos = () => {
       ];
       
       const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
+        id:false,
         createdAt: false,
         updatedAt: false
       });
@@ -110,11 +113,11 @@ const ListarPrestamos = () => {
         
         <div className="RegisterComponent">
 
-            <Box className="card">
+            <Box className="cardout">
                 <Typography variant="h4" component="h4" gutterBottom>
                     Historial de computadores prestados
                 </Typography>
-                <Box sx={{ height: 520, width: 'auto'}}>
+                <Box sx={{ height: 520, width: 'auto'}} className="cardin">
                     
                     <DataGrid
                     rows={rows}

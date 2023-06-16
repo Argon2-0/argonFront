@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route exact path="/Bio/public/login" element={<Login />} />
       <Route exact path="/Bio/public/home" element={<Home />} />
-      <Route exact path="/Bio/public/register" element={<Registro />} />
+      <Route exact path="/Bio/public/registro" element={<Registro />} />
     </Routes>
   );
 }

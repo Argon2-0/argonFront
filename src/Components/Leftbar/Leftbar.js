@@ -124,7 +124,7 @@ export default function Leftbar({ changeSection }) {
   return (
 
     <div className="drawer" >
-      <Sidebar backgroundColor="#101533">
+      <Sidebar backgroundColor="#992d30">
 
         <div className="sidebarWrapper">
 
@@ -140,16 +140,16 @@ export default function Leftbar({ changeSection }) {
               <ListItemText className="letras">
                 <center>
                   <Avatar
-                    alt={window.$usuario.nombres}
-                    src={"/people/" + window.$usuario.nombrefoto}
+                    alt={window.$name}
+                    src={"/people/" + window.$foto}
                     sx={{ width: 156, height: 156 }}
                   />
                   <div className="profileInfo">
                     <h4 className="letras">
-                      {window.$usuario.nombres + " " + window.$usuario.apellidos}
+                      {window.$name}
                     </h4>
-                    <p className="letras">{window.$usuario.email}</p>
-                    <p className="letras">{window.$usuario.tipousuario}</p>
+                    <p className="letras">{window.$email}</p>
+                    <p className="letras">{window.$nameRol}</p>
                   </div>
                 </center>
               </ListItemText>

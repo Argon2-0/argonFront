@@ -5,6 +5,9 @@ import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import './TipoServicioCrear.css'
 import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
+import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+
 
 const validateForm = errors => {
     let valid = true;
@@ -13,11 +16,13 @@ const validateForm = errors => {
 };
 
 class CrearTipoServicio extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
             checkVisualiza: false,
             nombre: "",
+            items: [],
             descripcion: "",
             form: "No",
             errors: {
@@ -28,13 +33,13 @@ class CrearTipoServicio extends React.Component {
         };
     }
 
-    handleCheckchange = (event) =>{
-        if(event.target.checked){
-            
-            this.setState({["form"]:"SI", ["checkVisualiza"]: true})
+    handleCheckchange = (event) => {
+        if (event.target.checked) {
+
+            this.setState({ ["form"]: "SI", ["checkVisualiza"]: true })
         }
-        else{
-            this.setState({["form"]:"NO", ["checkVisualiza"]: false})
+        else {
+            this.setState({ ["form"]: "NO", ["checkVisualiza"]: false })
         }
     }
 
@@ -95,102 +100,135 @@ class CrearTipoServicio extends React.Component {
         }
     };
 
+
+
     render() {
-        const {errors} = this.state;
+        const { errors } = this.state;
 
         return (
 
-            <div className="RegisterComponent">
+            <div className="sizer">
 
-                <Box className="card">
+                <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear equipo
+                        Crear tipo de servicio
                     </Typography>
-                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="card">
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box className="cardin">
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                                INFORMACION DEL EQUIPO
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                                            <TableContainer>
+                                                <Table>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="nombre"
+                                                                        name="nombre"
+                                                                        label="nombre"
+                                                                        variant="outlined"
+                                                                        value={this.state.nombre}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.nombre.length > 0 &&
+                                                                        <span className='error'>{errors.nombre}</span>}
+                                                                </Stack>
+                                                                <br />
+                                                                <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextareaAutosize
+                                                                        required
+                                                                        id="descripcion"
+                                                                        name="descripcion"
+                                                                        label="descripcion"
+                                                                        variant="outlined"
+                                                                        value={this.state.descripcion}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.descripcion.length > 0 &&
+                                                                        <span className='error'>{errors.descripcion}</span>}
+                                                                </Stack>
+                                                                <br />
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="nombre"
-                                name="nombre"
-                                label="nombre"
-                                variant="outlined"
-                                value={this.state.nombre}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.nombre.length > 0 &&
-                                <span className='error'>{errors.nombre}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextareaAutosize
-                                required
-                                id="descripcion"
-                                name="descripcion"
-                                label="descripcion"
-                                variant="outlined"
-                                value={this.state.descripcion}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.descripcion.length > 0 &&
-                                <span className='error'>{errors.descripcion}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <FormControlLabel
+                                                                        control={
+                                                                            <Switch
+                                                                                id="visualiza"
+                                                                                name="visualiza"
+                                                                                checked={this.state.checkVisualiza}
+                                                                                onChange={this.handleCheckchange}
+                                                                                style={{ width: 300 }}
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <FormControlLabel
-                            control={
-                            <Switch
-                                id="visualiza"
-                                name="visualiza"
-                                checked={this.state.checkVisualiza}
-                                onChange={this.handleCheckchange}
-                                style={{ width: 300 }}
-                                
-                            />
-                                }
-                                label={this.state.form}
-                            />
+                                                                            />
+                                                                        }
+                                                                        label={this.state.form}
+                                                                    />
 
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            {errors.form.length > 0 &&
-                                <span className='error'>{errors.form}</span>}
-                        </Stack>
-                        <br />
-                        <br />
-                        <Box textAlign='center'>
-                            <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.form.length > 0 &&
+                                                                        <span className='error'>{errors.form}</span>}
+                                                                </Stack>
 
-                        </Box>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Box>
+
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box textAlign='center'>
+                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+
                     </Box>
                 </Box>
             </div>

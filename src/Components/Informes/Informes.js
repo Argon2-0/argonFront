@@ -6,14 +6,14 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import './Informes.css';
-import Swal from "sweetalert2";
-import { useHistory } from 'react-router-dom';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Participante } from '../../Data/Participante';
-import XlsExport from 'xlsexport';
+import * as XLSX from "xlsx";
+import { HerramientaParticipante } from '../../Data/HerramientaParticipante';
+import '../../App.css'
 
 const Informes = () => {
 
@@ -29,12 +29,12 @@ const Informes = () => {
 
     const handleSubmit = (e) => {
     };
-    const handleDateIniciochange = (event, date) => {
-        setFechaInicio(date);
+    const handleDateIniciochange = (event) => {
+        setFechaInicio(event.$d);
     }
 
-    const handleDateFinchange = (event, date) => {
-        setFechaFin(date);
+    const handleDateFinchange = (event) => {
+        setFechaFin(event.$d);
     }
 
     const handleChangeTipoInforme = (event) => {
@@ -44,20 +44,14 @@ const Informes = () => {
         console.log(tipoInforme)
     }
 
-    const download = () => {
-        console.log("download");
+    const informeRegistro = () => {
         let participantes = [];
         fetch(
             window.$basicUri +
-            "participante/getBetween",
+            "participante/getBetween/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
             {
                 mode: "cors",
                 method: "GET",
-                body: JSON.stringify({
-                    fechaInicio: fechaInicio.toDate().toISOString(),
-                    fechaFin: fechaFin.toDate().toISOString(),
-
-                }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -107,34 +101,102 @@ const Informes = () => {
                     ));
                 }
             }).then(() => {
-                const xls = new XlsExport(participantes, "title");
-                xls.exportToXLS('export.xls')
-                
+                download(participantes);
             });
     }
 
-    const downloadAction = (csvString, fileName = 'test.csv') => {
-        // Creamos el elemento para hacer el trigger del download
-        const element = document.createElement('a');
-        element.setAttribute('href', 'data:application/octet-stream,' + encodeURIComponent(csvString));
-        element.setAttribute('download', fileName);
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+    const informeMarca = () => {
+
+        let herramientas = [];
+        fetch(
+            window.$basicUri +
+            "herramientaparticipante/getToday",
+            {
+                mode: "cors",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((json) => {
+
+                for (let pos = 0; pos < json.length; pos++) {
+                    json[pos]['createdAt'] = new Date(json[pos]['createdAt']).toLocaleString(
+                        "es-CO",
+                        {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "numeric",
+                        }
+                    );
+                    json[pos]['updatedAt'] = new Date(json[pos]['updatedAt']).toLocaleString(
+                        "es-CO",
+                        {
+                            month: "2-digit",
+                            day: "2-digit",
+                            year: "numeric",
+                        }
+                    );;
+                    herramientas.push(new HerramientaParticipante(
+                        json[pos]['id'],
+                        json[pos]['observacion'],
+                        json[pos]['estado'],
+                        json[pos]['totHoras'],
+                        json[pos]['createdAt'],
+                        json[pos]['updatedAt'],
+                        json[pos]['participante'],
+                        json[pos]['herramienta'],
+                    ));
+                }
+            }).then(() => {
+                download(herramientas);
+            });
+
     }
+    const traer = () => {
+        if (tipoInforme === "InformeRegistro") {
+            informeRegistro();
+        }
+        else if (tipoInforme === "InformePrestamosComputador") {
+            informeMarca();
+        }
+    }
+
+    const download = (data) => {
+        let binaryParticipantes = XLSX.utils.json_to_sheet(data);
+        var book = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(book, binaryParticipantes, 'Binary values')
+        XLSX.writeFile(book, 'Informe registros.xlsx');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const $codigo = document.querySelector("#codigo");
+        $codigo.addEventListener("keydown", evento => {
+            if (evento.keyCode === 13) {
+                // El lector ya terminó de leer
+                const codigoDeBarras = $codigo.value;
+                // Aquí ya podemos hacer algo con el código. Yo solo lo imprimiré
+                console.log("Tenemos un código de barras:");
+                console.log(codigoDeBarras);
+                // Limpiar el campo
+                $codigo.value = "";
+            }
+        });
+    });
 
     return (
         <div className="RegisterComponent">
 
-            <Box component="form" sx={{ mt: 1 }} className="card">
+            <Box component="form" sx={{ mt: 1 }} className="cardout">
 
                 <Typography variant="h4" align="Left" component="h4" gutterBottom>
                     Editar perfil
                 </Typography>
 
                 <br />
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }} className="card">
+                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }} className="cardin">
 
                     <Stack direction="row" spacing={2} >
 
@@ -237,7 +299,7 @@ const Informes = () => {
                     </Stack>
                     <br />
                     <Box textAlign='center'>
-                        <Button class="button" variant="contained" endIcon={<SendIcon />} onClick={download}>Descargar Informe</Button>
+                        <Button class="button" variant="contained" endIcon={<SendIcon />} onClick={traer}>Descargar Informe</Button>
 
                     </Box>
                 </Box>

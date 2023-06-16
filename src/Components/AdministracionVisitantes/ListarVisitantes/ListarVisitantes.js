@@ -3,6 +3,8 @@ import { GridToolbar, DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { Participante } from "../../../Data/Participante";
 import './ListarVisitantes.css';
+import '../../../App.css'
+
 const ListarVisitantes = () => {
     const [rows, setRows] = useState([]);
     useEffect(() => {
@@ -137,7 +139,7 @@ const ListarVisitantes = () => {
       ];
       
       const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-        
+        id:false,
         updatedAt: false,
         curso: false,
         fechaNacimiento: false,
@@ -152,11 +154,11 @@ const ListarVisitantes = () => {
         
         <div className="RegisterComponent">
 
-            <Box className="card">
+            <Box className="cardout">
                 <Typography variant="h4" component="h4" gutterBottom>
                     Administracion de visitantes
                 </Typography>
-                <Box sx={{ height: 520}}>
+                <Box sx={{ height: 520}} className="cardin">
                     
                     <DataGrid
                     rows={rows}

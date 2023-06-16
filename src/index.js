@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { DataGrid, 	esES } from '@mui/x-data-grid';
+import { DataGrid, esES } from '@mui/x-data-grid';
 
 const theme = createTheme(
   {
@@ -20,19 +20,28 @@ const theme = createTheme(
   esES,
 );
 const root = ReactDOM.createRoot(document.getElementById('root'));
-window.$usuario = "";
+window.$id = "";
+window.$name = "";
+window.$email = "";
+window.$idRol = "";
+window.$nameRol = "";
+window.$foto = "";
+window.$token = "";
+window.$expirationDate = "";
 window.$basicUri = "http://localhost:8080/accessbiosecurity/";
 
 root.render(
   <ThemeProvider theme={theme}>
 
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-  <ProSidebarProvider>
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-  </ProSidebarProvider>
-  </LocalizationProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ProSidebarProvider>
+        <BrowserRouter>
+
+          <App />
+
+        </BrowserRouter>
+      </ProSidebarProvider>
+    </LocalizationProvider>
   </ThemeProvider>
 );
 

@@ -4,6 +4,8 @@ import SendIcon from '@mui/icons-material/Send';
 import { Box, Stack, TextField } from '@mui/material';
 import './CrearEquipos.css'
 import Button from '@mui/material/Button';
+import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 const validateForm = errors => {
     let valid = true;
@@ -110,147 +112,187 @@ class CrearEquipos extends React.Component {
     };
 
     render() {
-        const {errors} = this.state;
+        const { errors } = this.state;
 
         return (
 
-            <div className="RegisterComponent">
+            <div className="sizer">
 
-                <Box className="card">
+                <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Crear equipo
                     </Typography>
-                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="card">
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box className="cardin">
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                                INFORMACIÓN DEL EQUIPO
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                                            <TableContainer>
+                                                <Table>
 
-                        <Stack direction="row" spacing={2} >
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Serial"
-                                name="Serial"
-                                label="Serial"
-                                variant="outlined"
-                                value={this.state.Serial}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.Serial.length > 0 &&
-                                <span className='error'>{errors.Serial}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Serial"
+                                                                        name="Serial"
+                                                                        label="Serial"
+                                                                        variant="outlined"
+                                                                        value={this.state.Serial}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.Serial.length > 0 &&
+                                                                        <span className='error'>{errors.Serial}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Marca"
-                                name="Marca"
-                                label="Marca"
-                                variant="outlined"
-                                value={this.state.Marca}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.Marca.length > 0 &&
-                                <span className='error'>{errors.Marca}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Marca"
+                                                                        name="Marca"
+                                                                        label="Marca"
+                                                                        variant="outlined"
+                                                                        value={this.state.Marca}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.Marca.length > 0 &&
+                                                                        <span className='error'>{errors.Marca}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Referencia"
-                                name="Referencia"
-                                label="Referencia"
-                                variant="outlined"
-                                value={this.state.Referencia}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.Referencia.length > 0 &&
-                                <span className='error'>{errors.Referencia}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Referencia"
+                                                                        name="Referencia"
+                                                                        label="Referencia"
+                                                                        variant="outlined"
+                                                                        value={this.state.Referencia}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.Referencia.length > 0 &&
+                                                                        <span className='error'>{errors.Referencia}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Descripcion"
-                                name="Descripcion"
-                                label="Descripcion"
-                                variant="outlined"
-                                value={this.state.Descripcion}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.Descripcion.length > 0 &&
-                                <span className='error'>{errors.Descripcion}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Descripcion"
+                                                                        name="Descripcion"
+                                                                        label="Descripcion"
+                                                                        variant="outlined"
+                                                                        value={this.state.Descripcion}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.Descripcion.length > 0 &&
+                                                                        <span className='error'>{errors.Descripcion}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="CodigoBarras"
-                                name="CodigoBarras"
-                                label="CodigoBarras"
-                                variant="outlined"
-                                value={this.state.CodigoBarras}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.CodigoBarras.length > 0 &&
-                                <span className='error'>{errors.CodigoBarras}</span>}
-                        </Stack>
-                        <br />
-                        <Box textAlign='center'>
-                            <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="CodigoBarras"
+                                                                        name="CodigoBarras"
+                                                                        label="CodigoBarras"
+                                                                        variant="outlined"
+                                                                        value={this.state.CodigoBarras}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.CodigoBarras.length > 0 &&
+                                                                        <span className='error'>{errors.CodigoBarras}</span>}
+                                                                </Stack>
 
-                        </Box>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box textAlign='center'>
+                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+
                     </Box>
                 </Box>
             </div>

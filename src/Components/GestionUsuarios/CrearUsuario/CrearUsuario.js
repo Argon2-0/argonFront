@@ -11,6 +11,9 @@ import { InputLabel, Menu, NativeSelect } from "@material-ui/core";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import bcrypt from 'bcryptjs'
 
 const validEmailRegex = RegExp(
     /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -20,7 +23,7 @@ const validateForm = errors => {
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
     return valid;
 };
-
+const rounds = 16;
 class CrearUsuario extends React.Component {
     constructor(props) {
         super(props);
@@ -44,10 +47,10 @@ class CrearUsuario extends React.Component {
     handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
-        this.validations(name,value);
+        this.validations(name, value);
     }
 
-    validations = (name, value) =>{
+    validations = (name, value) => {
         let errors = this.state.errors;
         switch (name) {
             case 'nombres':
@@ -64,7 +67,7 @@ class CrearUsuario extends React.Component {
                 break;
             case 'rol':
                 errors.rol =
-                    value===""
+                    value === ""
                         ? 'Should select a role!'
                         : '';
                 break;
@@ -79,8 +82,8 @@ class CrearUsuario extends React.Component {
                     value !== this.state["password"]
                         ? 'Passwords should be equals!'
                         : value.length < 8
-                        ? 'Password must be at least 8 characters long!'
-                        : '';
+                            ? 'Password must be at least 8 characters long!'
+                            : '';
 
                 break;
             default:
@@ -91,12 +94,12 @@ class CrearUsuario extends React.Component {
     }
 
     handleSubmit = (e) => {
-        const fields = ["nombres","email","rol","password","confirmPassword"];
-        e.preventDefault();        
+        const fields = ["nombres", "email", "rol", "password", "confirmPassword"];
+        e.preventDefault();
         fields.forEach(field => {
             this.validations(field, this.state[field]);
         });
-        if(validateForm(this.state.errors)) {
+        if (validateForm(this.state.errors)) {
             console.info('Valid Form')
             fetch(window.$basicUri + "/user/create", {
                 mode: "cors",
@@ -104,7 +107,7 @@ class CrearUsuario extends React.Component {
                 body: JSON.stringify({
                     name: this.state.nombres,
                     email: this.state.email,
-                    password: this.state.password,
+                    password: bcrypt.hashSync(this.state.password, rounds),
                     role: {
                         id: this.state.rol,
                     },
@@ -115,7 +118,7 @@ class CrearUsuario extends React.Component {
                     "Content-Type": "application/json",
                 },
             }).then((response) => response.json());
-        }else{
+        } else {
             console.error('Invalid Form')
         }
     };
@@ -149,156 +152,194 @@ class CrearUsuario extends React.Component {
             })
     };
     render() {
-        const {errors} = this.state;
+        const { errors } = this.state;
         return (
-            <div className="RegisterComponent">
+            <div className="sizer">
 
-                <Box className="card">
+                <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Crear usuario
                     </Typography>
-                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-                        <Typography variant="h5" component="h5" gutterBottom>
-                            INFORMACION DEL USUARIO
-                        </Typography>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box className="cardin">
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                                INFORMACION DEL USUARIO
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                                            <TableContainer>
+                                                <Table>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell>
 
-                        <Stack direction="row" spacing={2} >
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Nombres"
-                                name="nombres"
-                                value={this.state.nombres}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                                noValidate
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                            {errors.nombres.length > 0 &&
-                                <span className='error'>{errors.nombres}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Nombres"
+                                                                        name="nombres"
+                                                                        value={this.state.nombres}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                        noValidate
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.nombres.length > 0 &&
+                                                                        <span className='error'>{errors.nombres}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Email"
-                                name="email"
-                                type="email"
-                                value={this.state.email}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                            
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.email.length > 0 &&
-                                <span className='error'>{errors.email}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Email"
+                                                                        name="email"
+                                                                        type="email"
+                                                                        value={this.state.email}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rol
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <Select
-                                required
-                                id="Rol"
-                                name="rol"
-                                value={this.state.rol}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            >
-                                if(this.state.roles !== [""]){
-                                    this.state.roles?.map((element, index) => {
-                                        return (
-                                            <MenuItem key={index} value={element?.id} width="300">{element?.name}</MenuItem>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.email.length > 0 &&
+                                                                        <span className='error'>{errors.email}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                                        );
-                                    })}
-                            </Select>
-                            
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.rol.length > 0 &&
-                                <span className='error'>{errors.rol}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rol
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <Select
+                                                                        required
+                                                                        id="Rol"
+                                                                        name="rol"
+                                                                        value={this.state.rol}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    >
+                                                                        if(this.state.roles !== [""]){
+                                                                            this.state.roles?.map((element, index) => {
+                                                                                return (
+                                                                                    <MenuItem key={index} value={element?.id} width="300">{element?.name}</MenuItem>
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Password"
-                                name="password"
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                            
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.password.length > 0 &&
-                                <span className='error'>{errors.password}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                                );
+                                                                            })}
+                                                                    </Select>
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar contraseña
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="ConfirmPassword"
-                                name="confirmPassword"
-                                type="password"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                            />
-                            
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                        <br />
-                        {errors.confirmPassword.length > 0 &&
-                                <span className='error'>{errors.confirmPassword}</span>}
-                        </Stack>
-                        <br />
-                        <Box textAlign='center'>
-                            <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear usuario</Button>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.rol.length > 0 &&
+                                                                        <span className='error'>{errors.rol}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
 
-                        </Box>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Password"
+                                                                        name="password"
+                                                                        type="password"
+                                                                        value={this.state.password}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.password.length > 0 &&
+                                                                        <span className='error'>{errors.password}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar contraseña
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="ConfirmPassword"
+                                                                        name="confirmPassword"
+                                                                        type="password"
+                                                                        value={this.state.confirmPassword}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.confirmPassword.length > 0 &&
+                                                                        <span className='error'>{errors.confirmPassword}</span>}
+                                                                </Stack>
+
+
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box textAlign='center'>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear usuario</Button>
+
                     </Box>
-
                 </Box>
             </div>
         );

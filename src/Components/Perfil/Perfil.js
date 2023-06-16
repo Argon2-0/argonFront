@@ -6,8 +6,10 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import './Perfil.css';
+import '../../App.css'
 import Swal from "sweetalert2";
 import { useHistory } from 'react-router-dom';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 
 const Perfil = () => {
@@ -34,118 +36,140 @@ const Perfil = () => {
     return (
         <div className="RegisterComponent">
 
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardout">
 
                 <Typography variant="h4" align="Left" component="h4" gutterBottom>
                     Editar perfil
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
-                    INFORMACIÓN DEL USUARIO
-                    </Typography>
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>
+                                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
+                                        INFORMACIÓN DEL USUARIO
+                                    </Typography>
 
-                    <Stack direction="row" spacing={2} >
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
+                                        CAMBIAR LA CONTRASEÑA
+                                    </Typography>
 
-                        <Typography variant="h6" component="h6" spacing={2}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={4} >
-                        <br />
-                        <TextField
-                            required
-                            id="Nombres"
-                            name="Nombres"
-                            label="Nombres"
-                            variant="outlined"
-                        />
-                    </Stack>
-                    <br />
-                    <Stack direction="row" spacing={2} >
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>
+                                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
 
-                        <Typography variant="h6" component="h6" spacing={2}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={4} >
-                        <br />
-                        <TextField
-                            required
-                            id="Email"
-                            name="Email"
-                            label="Email"
-                            variant="outlined"
-                        />
-                    </Stack>
-                    <br />
-                    <Box textAlign='center'>
-                        <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+                                        <Stack direction="row" spacing={2} >
 
-                    </Box>
-                </Box>
-                <br />
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="card">
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={4} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="Nombres"
+                                                name="Nombres"
+                                                label="Nombres"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                        <br />
+                                        <Stack direction="row" spacing={2} >
 
-                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
-                    CAMBIAR LA CONTRASEÑA
-                    </Typography>
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={4} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="Email"
+                                                name="Email"
+                                                label="Email"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                        <br />
+                                        <Box textAlign='center'>
+                                            <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
 
-                    <Stack direction="row" spacing={2} >
+                                        </Box>
+                                    </Box>
+                                </TableCell>
+                                <TableCell>
+                                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
 
-                        <Typography variant="h6" component="h6" spacing={2}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña Actual
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={4} >
-                        <br />
-                        <TextField
-                            required
-                            id="ContraseñaActual"
-                            name="ContraseñaActual"
-                            label="Contraseña Actual"
-                            variant="outlined"
-                        />
-                    </Stack>
-                    <br />
-                    <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" component="h6" spacing={2}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva Contraseña
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={4} >
-                        <br />
-                        <TextField
-                            required
-                            id="NuevaContraseña"
-                            name="NuevaContraseña"
-                            label="Nueva Contraseña"
-                            variant="outlined"
-                        />
-                    </Stack>
-                    <br />
-                    <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" component="h6" spacing={2}>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar Nueva Contraseña
-                        </Typography>
-                    </Stack>
-                    <Stack direction="row" spacing={4} >
-                        <br />
-                        <TextField
-                            required
-                            id="ConfirmarNuevaContraseña"
-                            name="ConfirmarNuevaContraseña"
-                            label="Confirmar Nueva Contraseña"
-                            variant="outlined"
-                        />
-                    </Stack>
-                    <br />
-                    <Box textAlign='center'>
-                        <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Cambiar Contraseña</Button>
+                                        <Stack direction="row" spacing={2} >
 
-                    </Box>
-                </Box>
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña Actual
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={4} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="ContraseñaActual"
+                                                name="ContraseñaActual"
+                                                label="Contraseña Actual"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                        <br />
+                                        <Stack direction="row" spacing={2} >
+
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva Contraseña
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={4} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="NuevaContraseña"
+                                                name="NuevaContraseña"
+                                                label="Nueva Contraseña"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                        <br />
+                                        <Stack direction="row" spacing={2} >
+
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar Nueva Contraseña
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={4} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="ConfirmarNuevaContraseña"
+                                                name="ConfirmarNuevaContraseña"
+                                                label="Confirmar Nueva Contraseña"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                        <br />
+                                        <Box textAlign='center'>
+                                            <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Cambiar Contraseña</Button>
+
+                                        </Box>
+                                    </Box>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Box>
         </div>
     );

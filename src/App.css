@@ -32,7 +32,60 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.cardout {
+  background: rgba(241, 200, 36, 255);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 10px;
+  padding: 20px;
+  min-width: 80%;
+  max-width: 100%;
+  width: fit-content;
+}
+
+.cardin {
+  background: #fff;
+  box-shadow: 0 8px 2px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 100%;
+}
+
+.topbar {
+  background-color: #2c7339;
+  height: 50px;
+}
+
+.verticalbar {
+  background-color: #992d30;
+  width: 50px;
+  height: 1000px;
+  float: left;
+display: flex;
+position: fixed;
+}
+
+.position {
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  overflow-y: auto;
+
+  position: relative;
+  right: 5%;
+  height: auto;
+  max-height: 650px;
+
+}
+
+.sizer {
+  width: fit-content;
 }

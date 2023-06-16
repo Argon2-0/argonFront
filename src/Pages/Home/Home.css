@@ -1,10 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .Container {
     background: rgb(227, 228, 229);
-    min-height: 730px;
     display: flex;
     width: 100%;
+    height: 100%;
+    margin: 0;
+        padding: 0;
+        box-sizing: border-box;
   }
+.rightside{
+  height: 100%;
+  
+}
 .leftabsolute {
+  width: 80%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  overflow-y: auto;
+  left: 18%;
   position: relative;
-  left: 23%;
+  right: 5%;
+  height: auto;
+  max-height: 650px;
+
 }

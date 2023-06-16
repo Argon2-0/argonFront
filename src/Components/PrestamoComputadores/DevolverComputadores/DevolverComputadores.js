@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { Herramienta } from '../../../Data/Herramienta';
 import { HerramientaParticipante } from '../../../Data/HerramientaParticipante';
+import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 const validateForm = errors => {
     let valid = true;
@@ -38,12 +40,12 @@ class DevolverComputadores extends React.Component {
     }
 
     handleChangeCodigoBarras = (event) => {
-        let errors = this.state.errors;
         const { name, value } = event.target;
-        console.log("event")
         event.preventDefault();
-        var herramientaParticipante ;
+        let errors = this.state.errors;
         let herramienta = "";
+        var herramientaParticipante;
+        this.validations(name, value);
         fetch(
             window.$basicUri +
             "herramienta/getByCodigoBarras/" + value,
@@ -101,9 +103,9 @@ class DevolverComputadores extends React.Component {
                         );
                         console.log(json);
                         errors.CodigoDeBarras = '';
-                        
-                    }).then(()=>{
-                        this.setState({ errors , ["herramientaParticipante"]: herramientaParticipante});
+
+                    }).then(() => {
+                        this.setState({ errors, ["herramientaParticipante"]: herramientaParticipante });
                     }).catch((reason) => {
                         console.log(reason);
                         errors.CodigoDeBarras = 'El equipo no se encuentra préstado';
@@ -143,10 +145,10 @@ class DevolverComputadores extends React.Component {
                     observacion: this.state.Observacion,
                     updatedAt: Date.now(),
                     createdAt: this.state.herramientaParticipante.createdAt,
-                    participante:{
+                    participante: {
                         id: this.state.herramientaParticipante.participante_id,
                     },
-                    herramienta:{
+                    herramienta: {
                         id: this.state.herramientaParticipante.herrmienta_id,
                     }
                 }),
@@ -165,73 +167,107 @@ class DevolverComputadores extends React.Component {
     render() {
         const { errors } = this.state;
         return (
-            <div className="RegisterComponent">
+            <div className="sizer">
 
-                <Box className="card">
+                <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Devolver computador
                     </Typography>
-                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-                        <Typography variant="h5" component="h5" gutterBottom>
-                            INFORMACION DEL EQUIPO
-                        </Typography>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box className="cardin">
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                                INFORMACION DEL EQUIPO
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
 
-                        <Stack direction="row" spacing={2} >
+                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                                            <TableContainer>
+                                                <Table>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell>
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="CodigoDeBarras"
-                                name="CodigoDeBarras"
-                                value={this.state.CodigoDeBarras}
-                                onChange={this.handleChangeCodigoBarras}
-                                style={{ width: 300 }}
-                                noValidate
-                            />
+                                                                <Stack direction="row" spacing={2} >
 
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            {errors.CodigoDeBarras.length > 0 &&
-                                <span className='error'>{errors.CodigoDeBarras}</span>}
-                        </Stack>
-                        <br />
-                        <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
+                                                                    </Typography>
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="CodigoDeBarras"
+                                                                        name="CodigoDeBarras"
+                                                                        value={this.state.CodigoDeBarras}
+                                                                        onChange={this.handleChangeCodigoBarras}
+                                                                        style={{ width: 300 }}
+                                                                        noValidate
+                                                                    />
 
-                            <Typography variant="h6" component="h6" spacing={2}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
-                            </Typography>
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            <TextField
-                                required
-                                id="Observacion"
-                                name="Observacion"
-                                value={this.state.Observacion}
-                                onChange={this.handleChange}
-                                style={{ width: 300 }}
-                                noValidate
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={8} >
-                            <br />
-                            {errors.Observacion.length > 0 &&
-                                <span className='error'>{errors.Observacion}</span>}
-                        </Stack>
-                        <br />
-                        <br />
-                        <Box textAlign='center'>
-                            <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear visitante</Button>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.CodigoDeBarras.length > 0 &&
+                                                                        <span className='error'>{errors.CodigoDeBarras}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
 
-                        </Box>
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
+                                                                    </Typography>
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="Observacion"
+                                                                        name="Observacion"
+                                                                        value={this.state.Observacion}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                        noValidate
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.Observacion.length > 0 &&
+                                                                        <span className='error'>{errors.Observacion}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </Box>
+
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Box textAlign='center'>
+                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear visitante</Button>
+
                     </Box>
-
                 </Box>
             </div>
         );
