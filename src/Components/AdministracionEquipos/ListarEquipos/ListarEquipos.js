@@ -174,7 +174,7 @@ const ListarEquipos = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "/herramienta/createMasive", {
+    fetch(window.$basicUri + "herramienta/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(computadores),

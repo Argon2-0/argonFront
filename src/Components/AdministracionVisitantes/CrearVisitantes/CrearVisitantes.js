@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import Switch from '@mui/material/Switch';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { Participante } from "../../../Data/Participante";
 
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
@@ -36,7 +37,9 @@ class CrearVisitantes extends React.Component {
             fechaNacimiento: dayjs(new Date()),
             celular: "",
             tiposervicio: "",
+            sexo: "",
             tratDatos: "NO",
+            tipoDocumentoZK: "",
             errors: {
                 tipoDocumento: "",
                 cedula: "",
@@ -46,6 +49,8 @@ class CrearVisitantes extends React.Component {
                 celular: "",
                 tiposervicio: "",
                 tratDatos: "",
+                sexo: "",
+                tipoDocumentoZK: "",
             }
         };
     }
@@ -68,26 +73,157 @@ class CrearVisitantes extends React.Component {
         const { name, value } = event.target;
         this.validations(name, value);
     }
+    handleChangeDocument = (event) => {
+
+
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = this.state.errors;
+        this.validations(name, value).then(() => {
+            console.log(this.state.tipoDocumento);
+            console.log(this.state.cedula);
+            if (validateForm(this.state.errors)) {
+                console.log(this.state.tipoDocumento);
+                console.log(this.state.cedula);
+            }
+            if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
+                let participante = "";
+
+                fetch(
+                    window.$basicUri +
+                    "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula,
+                    {
+                        mode: "cors",
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+
+                        if (json['fechaNacimiento'] != null) {
+                            json['fechaNacimiento'] = (json['fechaNacimiento'])[2] + "/" + (json['fechaNacimiento'])[1] + "/" + (json['fechaNacimiento'])[0];
+                        }
+                        json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
+                        json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+
+                        participante = new Participante(
+                            json['id'],
+                            json['tipoDocumento'],
+                            json['cedula'],
+                            json['nombres'],
+                            json['apellidos'],
+                            json['fechaNacimiento'],
+                            json['celular'],
+                            json['sexo'],
+                            json['email'],
+                            json['curso'],
+                            json['tratDatos'],
+                            json['estado'],
+                            json['createdAt'],
+                            json['updatedAt'],
+                            json['tiposervicio']
+                        );
+                        this.setState({ ["participante"]: participante });
+                        this.setState({ ["nombres"]: json['nombres'] });
+                        this.setState({ ["apellidos"]: json['apellidos'] });
+                        this.setState({ ["celular"]: json['celular'] });
+                        this.setState({ ["sexo"]: json['sexo'] });
+                        this.setState({ ["tratDatos"]: json['tratDatos'] });
+                        this.setState({ ["tiposervicio"]: json['tiposervicio']['id'] });
+                        if (json['tratDatos'] === "SI") {
+                            this.setState({ ["checkTratDatos"]: true });
+                        }
+                        else {
+                            this.setState({ ["checkTratDatos"]: false });
+                        }
+
+                    }).then().catch((reason) => {
+                        console.log(reason);
+                        this.setState({ ["participante"]: '' });
+                        this.setState({ ["nombres"]: '' });
+                        this.setState({ ["apellidos"]: '' });
+                        this.setState({ ["celular"]: '' });
+                        this.setState({ ["sexo"]: ''});
+                        this.setState({ ["tratDatos"]: '' });
+                        this.setState({ ["tiposervicio"]: ''});
+
+                    }).then(() => {
+                        console.log(errors);
+                        this.setState({ errors });
+                    });
+            }
+        });
+
+
+    }
+
+    setClickOnDocumento = (e) => {
+        console.log("documento")
+        this.setState({ ['actual']: "documento" });
+    }
 
     validations = (name, value) => {
         let errors = this.state.errors;
         switch (name) {
-            case 'tipoDocumento':
+            case 'tipoDocumento': {
+                console.log(value)
+                switch (value) {
+                    case 'C.C':
+                        this.setState({ ["tipoDocumentoZK"]: 2000 });
+                        break;
+                    case 'C.E':
+                        this.setState({ ["tipoDocumentoZK"]: 2002 });
+                        break;
+                    case 'Registro único tributario':
+                        this.setState({ ["tipoDocumentoZK"]: 8 });
+                        break;
+                    case 'Registro civil':
+                        this.setState({ ["tipoDocumentoZK"]: 8 });
+                        break;
+                    case 'Numero identificación tributaria':
+                        this.setState({ ["tipoDocumentoZK"]: 8 });
+                        break;
+                    case 'Pasaporte':
+                        this.setState({ ["tipoDocumentoZK"]: 3 });
+                        break;
+                    case 'T.I':
+                        this.setState({ ["tipoDocumentoZK"]: 2001 });
+                        break;
+                    case 'Permiso de permanencia':
+                        this.setState({ ["tipoDocumentoZK"]: 2004 });
+                        break;
+                    case 'NIT':
+                        this.setState({ ["tipoDocumentoZK"]: 8 });
+                        break;
+                    case 'Desconocido':
+                        this.setState({ ["tipoDocumentoZK"]: 8 });
+                        break;
+                    default:
+                        break;
+
+                };
                 errors.tipoDocumento =
                     value === ""
                         ? 'Should select a document type!'
-                        : '';
+                        : ''
                 break;
+            }
             case 'cedula':
                 errors.cedula =
                     value.length < 5
                         ? 'Id must be at least 5 characters long!'
                         : '';
+                break;
             case 'nombres':
                 errors.nombres =
                     value.length < 2
                         ? 'Nombres must be at least 2 characters long!'
                         : '';
+                break;
             case 'apellidos':
                 errors.apellidos =
                     value.length < 2
@@ -112,22 +248,31 @@ class CrearVisitantes extends React.Component {
                         ? 'Tipo servicio select a document type!'
                         : '';
                 break;
+            case 'sexo':
+                errors.tipoDocumento =
+                    value === ""
+                        ? 'Should select a sex!'
+                        : ''
+                break;
+
             default:
                 break;
         }
-        this.setState({ errors, [name]: value });
+        return Promise.resolve(this.setState({ errors, [name]: value }));
+
 
     }
 
     handleSubmit = (e) => {
-        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "fechaNacimiento", "celular", "tiposervicio", "tratDatos"];
-        e.preventDefault();
+        console.log(this.state.tipoDocumentoZK)
+        console.log("handleSubmit")
+        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "fechaNacimiento", "celular", "tiposervicio", "tratDatos", "sexo"];
         fields.forEach(field => {
             this.validations(field, this.state[field]);
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "/participante/create", {
+            fetch(window.$basicUri + "participante/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -137,16 +282,40 @@ class CrearVisitantes extends React.Component {
                     apellidos: this.state.apellidos,
                     fechaNacimiento: new Date(this.state.fechaNacimiento.toISOString()).getTime(),
                     tratDatos: this.state.tratDatos,
+                    celular: this.state.celular,
                     tiposervicio: {
                         id: this.state.tiposervicio,
                     },
-                    createdAt: Date.now()
+                    createdAt: Date.now(),
+                    sexo: this.state.sexo
 
                 }),
                 headers: {
                     "Content-Type": "application/json",
                 },
-            }).then((response) => response.json());
+            }).then(() => {
+                fetch(window.$basicUri + "zkt/persona/create", {
+                    mode: "cors",
+                    method: "POST",
+                    body: JSON.stringify({
+                        birthday: this.state.fechaNacimiento.toISOString().toString().split("T")[0],
+                        carPlate: this.state.cedula,
+                        cardNo: this.state.cedula,
+                        certNumber: this.state.cedula,
+                        certType: this.state.tipoDocumentoZK,
+                        gender: this.state.sexo,
+                        lastName: this.state.apellidos,
+                        mobilePhone: this.state.celular,
+                        name: this.state.nombres,
+                        pin: this.state.cedula,
+
+
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+            });
         } else {
             console.error('Invalid Form')
         }
@@ -226,19 +395,19 @@ class CrearVisitantes extends React.Component {
                                                                         id="TipoDeDocumento"
                                                                         name="tipoDocumento"
                                                                         value={this.state.tipoDocumento}
-                                                                        onChange={this.handleChange}
+                                                                        onChange={this.handleChangeDocument}
                                                                         style={{ width: 300 }}
                                                                     >
-                                                                        <MenuItem key="1" value="Cédula de ciudadania" width="300">Cédula de ciudadania</MenuItem>
-                                                                        <MenuItem key="2" value="Cédula de extranjeria" width="300">Cédula de extranjeria</MenuItem>
-                                                                        <MenuItem key="3" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
-                                                                        <MenuItem key="4" value="Registro civil" width="300">Registro civil</MenuItem>
-                                                                        <MenuItem key="5" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
-                                                                        <MenuItem key="6" value="Pasaporte" width="300">Pasaporte</MenuItem>
-                                                                        <MenuItem key="7" value="Tarjeta de identidad" width="300">Tarjeta de identidad</MenuItem>
-                                                                        <MenuItem key="8" value="Permiso especial de permanencia" width="300">Permiso especial de permanencia</MenuItem>
-                                                                        <MenuItem key="9" value="NIT" width="300">NIT</MenuItem>
-                                                                        <MenuItem key="10" value="Desconocido" width="300">Desconocido</MenuItem>
+                                                                        <MenuItem key="C.C" value="C.C" width="300">Cédula de ciudadania</MenuItem>
+                                                                        <MenuItem key="C.E" value="C.E" width="300">Cédula de extranjeria</MenuItem>
+                                                                        <MenuItem key="Registro único tributario" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
+                                                                        <MenuItem key="Registro civil" value="Registro civil" width="300">Registro civil</MenuItem>
+                                                                        <MenuItem key="Numero identificación tributaria" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
+                                                                        <MenuItem key="Pasaporte" value="Pasaporte" width="300">Pasaporte</MenuItem>
+                                                                        <MenuItem key="T.I" value="T.I" width="300">Tarjeta de identidad</MenuItem>
+                                                                        <MenuItem key="Permiso de permanencia" value="Permiso de permanencia" width="300">Permiso especial de permanencia</MenuItem>
+                                                                        <MenuItem key="NIT" value="NIT" width="300">NIT</MenuItem>
+                                                                        <MenuItem key="Desconocido" value="Desconocido" width="300">Desconocido</MenuItem>
                                                                     </Select>
 
                                                                 </Stack>
@@ -262,15 +431,44 @@ class CrearVisitantes extends React.Component {
                                                                         id="Cedula"
                                                                         name="cedula"
                                                                         value={this.state.cedula}
-                                                                        onChange={this.handleChange}
+                                                                        onChange={this.handleChangeDocument}
                                                                         style={{ width: 300 }}
                                                                         noValidate
+                                                                        onClick={this.setClickOnDocumento}
                                                                     />
                                                                 </Stack>
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
                                                                     {errors.cedula.length > 0 &&
                                                                         <span className='error'>{errors.cedula}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sexo
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <Select
+                                                                        required
+                                                                        id="Sexo"
+                                                                        name="sexo"
+                                                                        value={this.state.sexo}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    >
+                                                                        <MenuItem key="F" value="F" width="300">Femenino</MenuItem>
+                                                                        <MenuItem key="M" value="M" width="300">Masculino</MenuItem>
+                                                                    </Select>
+
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.tipoDocumento.length > 0 &&
+                                                                        <span className='error'>{errors.sexo}</span>}
                                                                 </Stack>
                                                             </TableCell>
                                                         </TableRow>
@@ -400,7 +598,7 @@ class CrearVisitantes extends React.Component {
                                                                         style={{ width: 300 }}
                                                                     >
                                                                         if(this.state.tiposservicios !== [""]){
-                                                                            this.state.tiposservicios?.map((element, index) => {
+                                                                            this.state.tiposservicios?.map((element, index = element?.id) => {
                                                                                 return (
                                                                                     <MenuItem key={index} value={element?.id} width="300">{element?.nombre}</MenuItem>
 
@@ -460,7 +658,7 @@ class CrearVisitantes extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear visitante</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear visitante</Button>
 
                     </Box>
                 </Box>

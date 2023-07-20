@@ -1,7 +1,9 @@
 export class HerramientaParticipante{
-    constructor(id, observacion, estado, totHoras, createdAt, updatedAt, participante, herramienta) {
+    constructor(id, observacionSalida, observacionEntrada, estado, totHoras, createdAt, updatedAt, participante, herramienta) {
+      console.log(id)
       this.id = id;
-      this.observacion = observacion;
+      this.observacionSalida = observacionSalida;
+      this.observacionEntrada = observacionEntrada;
       this.estado = estado;
       this.totHoras = totHoras;
       this.createdAt = createdAt;

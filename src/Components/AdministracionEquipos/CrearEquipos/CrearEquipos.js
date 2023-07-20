@@ -89,7 +89,7 @@ class CrearEquipos extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "/herramienta/create", {
+            fetch(window.$basicUri + "herramienta/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({

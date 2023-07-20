@@ -101,7 +101,7 @@ class CrearUsuario extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "/user/create", {
+            fetch(window.$basicUri + "user/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({

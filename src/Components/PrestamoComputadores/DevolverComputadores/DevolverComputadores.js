@@ -91,9 +91,11 @@ class DevolverComputadores extends React.Component {
                     }
                 ).then((response) => response.json())
                     .then((json) => {
+                        console.log(json)
                         herramientaParticipante = new HerramientaParticipante(
                             json['id'],
-                            json['observacion'],
+                            json['observacionSalida'],
+                            json['observacionEntrada'],
                             json['estado'],
                             json['totHoras'],
                             json['createdAt'],
@@ -142,7 +144,7 @@ class DevolverComputadores extends React.Component {
                 method: "PUT",
                 body: JSON.stringify({
                     id: this.state.herramientaParticipante.id,
-                    observacion: this.state.Observacion,
+                    observacionEntrada: this.state.Observacion,
                     updatedAt: Date.now(),
                     createdAt: this.state.herramientaParticipante.createdAt,
                     participante: {
@@ -155,7 +157,17 @@ class DevolverComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                 },
-            }).then((response) => response.json());
+            }).then((response) => {
+                console.log(this.state.herramientaParticipante);
+                console.log(this.state.herramientaParticipante.participante_cedula);
+                fetch(window.$basicUri + "zkt/persona/updatePrestamo/"+this.state.herramientaParticipante.participante_cedula, {
+                    mode: "cors",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then(()=>{})
+            });
         } else {
             console.error('Invalid Form')
         }
@@ -265,7 +277,7 @@ class DevolverComputadores extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear visitante</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear visitante</Button>
 
                     </Box>
                 </Box>

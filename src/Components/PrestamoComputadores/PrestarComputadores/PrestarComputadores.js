@@ -32,6 +32,7 @@ class PrestarComputadores extends React.Component {
         console.log(dayjs(new Date()));
         super(props);
         this.state = {
+            id: "",
             actual: "",
             stopStream: false,
             participante: "",
@@ -83,68 +84,98 @@ class PrestarComputadores extends React.Component {
         event.preventDefault();
         const { name, value } = event.target;
         let errors = this.state.errors;
-        this.validations(name, value);
-        if (validateForm(this.state.errors)) {
-            let participante = "";
-            fetch(
-                window.$basicUri +
-                "participante/getByCedula/" + value,
-                {
-                    mode: "cors",
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            )
-                .then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
+        this.validations(name, value).then(() => {
+            console.log(this.state.tipoDocumento);
+            console.log(this.state.cedula);
+            if (validateForm(this.state.errors)) {
+                console.log(this.state.tipoDocumento);
+                console.log(this.state.cedula);
+            }
+            if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
+                let participante = "";
 
-                    if (json['fechaNacimiento'] != null) {
-                        json['fechaNacimiento'] = (json['fechaNacimiento'])[2] + "/" + (json['fechaNacimiento'])[1] + "/" + (json['fechaNacimiento'])[0];
+                fetch(
+                    window.$basicUri +
+                    "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula,
+                    {
+                        mode: "cors",
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
                     }
-                    json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
-                    json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+                )
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
 
-                    participante = new Participante(
-                        json['id'],
-                        json['tipoDocumento'],
-                        json['cedula'],
-                        json['nombres'],
-                        json['apellidos'],
-                        json['fechaNacimiento'],
-                        json['celular'],
-                        json['sexo'],
-                        json['email'],
-                        json['curso'],
-                        json['tratDatos'],
-                        json['estado'],
-                        json['createdAt'],
-                        json['updatedAt'],
-                        json['tiposervicio']
-                    );
-                    this.setState({ ["participante"]: participante });
-                    this.setState({ ["tipoDocumento"]: json['tipoDocumento'] });
-                    this.setState({ ["nombres"]: json['nombres'] });
-                    this.setState({ ["apellidos"]: json['apellidos'] });
-                    this.setState({ ["celular"]: json['celular'] });
+                        if (json['fechaNacimiento'] != null) {
+                            json['fechaNacimiento'] = (json['fechaNacimiento'])[2] + "/" + (json['fechaNacimiento'])[1] + "/" + (json['fechaNacimiento'])[0];
+                        }
+                        json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
+                        json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
 
-                }).then().catch((reason) => {
-                    console.log(reason);
-                    errors.cedula = 'El documento no existe';
-                    this.setState({ ["participante"]: '' });
-                    this.setState({ ["tipoDocumento"]: '' });
-                    this.setState({ ["nombres"]: '' });
-                    this.setState({ ["apellidos"]: '' });
-                    this.setState({ ["celular"]: '' });
+                        participante = new Participante(
+                            json['id'],
+                            json['tipoDocumento'],
+                            json['cedula'],
+                            json['nombres'],
+                            json['apellidos'],
+                            0,
+                            json['celular'],
+                            json['sexo'],
+                            json['email'],
+                            json['curso'],
+                            json['tratDatos'],
+                            json['estado'],
+                            json['createdAt'],
+                            json['updatedAt'],
+                            json['tiposervicio']
+                        );
+                        return Promise.resolve(this.setState({ ["participante"]: participante, ["id"]: json['id'], ["nombres"]: json['nombres'], ["apellidos"]: json['apellidos'],["celular"]: json['celular'] }));
+
+                    }).then((response) => {
+                        if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
+                            let errors = this.state.errors;
+                            fetch(
+                                window.$basicUri +
+                                "herramientaparticipante/getByParticipanteIdAndEstado/" + this.state.tipoDocumento + "/" + this.state.cedula +"/Préstado",
+                                {
+                                    mode: "cors",
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                }
+                            )
+                                .then((response) => response.json())
+                                .then((json) => {
+                                    if(json===0){
+                                        errors.cedula = '';
+                                    }
+                                    else{errors.cedula = 'La persona ya tiene un dispositivo prestado';}
+                                    
+                                }).then(() => {
+                                    console.log(errors);
+                                    this.setState({ errors });
+                                })
+                        }
+                    }).then().catch((reason) => {
+                        console.log(reason);
+                        errors.cedula = 'El documento no existe';
+                        this.setState({ ["participante"]: '' });
+                        this.setState({ ["nombres"]: '' });
+                        this.setState({ ["apellidos"]: '' });
+                        this.setState({ ["celular"]: '' });
 
 
-                }).then(() => {
-                    console.log(errors);
-                    this.setState({ errors });
-                });
-        }
+                    }).then(() => {
+                        console.log(errors);
+                        this.setState({ errors });
+                    })
+            }
+        })
+
     }
 
     handleChangeCodigoBarras = (event) => {
@@ -281,8 +312,8 @@ class PrestarComputadores extends React.Component {
             default:
                 break;
         }
-        this.setState({ errors, [name]: value });
 
+        return Promise.resolve(this.setState({ errors, [name]: value }));
     }
 
     handleSubmit = (e) => {
@@ -293,13 +324,13 @@ class PrestarComputadores extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "/herramientaparticipante/create", {
+            fetch(window.$basicUri + "herramientaparticipante/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
                     participante: this.state.participante,
                     herramienta: this.state.herramienta,
-                    observacion: this.state.Observacion,
+                    observacionSalida: this.state.Observacion,
                     estado: 'Préstado',
                     createdAt: Date.now()
 
@@ -307,7 +338,15 @@ class PrestarComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                 },
-            }).then((response) => response.json());
+            }).then((response) => {
+                fetch(window.$basicUri + "zkt/persona/updatePrestamo/"+this.state.cedula, {
+                    mode: "cors",
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then(()=>{})
+            });
         } else {
             console.error('Invalid Form')
         }
@@ -406,22 +445,23 @@ class PrestarComputadores extends React.Component {
                                                                         required
                                                                         id="TipoDeDocumento"
                                                                         name="tipoDocumento"
+                                                                        key={this.state.tipoDocumento}
                                                                         value={this.state.tipoDocumento}
-                                                                        onChange={this.handleChange}
+                                                                        onChange={this.handleChangeDocument}
                                                                         style={{ width: 300 }}
-                                                                        disabled
                                                                         variant="filled"
+
                                                                     >
-                                                                        <MenuItem key="1" value="Cédula de ciudadania" width="300">Cédula de ciudadania</MenuItem>
-                                                                        <MenuItem key="2" value="Cédula de extranjeria" width="300">Cédula de extranjeria</MenuItem>
-                                                                        <MenuItem key="3" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
-                                                                        <MenuItem key="4" value="Registro civil" width="300">Registro civil</MenuItem>
-                                                                        <MenuItem key="5" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
-                                                                        <MenuItem key="6" value="Pasaporte" width="300">Pasaporte</MenuItem>
-                                                                        <MenuItem key="7" value="Tarjeta de identidad" width="300">Tarjeta de identidad</MenuItem>
-                                                                        <MenuItem key="8" value="Permiso especial de permanencia" width="300">Permiso especial de permanencia</MenuItem>
-                                                                        <MenuItem key="9" value="NIT" width="300">NIT</MenuItem>
-                                                                        <MenuItem key="10" value="Desconocido" width="300">Desconocido</MenuItem>
+                                                                        <MenuItem key="C.C" value="C.C" width="300">Cédula de ciudadania</MenuItem>
+                                                                        <MenuItem key="C.E" value="C.E" width="300">Cédula de extranjeria</MenuItem>
+                                                                        <MenuItem key="Registro único tributario" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
+                                                                        <MenuItem key="Registro civil" value="Registro civil" width="300">Registro civil</MenuItem>
+                                                                        <MenuItem key="Numero identificación tributaria" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
+                                                                        <MenuItem key="Pasaporte" value="Pasaporte" width="300">Pasaporte</MenuItem>
+                                                                        <MenuItem key="T.I" value="T.I" width="300">Tarjeta de identidad</MenuItem>
+                                                                        <MenuItem key="Permiso de permanencia" value="Permiso de permanencia" width="300">Permiso especial de permanencia</MenuItem>
+                                                                        <MenuItem key="NIT" value="NIT" width="300">NIT</MenuItem>
+                                                                        <MenuItem key="Desconocido" value="Desconocido" width="300">Desconocido</MenuItem>
                                                                     </Select>
 
                                                                 </Stack>
@@ -613,7 +653,7 @@ class PrestarComputadores extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Crear visitante</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear visitante</Button>
 
                     </Box>
                 </Box>

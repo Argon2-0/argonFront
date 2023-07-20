@@ -45,7 +45,8 @@ const ListarPrestamos = () => {
               );;
               participantes.push(new HerramientaParticipante(
                 json[pos]['id'],
-                json[pos]['observacion'],
+                json[pos]['observacionSalida'],
+                json[pos]['observacionEntrada'],
                 json[pos]['estado'],
                 json[pos]['totHoras'],
                 json[pos]['createdAt'],
