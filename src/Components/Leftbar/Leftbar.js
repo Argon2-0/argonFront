@@ -64,7 +64,7 @@ export default function Leftbar({ changeSection }) {
   const [openAdministracionEquipos, setOpenAdministracionEquipos] = useState(false);
   const [openTipoServicio, setOpenTipoServicio] = useState(false);
   const [openPrestamoComputadores, setOpenPrestamoComputadores] = useState(false);
-
+  const [openEmpresas, setOpenEmpresa] = useState(false);
 
   const [nConjunto, setnConjunto] = useState([]);
 
@@ -113,6 +113,15 @@ export default function Leftbar({ changeSection }) {
     }
   }
 
+  const handleClickEmpresas = () =>{
+    if(openTipoServicio){
+      setOpenEmpresa(false);
+    }
+    else{
+      setOpenEmpresa(true);
+    }
+  }
+
 
 
   const handleClick = () => {
@@ -124,20 +133,20 @@ export default function Leftbar({ changeSection }) {
   return (
 
     <div className="drawer" >
-      <Sidebar backgroundColor="#992d30">
+      <Sidebar backgroundColor="#090811">
 
         <div className="sidebarWrapper">
 
-          <List className="letras" >
+          <List className="letrasDark" >
             <ListItemButton
               name="Dasboard"
-              className="letras"
+              className="letrasDark"
               onClick={() => collapseSidebar()}
             >
               <ListItemIcon>
-                <MenuBook className="sidebarIcon letras" />{" "}
+                <MenuBook className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">
+              <ListItemText className="letrasDark">
                 <center>
                   <Avatar
                     alt={window.$name}
@@ -145,11 +154,11 @@ export default function Leftbar({ changeSection }) {
                     sx={{ width: 156, height: 156 }}
                   />
                   <div className="profileInfo">
-                    <h4 className="letras">
+                    <h4 className="letrasDark">
                       {window.$name}
                     </h4>
-                    <p className="letras">{window.$email}</p>
-                    <p className="letras">{window.$nameRol}</p>
+                    <p className="letrasDark">{window.$email}</p>
+                    <p className="letrasDark">{window.$nameRol}</p>
                   </div>
                 </center>
               </ListItemText>
@@ -165,9 +174,9 @@ export default function Leftbar({ changeSection }) {
               onClick={changeSection("Dasboard")}
             >
               <ListItemIcon>
-                <Dashboard className="sidebarIcon letras" />{" "}
+                <Dashboard className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Dasboard</ListItemText>
+              <ListItemText className="letrasDark">Dasboard</ListItemText>
             </ListItemButton>
 
             <ListItemButton
@@ -176,9 +185,9 @@ export default function Leftbar({ changeSection }) {
               onClick={changeSection("Perfil")}
             >
               <ListItemIcon>
-                <Person className="sidebarIcon letras" />{" "}
+                <Person className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Perfil</ListItemText>
+              <ListItemText className="letrasDark">Perfil</ListItemText>
             </ListItemButton>
 
             <ListItemButton
@@ -187,9 +196,9 @@ export default function Leftbar({ changeSection }) {
               onClick={handleClickGestionUsuarios}
             >
               <ListItemIcon>
-                <ManageAccounts className="sidebarIcon letras" />{" "}
+                <ManageAccounts className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Gestion de usuarios</ListItemText>
+              <ListItemText className="letrasDark">Gestion de usuarios</ListItemText>
               {openGestionUsuarios ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
 
@@ -202,9 +211,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <AddCircleOutlineIcon className="sidebarIcon letras" />{" "}
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Crear nuevo usuario</ListItemText>
+                  <ListItemText className="letrasDark">Crear nuevo usuario</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -215,9 +224,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <FormatListBulletedIcon className="sidebarIcon letras" />{" "}
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Listar usuarios</ListItemText>
+                  <ListItemText className="letrasDark">Listar usuarios</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -228,9 +237,9 @@ export default function Leftbar({ changeSection }) {
               onClick={handleClickOpenAdministracionVisitantes}
             >
               <ListItemIcon>
-                <TransferWithinAStation className="sidebarIcon letras" />{" "}
+                <TransferWithinAStation className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Administracion de visitantes</ListItemText>
+              <ListItemText className="letrasDark">Administracion de visitantes</ListItemText>
               {openAdministracionVisitantes ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openAdministracionVisitantes} timeout="auto" unmountOnExit>
@@ -242,9 +251,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <AddCircleOutlineIcon className="sidebarIcon letras" />{" "}
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Crear nuevo visitante</ListItemText>
+                  <ListItemText className="letrasDark">Crear nuevo visitante</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -255,9 +264,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <FormatListBulletedIcon className="sidebarIcon letras" />{" "}
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Listar visitantes</ListItemText>
+                  <ListItemText className="letrasDark">Listar visitantes</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -267,9 +276,9 @@ export default function Leftbar({ changeSection }) {
               onClick={handleClickAdministracionEquipos}
             >
               <ListItemIcon>
-                <Devices className="sidebarIcon letras" />{" "}
+                <Devices className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Administracion de equipos</ListItemText>
+              <ListItemText className="letrasDark">Administracion de equipos</ListItemText>
               {openAdministracionEquipos ? <ExpandLess /> : <ExpandMore />}
 
             </ListItemButton>
@@ -282,9 +291,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <AddCircleOutlineIcon className="sidebarIcon letras" />{" "}
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Crear nuevo equipo</ListItemText>
+                  <ListItemText className="letrasDark">Crear nuevo equipo</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -295,9 +304,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <FormatListBulletedIcon className="sidebarIcon letras" />{" "}
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Listar equipos</ListItemText>
+                  <ListItemText className="letrasDark">Listar equipos</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -308,9 +317,9 @@ export default function Leftbar({ changeSection }) {
               onClick={handleClickPrestamoComputadores}
             >
               <ListItemIcon>
-                <ScreenShare className="sidebarIcon letras" />{" "}
+                <ScreenShare className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Prestamo de computadores</ListItemText>
+              <ListItemText className="letrasDark">Prestamo de computadores</ListItemText>
               {openPrestamoComputadores ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openPrestamoComputadores} timeout="auto" unmountOnExit>
@@ -322,9 +331,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon >
-                    <SendIcon className="sidebarIcon letras" />{" "}
+                    <SendIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon >
-                  <ListItemText className="letras">Prestar computador</ListItemText>
+                  <ListItemText className="letrasDark">Prestar computador</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -335,9 +344,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon  >
-                    <ReplyIcon className="sidebarIcon letras" />{" "}
+                    <ReplyIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon  >
-                  <ListItemText className="letras">Devolver computadotr</ListItemText>
+                  <ListItemText className="letrasDark">Devolver computadotr</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -348,9 +357,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <FormatListBulletedIcon className="sidebarIcon letras" />{" "}
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Listar prestamos</ListItemText>
+                  <ListItemText className="letrasDark">Listar prestamos</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -362,19 +371,20 @@ export default function Leftbar({ changeSection }) {
               onClick={changeSection("Informes")}
             >
               <ListItemIcon>
-                <Article className="sidebarIcon letras" />{" "}
+                <Article className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Informes</ListItemText>
+              <ListItemText className="letrasDark">Informes</ListItemText>
             </ListItemButton>
+
             <ListItemButton
               name="TipoServicio"
               className="TipoServicio"
               onClick={handleClickTipoServicio}
             >
               <ListItemIcon>
-                <MiscellaneousServices className="sidebarIcon letras" />{" "}
+                <MiscellaneousServices className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Tipo de servicio</ListItemText>
+              <ListItemText className="letrasDark">Tipo de servicio</ListItemText>
               {openTipoServicio ? <ExpandLess /> : <ExpandMore />}
 
             </ListItemButton>
@@ -387,9 +397,9 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <AddCircleOutlineIcon className="sidebarIcon letras" />{" "}
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Crear nuevo tipo de servicio</ListItemText>
+                  <ListItemText className="letrasDark">Crear nuevo tipo de servicio</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -400,21 +410,64 @@ export default function Leftbar({ changeSection }) {
                   sx={{ pl: 4 }}
                 >
                   <ListItemIcon>
-                    <FormatListBulletedIcon className="sidebarIcon letras" />{" "}
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letras">Listar tipos de servicio</ListItemText>
+                  <ListItemText className="letrasDark">Listar tipos de servicio</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>
+
+            <ListItemButton
+              name="Empresas"
+              className="Empresas"
+              onClick={handleClickEmpresas}
+            >
+              <ListItemIcon>
+                <MiscellaneousServices className="sidebarIcon letrasDark" />{" "}
+              </ListItemIcon>
+              <ListItemText className="letrasDark">Empresas</ListItemText>
+              {openEmpresas ? <ExpandLess /> : <ExpandMore />}
+
+            </ListItemButton>
+            <Collapse in={openEmpresas} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  name="EmpresaCrear"
+                  className="EmpresaCrear"
+                  onClick={changeSection("EmpresaCrear")}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemIcon>
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
+                  </ListItemIcon>
+                  <ListItemText className="letrasDark">Crear nueva empresa</ListItemText>
+                </ListItemButton>
+              </List>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  name="EmpresasListar"
+                  className="EmpresasListar"
+                  onClick={changeSection("EmpresasListar")}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemIcon>
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
+                  </ListItemIcon>
+                  <ListItemText className="letrasDark">Listar empresas</ListItemText>
+                </ListItemButton>
+              </List>
+            </Collapse>
+
+
             <ListItemButton
               name="Exit"
               className="Exit"
               onClick={changeSection("Exit")}
             >
               <ListItemIcon>
-                <Exit className="sidebarIcon letras" />{" "}
+                <Exit className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letras">Exit</ListItemText>
+              <ListItemText className="letrasDark">Exit</ListItemText>
             </ListItemButton>
           </List>
           <hr className="sidebarHr" />

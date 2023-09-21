@@ -70,13 +70,18 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-        setLabelsVisitsByService(json[0]);
-        setDataVisitsByService(json[1]);
+        console.log(json);
+        window.$token = json[0];
+        setLabelsVisitsByService(json[1]);
+        setDataVisitsByService(json[2]);
       });
   }
 
@@ -89,14 +94,19 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
+        window.$token = json[0];
         console.log(json)
-        setLabelsVisitsByEdad(json[0]);
-        setDataVisitsByEdad(json[1]);
+        setLabelsVisitsByEdad(json[1]);
+        setDataVisitsByEdad(json[2]);
       });
   }
 
@@ -117,14 +127,18 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
-        setLabelsVisitsBySexo(json[0]);
-        setDataVisitsBySexo(json[1]);
+        console.log(json);
+        window.$token = json[0];
+        setLabelsVisitsBySexo(json[1]);
+        setDataVisitsBySexo(json[2]);
       });
   }
 
@@ -137,14 +151,18 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
-        setVisitantes(json[0]);
-        setVisitas(json[1]);
+        console.log(json);
+        window.$token = json[0];
+        setVisitantes(json[1]);
+        setVisitas(json[2]);
       });
   }
 
@@ -157,14 +175,19 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-        setUsuariosPrestados(json[0]);
-        setPrestamos(json[1]);
-        setHorasPrestamo(json[2]);
+        console.log(json);
+        window.$token = json[0];
+        setUsuariosPrestados(json[1]);
+        setPrestamos(json[2]);
+        setHorasPrestamo(json[3]);
       });
   }
 
@@ -177,14 +200,18 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
-        setLabelsComputadores(json[0]);
-        setDataComputadores(json[1]);
+        console.log(json);
+        window.$token = json[0];
+        setLabelsComputadores(json[1]);
+        setDataComputadores(json[2]);
       });
   }
 

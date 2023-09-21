@@ -22,19 +22,26 @@ const ListarUsuarios = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
+        window.$token = json[0];
+        var body = json[1];
+        console.log(body)
         let participantes = [];
         let roleJson = "";
         let role = "";
-        for (let pos = 0; pos < json.length; pos++) {
-          if (json[pos]['fechaNacimiento'] != null) {
-            json[pos]['fechaNacimiento'] = (json[pos]['fechaNacimiento'])[2] + "/" + (json[pos]['fechaNacimiento'])[1] + "/" + (json[pos]['fechaNacimiento'])[0];
+        for (let pos = 0; pos < body.length; pos++) {
+          if (body[pos]['fechaNacimiento'] != null) {
+            body[pos]['fechaNacimiento'] = (body[pos]['fechaNacimiento'])[2] + "/" + (body[pos]['fechaNacimiento'])[1] + "/" + (body[pos]['fechaNacimiento'])[0];
           }
-          json[pos]['createdAt'] = new Date(json[pos]['createdAt']).toLocaleString(
+          body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -42,7 +49,7 @@ const ListarUsuarios = () => {
               year: "numeric",
             }
           );
-          json[pos]['updatedAt'] = new Date(json[pos]['updatedAt']).toLocaleString(
+          body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -51,19 +58,19 @@ const ListarUsuarios = () => {
             }
           );;
           participantes.push(new UserInfo(
-            json[pos]['id'],
-            json[pos]['name'],
-            json[pos]['email'],
-            json[pos]['emailVerifiedAt'],
-            json[pos]['emapictureil'],
-            json[pos]['rememberToken'],
-            json[pos]['createdAt'],
-            json[pos]['updatedAt'],
-            (json[pos]['role'])['id'],
-            (json[pos]['role'])['name'],
-            (json[pos]['role'])['description'],
-            (json[pos]['role'])['createdAt'],
-            (json[pos]['role'])['updatedAt'],
+            body[pos]['id'],
+            body[pos]['name'],
+            body[pos]['email'],
+            body[pos]['emailVerifiedAt'],
+            body[pos]['emapictureil'],
+            body[pos]['rememberToken'],
+            body[pos]['createdAt'],
+            body[pos]['updatedAt'],
+            (body[pos]['role'])['id'],
+            (body[pos]['role'])['name'],
+            (body[pos]['role'])['description'],
+            (body[pos]['role'])['createdAt'],
+            (body[pos]['role'])['updatedAt'],
           ));
         }
         setRows(participantes);
@@ -104,7 +111,7 @@ const ListarUsuarios = () => {
   ];
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-    id:false,
+    id: false,
     updatedAt: false
   });
 
@@ -121,14 +128,20 @@ const ListarUsuarios = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
-
-        for (let pos = 0; pos < json.length; pos++) {
-          json[pos]['createdAt'] = new Date(json[pos]['createdAt']).toLocaleString(
+        console.log(json);
+        window.$token = json[0];
+        var body = json[1];
+        console.log(body)
+        for (let pos = 0; pos < body.length; pos++) {
+          body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -136,7 +149,7 @@ const ListarUsuarios = () => {
               year: "numeric",
             }
           );
-          json[pos]['updatedAt'] = new Date(json[pos]['updatedAt']).toLocaleString(
+          body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -145,11 +158,11 @@ const ListarUsuarios = () => {
             }
           );;
           roles.push(new Role(
-            json[pos]['id'],
-            json[pos]['name'],
-            json[pos]['description'],
-            json[pos]['createdAt'],
-            json[pos]['updatedAt']
+            body[pos]['id'],
+            body[pos]['name'],
+            body[pos]['description'],
+            body[pos]['createdAt'],
+            body[pos]['updatedAt']
           ));
         }
       }).then(() => {
@@ -192,7 +205,7 @@ const ListarUsuarios = () => {
     promise.then((d) => {
       for (var i in d) {
         d[i]["createdAt"] = Date.now();
-        d[i]["role"] ={["id"]: d[i]["roleId"]}
+        d[i]["role"] = { ["id"]: d[i]["roleId"] }
         console.log(d[i]);
         setUsuarios(d)
       }
@@ -209,8 +222,15 @@ const ListarUsuarios = () => {
       body: JSON.stringify(usuarios),
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.$token,
+        "LastTime": window.$lastTime,
+        "CurrentTime": window.$currentTime
       },
-    }).then((response) => response.json());
+    }).then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        window.$token = json[0];
+      })
 
   };
   return (
@@ -222,7 +242,7 @@ const ListarUsuarios = () => {
           Gestión de usuarios
         </Typography>
         <a href="/Computadores.xlsx" download="Computadores.xlsx">
-          Descargar Archivo
+          Descargar plantilla
         </a>
         <Box textAlign='center'>
           <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={getRoles}>Descargar listado de roles</Button>

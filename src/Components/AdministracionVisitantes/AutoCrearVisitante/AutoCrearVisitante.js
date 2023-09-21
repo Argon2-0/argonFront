@@ -105,44 +105,51 @@ class AutoCrearVisitante extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
                         },
                     }
                 )
                     .then((response) => response.json())
                     .then((json) => {
-                        console.log(json);
 
-                        if (json['fechaNacimiento'] != null) {
-                            json['fechaNacimiento'] = (json['fechaNacimiento'])[2] + "/" + (json['fechaNacimiento'])[1] + "/" + (json['fechaNacimiento'])[0];
+                        console.log(json);
+                        window.$token = json[0];
+                        var body = json[1];
+                        console.log(body)
+
+                        if (body['fechaNacimiento'] != null) {
+                            body['fechaNacimiento'] = (body['fechaNacimiento'])[2] + "/" + (body['fechaNacimiento'])[1] + "/" + (body['fechaNacimiento'])[0];
                         }
-                        json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
-                        json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+                        body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                        body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
 
                         participante = new Participante(
-                            json['id'],
-                            json['tipoDocumento'],
-                            json['cedula'],
-                            json['nombres'],
-                            json['apellidos'],
-                            json['fechaNacimiento'],
-                            json['celular'],
-                            json['sexo'],
-                            json['email'],
-                            json['curso'],
-                            json['tratDatos'],
-                            json['estado'],
-                            json['createdAt'],
-                            json['updatedAt'],
-                            json['tiposervicio']
+                            body['id'],
+                            body['tipoDocumento'],
+                            body['cedula'],
+                            body['nombres'],
+                            body['apellidos'],
+                            body['fechaNacimiento'],
+                            body['celular'],
+                            body['sexo'],
+                            body['email'],
+                            body['curso'],
+                            body['tratDatos'],
+                            body['estado'],
+                            body['createdAt'],
+                            body['updatedAt'],
+                            body['tiposervicio']
                         );
                         this.setState({ ["participante"]: participante });
-                        this.setState({ ["nombres"]: json['nombres'] });
-                        this.setState({ ["apellidos"]: json['apellidos'] });
-                        this.setState({ ["celular"]: json['celular'] });
-                        this.setState({ ["sexo"]: json['sexo'] });
-                        this.setState({ ["tratDatos"]: json['tratDatos'] });
-                        this.setState({ ["tiposervicio"]: json['tiposervicio']['id'] });
-                        if (json['tratDatos'] === "SI") {
+                        this.setState({ ["nombres"]: body['nombres'] });
+                        this.setState({ ["apellidos"]: body['apellidos'] });
+                        this.setState({ ["celular"]: body['celular'] });
+                        this.setState({ ["sexo"]: body['sexo'] });
+                        this.setState({ ["tratDatos"]: body['tratDatos'] });
+                        this.setState({ ["tiposervicio"]: body['tiposervicio']['id'] });
+                        if (body['tratDatos'] === "SI") {
                             this.setState({ ["checkTratDatos"]: true });
                         }
                         else {
@@ -298,30 +305,45 @@ class AutoCrearVisitante extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
-            }).then(() => {
-                fetch(window.$basicUri + "zkt/persona/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        birthday: this.state.fechaNacimiento.toISOString().toString().split("T")[0],
-                        carPlate: this.state.cedula,
-                        cardNo: this.state.cedula,
-                        certNumber: this.state.cedula,
-                        certType: this.state.tipoDocumentoZK,
-                        gender: this.state.sexo,
-                        lastName: this.state.apellidos,
-                        mobilePhone: this.state.celular,
-                        name: this.state.nombres,
-                        pin: this.state.cedula,
+            }).then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    window.$token = json[0];
+                    var body = json[1];
+                    console.log(body)
+                    fetch(window.$basicUri + "zkt/persona/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            birthday: this.state.fechaNacimiento.toISOString().toString().split("T")[0],
+                            carPlate: this.state.cedula,
+                            cardNo: this.state.cedula,
+                            certNumber: this.state.cedula,
+                            certType: this.state.tipoDocumentoZK,
+                            gender: this.state.sexo,
+                            lastName: this.state.apellidos,
+                            mobilePhone: this.state.celular,
+                            name: this.state.nombres,
+                            pin: this.state.cedula,
 
 
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-            });
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            window.$token = json[0];
+                        })
+                });
         } else {
             console.error('Invalid Form')
         }
@@ -337,21 +359,28 @@ class AutoCrearVisitante extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
             }
         ).then((response) => response.json())
             .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
                 let tiposServiciosJson = [];
-                for (let pos = 0; pos < json.length; pos++) {
-                    json[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['createdAt']));
-                    json[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['updatedAt']));
+                for (let pos = 0; pos < body.length; pos++) {
+                    body[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['createdAt']));
+                    body[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['updatedAt']));
                     tiposServiciosJson.push(new TipoServicio(
-                        json[pos]['id'],
-                        json[pos]['nombre'],
-                        json[pos]['descripcion'],
-                        json[pos]['createdAt'],
-                        json[pos]['updatedAt'],
-                        json[pos]['form']));
+                        body[pos]['id'],
+                        body[pos]['nombre'],
+                        body[pos]['descripcion'],
+                        body[pos]['createdAt'],
+                        body[pos]['updatedAt'],
+                        body[pos]['form']));
                 }
                 this.setState({ ["tiposservicios"]: tiposServiciosJson });
             })

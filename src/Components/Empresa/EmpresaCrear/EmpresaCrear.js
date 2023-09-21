@@ -2,7 +2,7 @@ import React from 'react'
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
-import './TipoServicioCrear.css'
+import './EmpresaCrear.css'
 import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import '../../../App.css'
@@ -15,20 +15,15 @@ const validateForm = errors => {
     return valid;
 };
 
-class CrearTipoServicio extends React.Component {
+class CrearEmpresa extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             checkVisualiza: false,
             nombre: "",
-            items: [],
-            descripcion: "",
-            form: "No",
             errors: {
                 nombre: "",
-                descripcion: "",
-                form: "",
             }
         };
     }
@@ -60,11 +55,6 @@ class CrearTipoServicio extends React.Component {
                         ? 'nombre must be at least 5 characters long!'
                         : '';
                 break;
-            case 'descripcion':
-                errors.descripcion =
-                    value.length < 5
-                        ? 'descripcion must be at least 5 characters long!'
-                        : '';
             default:
                 break;
         }
@@ -81,15 +71,11 @@ class CrearTipoServicio extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "tiposervicio/create", {
+            fetch(window.$basicUri + "empresa/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
-                    nombre: this.state.nombre,
-                    descripcion: this.state.descripcion,
-                    form: this.state.form,
-                    createdAt: Date.now()
-
+                    nombre: this.state.nombre
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -118,7 +104,7 @@ class CrearTipoServicio extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear tipo de servicio
+                        Crear empresa
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -127,7 +113,7 @@ class CrearTipoServicio extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACION DEL EQUIPO
+                                                INFORMACION DE LA EMPRESA
                                             </Typography>
                                         </Box>
                                     </TableCell>
@@ -167,59 +153,7 @@ class CrearTipoServicio extends React.Component {
                                                                         <span className='error'>{errors.nombre}</span>}
                                                                 </Stack>
                                                                 <br />
-                                                                <Stack direction="row" spacing={2} >
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextareaAutosize
-                                                                        required
-                                                                        id="descripcion"
-                                                                        name="descripcion"
-                                                                        label="descripcion"
-                                                                        variant="outlined"
-                                                                        value={this.state.descripcion}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.descripcion.length > 0 &&
-                                                                        <span className='error'>{errors.descripcion}</span>}
-                                                                </Stack>
-                                                                <br />
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <FormControlLabel
-                                                                        control={
-                                                                            <Switch
-                                                                                id="visualiza"
-                                                                                name="visualiza"
-                                                                                checked={this.state.checkVisualiza}
-                                                                                onChange={this.handleCheckchange}
-                                                                                style={{ width: 300 }}
-
-                                                                            />
-                                                                        }
-                                                                        label={this.state.form}
-                                                                    />
-
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.form.length > 0 &&
-                                                                        <span className='error'>{errors.form}</span>}
-                                                                </Stack>
-
+                                                                
                                                             </TableCell>
                                                         </TableRow>
                                                     </TableBody>
@@ -243,4 +177,4 @@ class CrearTipoServicio extends React.Component {
     }
 };
 
-export default CrearTipoServicio;
+export default CrearEmpresa;

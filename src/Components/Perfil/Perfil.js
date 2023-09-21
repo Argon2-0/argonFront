@@ -38,21 +38,21 @@ const Perfil = () => {
 
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardout">
 
-                <Typography variant="h4" align="Left" component="h4" gutterBottom>
+                <Typography variant="h4" align="Left" component="h4" gutterBottom className="letras">
                     Editar perfil
                 </Typography>
-                <TableContainer>
+                <TableContainer className="letras">
                     <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
+                                    <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
                                         INFORMACIÓN DEL USUARIO
                                     </Typography>
 
                                 </TableCell>
                                 <TableCell>
-                                    <Typography variant="h5" align="Left" component="h5" gutterBottom>
+                                    <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
                                         CAMBIAR LA CONTRASEÑA
                                     </Typography>
 

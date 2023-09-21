@@ -27,7 +27,9 @@ window.$idRol = "";
 window.$nameRol = "";
 window.$foto = "";
 window.$token = "";
-window.$expirationDate = "";
+window.$token_due = "";
+window.$lastTime = "";
+window.$currentTime = "";
 window.$basicUri = "http://localhost:8080/accessbiosecurity/";
 
 root.render(

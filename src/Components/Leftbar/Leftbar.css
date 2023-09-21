@@ -66,6 +66,9 @@
 .letras {
   color: #fff;
 }
+.letrasDark {
+  color: #ffcf00;
+}
 .Sidebar:root{
   background-color: transparent !important
   

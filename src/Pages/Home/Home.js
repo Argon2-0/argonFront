@@ -19,6 +19,8 @@ import ListarPrestamos from "../../Components/PrestamoComputadores/ListarPrestam
 import PrestarComputadores from "../../Components/PrestamoComputadores/PrestarComputadores/PrestarComputadores";
 import DevolverComputadores from "../../Components/PrestamoComputadores/DevolverComputadores/DevolverComputadores";
 import '../../App.css';
+import CrearEmpresa from "../../Components/Empresa/EmpresaCrear/EmpresaCrear";
+import EmpresaListar from "../../Components/Empresa/EmpresaListar/EmpresaListar";
 const Home = () => {
   let history = useNavigate();
   const [section, setSection] = useState("Dasboard");
@@ -61,6 +63,10 @@ const Home = () => {
         return <CrearTipoServicio />;
       case "TipoServicioListar":
         return <TipoServicioListar />;
+      case "EmpresaCrear":
+        return <CrearEmpresa />;
+      case "EmpresasListar":
+        return <EmpresaListar />;
       case "Exit":
         history.push("/");
       default:
@@ -68,8 +74,15 @@ const Home = () => {
     }
   };
 
+  const handleTime = () => {
+    window.$lastTime = window.$currentTime;
+    window.$currentTime = Date.now();
+    console.log(window.$lastTime);
+    console.log(window.$currentTime);
+  }
+
   return (
-    <div>
+    <div onClick={handleTime} onKeyUp={handleTime}>
       <div className="Container">
         {showSidebar &&
 

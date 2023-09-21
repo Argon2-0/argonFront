@@ -14,6 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import bcrypt from 'bcryptjs'
+import Protege from "../../../Auth/Protege";
 
 const validEmailRegex = RegExp(
     /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -101,23 +102,32 @@ class CrearUsuario extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "user/create", {
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    name: this.state.nombres,
-                    email: this.state.email,
-                    password: bcrypt.hashSync(this.state.password, rounds),
-                    role: {
-                        id: this.state.rol,
-                    },
-                    createdAt: Date.now()
+            Protege(this.state.password).then(response => {
+                fetch(window.$basicUri + "user/create", {
+                    mode: "cors",
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.state.nombres,
+                        email: this.state.email,
+                        password: response.toString(),
+                        role: {
+                            id: this.state.rol,
+                        },
+                        createdAt: Date.now()
 
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then((response) => response.json());
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': window.$token,
+                        "LastTime": window.$lastTime,
+                        "CurrentTime": window.$currentTime
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        window.$token = json[0];
+                    })
+            })
         } else {
             console.error('Invalid Form')
         }
@@ -133,20 +143,27 @@ class CrearUsuario extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
             }
         ).then((response) => response.json())
             .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
                 let rolesJson = [];
-                for (let pos = 0; pos < json.length; pos++) {
-                    json[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['createdAt']));
-                    json[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['updatedAt']));
+                for (let pos = 0; pos < body.length; pos++) {
+                    body[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['createdAt']));
+                    body[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['updatedAt']));
                     rolesJson.push(new Role(
-                        json[pos]['id'],
-                        json[pos]['name'],
-                        json[pos]['description'],
-                        json[pos]['createdAt'],
-                        json[pos]['updatedAt']));
+                        body[pos]['id'],
+                        body[pos]['name'],
+                        body[pos]['description'],
+                        body[pos]['createdAt'],
+                        body[pos]['updatedAt']));
                 }
                 this.setState({ ["roles"]: rolesJson });
             })
@@ -165,8 +182,8 @@ class CrearUsuario extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Box className="cardin">
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                        <Box >
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
                                                 INFORMACION DEL USUARIO
                                             </Typography>
                                         </Box>

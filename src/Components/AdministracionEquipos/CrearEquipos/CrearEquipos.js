@@ -104,8 +104,15 @@ class CrearEquipos extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
-            }).then((response) => response.json());
+            }).then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    window.$token = json[0];
+                })
         } else {
             console.error('Invalid Form')
         }
@@ -127,8 +134,8 @@ class CrearEquipos extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Box className="cardin">
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                        <Box>
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
                                                 INFORMACIÓN DEL EQUIPO
                                             </Typography>
                                         </Box>

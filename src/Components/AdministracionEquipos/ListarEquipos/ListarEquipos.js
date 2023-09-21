@@ -25,20 +25,28 @@ const ListarEquipos = () => {
       {
         mode: "cors",
         method: "GET",
+
         headers: {
           "Content-Type": "application/json",
+          'Authorization': window.$token,
+          "LastTime": window.$lastTime,
+          "CurrentTime": window.$currentTime
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
+        window.$token = json[0];
+        var body = json[1];
+        console.log(body)
         let herramientas = [];
         let participanteJson = "";
         let participante = "";
         let tipoServicioJson = "";
         let tipoServicio = "";
-        for (let pos = 0; pos < json.length; pos++) {
-          json[pos]['createdAt'] = new Date(json[pos]['createdAt']).toLocaleString(
+        for (let pos = 0; pos < body.length; pos++) {
+          body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -46,7 +54,7 @@ const ListarEquipos = () => {
               year: "numeric",
             }
           );
-          json[pos]['updatedAt'] = new Date(json[pos]['updatedAt']).toLocaleString(
+          body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
             "es-CO",
             {
               month: "2-digit",
@@ -54,16 +62,16 @@ const ListarEquipos = () => {
               year: "numeric",
             }
           );; herramientas.push(new Herramienta(
-            json[pos]['id'],
-            json[pos]['nombre'],
-            json[pos]['descripcion'],
-            json[pos]['marca'],
-            json[pos]['serial'],
-            json[pos]['codigoBarras'],
-            json[pos]['estado'],
-            json[pos]['createdAt'],
-            json[pos]['updatedAt'],
-            json[pos]['participante'],
+            body[pos]['id'],
+            body[pos]['nombre'],
+            body[pos]['descripcion'],
+            body[pos]['marca'],
+            body[pos]['serial'],
+            body[pos]['codigoBarras'],
+            body[pos]['estado'],
+            body[pos]['createdAt'],
+            body[pos]['updatedAt'],
+            body[pos]['participante'],
 
           ));
         }
@@ -130,7 +138,7 @@ const ListarEquipos = () => {
   ];
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-    id:false,
+    id: false,
     codigoBarras: false,
     participante: false,
     updatedAt: false
@@ -180,8 +188,15 @@ const ListarEquipos = () => {
       body: JSON.stringify(computadores),
       headers: {
         "Content-Type": "application/json",
+        'Authorization': window.$token,
+        "LastTime": window.$lastTime,
+        "CurrentTime": window.$currentTime
       },
-    }).then((response) => response.json());
+    }).then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        window.$token = json[0];
+      })
 
   };
 

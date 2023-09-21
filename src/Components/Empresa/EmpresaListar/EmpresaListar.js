@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import './TipoServicioListar.css';
+import './EmpresaListar.css';
 import Swal from "sweetalert2";
 import { json, useHistory } from 'react-router-dom';
 import { renderEditProgress, renderEditStatus, renderProgress, renderStatus, useDemoData } from '@mui/x-data-grid-generator';
@@ -15,24 +15,25 @@ import {
   useGridApiRef,
   esES
 } from '@mui/x-data-grid';
-import { TipoServicio } from '../../../Data/TipoServico';
 import { makeStyles } from '@material-ui/core';
 import * as XLSX from "xlsx";
 import '../../../App.css'
+import { Empresa } from '../../../Data/Empresa';
 
 
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
 
-const TipoServicioListar = () => {
+const EmpresaListar = () => {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
-  const [tiposServicios, setTiposServico] = useState([]);
+  const [empresa, setEmpresa] = useState([]);
+
   useEffect(() => {
     fetch(
       window.$basicUri +
-      "tiposervicio/getAll",
+      "empresa/getAll",
       {
         mode: "cors",
         method: "GET",
@@ -50,33 +51,14 @@ const TipoServicioListar = () => {
         window.$token = json[0];
         var body = json[1];
         console.log(body)
-        let tiposServicios = [];
+        let empresas = [];
         console.log(json);
         for (let pos = 0; pos < body.length; pos++) {
-          body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
-            "es-CO",
-            {
-              month: "2-digit",
-              day: "2-digit",
-              year: "numeric",
-            }
-          );
-          body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
-            "es-CO",
-            {
-              month: "2-digit",
-              day: "2-digit",
-              year: "numeric",
-            }
-          );; tiposServicios.push(new TipoServicio(
+          empresas.push(new Empresa(
             body[pos]['id'],
-            body[pos]['nombre'],
-            body[pos]['descripcion'],
-            body[pos]['createdAt'],
-            body[pos]['updatedAt'],
-            body[pos]['form']));
+            body[pos]['nombre']));
         }
-        setRows(tiposServicios);
+        setRows(empresas);
       }).then(() => {
         console.log(rows)
       });
@@ -90,32 +72,10 @@ const TipoServicioListar = () => {
       headerName: 'Nombre',
       flex: 0.1
     },
-    {
-      field: 'descripcion',
-      headerName: 'Descripcion',
-      flex: 0.1
-    },
-    {
-      field: 'form',
-      headerName: 'Form',
-      type: 'text',
-      flex: 0.1
-    },
-    {
-      field: 'createdAt',
-      headerName: 'Fecha de creación',
-      flex: 0.1
-    },
-    {
-      field: 'updatedAt',
-      headerName: 'Fecha de actualización',
-      flex: 0.1
-    }
+   
   ];
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-    id: false,
-    createdAt: false,
-    updatedAt: false
+    
   });
 
 
@@ -143,12 +103,10 @@ const TipoServicioListar = () => {
         reject(error);
       };
     });
-
     promise.then((d) => {
       for (var i in d) {
-        d[i]["createdAt"] = Date.now();
         console.log(d[i]);
-        setTiposServico(d)
+        setEmpresa(d)
       }
     });
   };
@@ -157,10 +115,10 @@ const TipoServicioListar = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "/tiposervicio/createMasive", {
+    fetch(window.$basicUri + "empresa/createMasive", {
       mode: "cors",
       method: "POST",
-      body: JSON.stringify(tiposServicios),
+      body: JSON.stringify(empresa),
       headers: {
         "Content-Type": "application/json",
         'Authorization': window.$token,
@@ -179,10 +137,10 @@ const TipoServicioListar = () => {
     <div>
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
-          Tipos de servicios
+          Empresas
         </Typography>
 
-        <a href="/Tipos de servicio.xlsx" download="Tipos de servicio.xlsx">
+        <a href="/Empresas.xlsx" download="Empresas.xlsx">
           Descargar Archivo
         </a>
         <div>
@@ -194,7 +152,7 @@ const TipoServicioListar = () => {
             }}
           />
           <Box textAlign='center'>
-            <Button className="button" variant="contained" endIcon={<SendIcon />} onSubmit={handleSubmit}>Guardar cambios</Button>
+            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
           </Box>
         </div>
         <Box sx={{ height: 520 }} className="cardin">
@@ -217,4 +175,4 @@ const TipoServicioListar = () => {
   );
 };
 
-export default TipoServicioListar;
+export default EmpresaListar;

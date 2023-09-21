@@ -54,26 +54,33 @@ class DevolverComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
             }
         )
             .then((response) => response.json())
             .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
                 console.log(json)
-                json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
-                json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+                body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
 
                 herramienta = new Herramienta(
-                    json['id'],
-                    json['nombre'],
-                    json['descripcion'],
-                    json['marca'],
-                    json['serial'],
-                    json['codigoBarras'],
-                    json['estado'],
-                    json['createdAt'],
-                    json['updatedAt'],
-                    json['participante'],
+                    body['id'],
+                    body['nombre'],
+                    body['descripcion'],
+                    body['marca'],
+                    body['serial'],
+                    body['codigoBarras'],
+                    body['estado'],
+                    body['createdAt'],
+                    body['updatedAt'],
+                    body['participante'],
                 );
             }).then(() => {
                 errors.CodigoDeBarras = '';
@@ -87,21 +94,28 @@ class DevolverComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
                         },
                     }
                 ).then((response) => response.json())
                     .then((json) => {
+                        console.log(json);
+                        window.$token = json[0];
+                        var body = json[1];
+                        console.log(body)
                         console.log(json)
                         herramientaParticipante = new HerramientaParticipante(
-                            json['id'],
-                            json['observacionSalida'],
-                            json['observacionEntrada'],
-                            json['estado'],
-                            json['totHoras'],
-                            json['createdAt'],
-                            json['updatedAt'],
-                            json['participante'],
-                            json['herramienta'],
+                            body['id'],
+                            body['observacionSalida'],
+                            body['observacionEntrada'],
+                            body['estado'],
+                            body['totHoras'],
+                            body['createdAt'],
+                            body['updatedAt'],
+                            body['participante'],
+                            body['herramienta'],
                         );
                         console.log(json);
                         errors.CodigoDeBarras = '';
@@ -156,18 +170,31 @@ class DevolverComputadores extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
-            }).then((response) => {
-                console.log(this.state.herramientaParticipante);
-                console.log(this.state.herramientaParticipante.participante_cedula);
-                fetch(window.$basicUri + "zkt/persona/updatePrestamo/"+this.state.herramientaParticipante.participante_cedula, {
-                    mode: "cors",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }).then(()=>{})
-            });
+            }).then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    window.$token = json[0];
+                    console.log(this.state.herramientaParticipante);
+                    console.log(this.state.herramientaParticipante.participante_cedula);
+                    fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
+                        mode: "cors",
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            window.$token = json[0];
+                        })
+                });
         } else {
             console.error('Invalid Form')
         }
@@ -190,8 +217,8 @@ class DevolverComputadores extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Box className="cardin">
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                        <Box>
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
                                                 INFORMACION DEL EQUIPO
                                             </Typography>
                                         </Box>

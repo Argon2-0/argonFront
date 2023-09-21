@@ -102,59 +102,73 @@ class PrestarComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
                         },
                     }
                 )
                     .then((response) => response.json())
                     .then((json) => {
                         console.log(json);
+                        window.$token = json[0];
+                        var body = json[1];
+                        console.log(body)
+                        console.log(json);
 
-                        if (json['fechaNacimiento'] != null) {
-                            json['fechaNacimiento'] = (json['fechaNacimiento'])[2] + "/" + (json['fechaNacimiento'])[1] + "/" + (json['fechaNacimiento'])[0];
+                        if (body['fechaNacimiento'] != null) {
+                            body['fechaNacimiento'] = (body['fechaNacimiento'])[2] + "/" + (body['fechaNacimiento'])[1] + "/" + (body['fechaNacimiento'])[0];
                         }
-                        json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
-                        json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+                        body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                        body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
 
                         participante = new Participante(
-                            json['id'],
-                            json['tipoDocumento'],
-                            json['cedula'],
-                            json['nombres'],
-                            json['apellidos'],
+                            body['id'],
+                            body['tipoDocumento'],
+                            body['cedula'],
+                            body['nombres'],
+                            body['apellidos'],
                             0,
-                            json['celular'],
-                            json['sexo'],
-                            json['email'],
-                            json['curso'],
-                            json['tratDatos'],
-                            json['estado'],
-                            json['createdAt'],
-                            json['updatedAt'],
-                            json['tiposervicio']
+                            body['celular'],
+                            body['sexo'],
+                            body['email'],
+                            body['curso'],
+                            body['tratDatos'],
+                            body['estado'],
+                            body['createdAt'],
+                            body['updatedAt'],
+                            body['tiposervicio']
                         );
-                        return Promise.resolve(this.setState({ ["participante"]: participante, ["id"]: json['id'], ["nombres"]: json['nombres'], ["apellidos"]: json['apellidos'],["celular"]: json['celular'] }));
+                        return Promise.resolve(this.setState({ ["participante"]: participante, ["id"]: body['id'], ["nombres"]: body['nombres'], ["apellidos"]: body['apellidos'], ["celular"]: body['celular'] }));
 
                     }).then((response) => {
                         if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
                             let errors = this.state.errors;
                             fetch(
                                 window.$basicUri +
-                                "herramientaparticipante/getByParticipanteIdAndEstado/" + this.state.tipoDocumento + "/" + this.state.cedula +"/Préstado",
+                                "herramientaparticipante/getByParticipanteIdAndEstado/" + this.state.tipoDocumento + "/" + this.state.cedula + "/Préstado",
                                 {
                                     mode: "cors",
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
+                                        'Authorization': window.$token,
+                                        "LastTime": window.$lastTime,
+                                        "CurrentTime": window.$currentTime
                                     },
                                 }
                             )
                                 .then((response) => response.json())
                                 .then((json) => {
-                                    if(json===0){
+                                    console.log(json);
+                                    window.$token = json[0];
+                                    var body = json[1];
+                                    console.log(body)
+                                    if (body === 0) {
                                         errors.cedula = '';
                                     }
-                                    else{errors.cedula = 'La persona ya tiene un dispositivo prestado';}
-                                    
+                                    else { errors.cedula = 'La persona ya tiene un dispositivo prestado'; }
+
                                 }).then(() => {
                                     console.log(errors);
                                     this.setState({ errors });
@@ -194,26 +208,33 @@ class PrestarComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
             }
         )
             .then((response) => response.json())
             .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
                 console.log(json)
-                json['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['createdAt']));
-                json['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json['updatedAt']));
+                body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
 
                 herramienta = new Herramienta(
-                    json['id'],
-                    json['nombre'],
-                    json['descripcion'],
-                    json['marca'],
-                    json['serial'],
-                    json['codigoBarras'],
-                    json['estado'],
-                    json['createdAt'],
-                    json['updatedAt'],
-                    json['participante'],
+                    body['id'],
+                    body['nombre'],
+                    body['descripcion'],
+                    body['marca'],
+                    body['serial'],
+                    body['codigoBarras'],
+                    body['estado'],
+                    body['createdAt'],
+                    body['updatedAt'],
+                    body['participante'],
                 );
             }).then(() => {
                 errors.CodigoDeBarras = '';
@@ -227,10 +248,15 @@ class PrestarComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
                         },
                     }
                 ).then((response) => response.json())
                     .then((json) => {
+                        console.log(json);
+                        window.$token = json[0];
                         console.log(json);
                         errors.CodigoDeBarras = 'El equipo se encuentra préstado';
                         this.validations(name, value);
@@ -337,16 +363,29 @@ class PrestarComputadores extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
-            }).then((response) => {
-                fetch(window.$basicUri + "zkt/persona/updatePrestamo/"+this.state.cedula, {
-                    mode: "cors",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }).then(()=>{})
-            });
+            }).then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    window.$token = json[0];
+                    fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.cedula, {
+                        mode: "cors",
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            window.$token = json[0];
+                        })
+                });
         } else {
             console.error('Invalid Form')
         }
@@ -362,21 +401,28 @@ class PrestarComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
                 },
             }
         ).then((response) => response.json())
             .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
                 let tiposServiciosJson = [];
                 for (let pos = 0; pos < json.length; pos++) {
-                    json[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['createdAt']));
-                    json[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(json[pos]['updatedAt']));
+                    body[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['createdAt']));
+                    body[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['updatedAt']));
                     tiposServiciosJson.push(new TipoServicio(
-                        json[pos]['id'],
-                        json[pos]['nombre'],
-                        json[pos]['descripcion'],
-                        json[pos]['createdAt'],
-                        json[pos]['updatedAt'],
-                        json[pos]['form']));
+                        body[pos]['id'],
+                        body[pos]['nombre'],
+                        body[pos]['descripcion'],
+                        body[pos]['createdAt'],
+                        body[pos]['updatedAt'],
+                        body[pos]['form']));
                 }
                 this.setState({ ["tiposservicios"]: tiposServiciosJson });
             })
@@ -395,15 +441,15 @@ class PrestarComputadores extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>
-                                        <Box className="cardin">
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                        <Box>
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
                                                 INFORMACION DEL SOLICITANTE
                                             </Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell>
-                                        <Box className="cardin">
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom>
+                                        <Box>
+                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
                                                 INFORMACION DEL EQUIPO
                                             </Typography>
                                         </Box>
