@@ -394,7 +394,6 @@ const Informes = () => {
                         >
                             <MenuItem key="1" value="InformeRegistro" width="300">Registro</MenuItem>
                             <MenuItem key="2" value="InformePrestamosComputador" width="300">Cantidad de prestamos por computador</MenuItem>
-                            <MenuItem key="3" value="ReporteEntradasSalidas" width="300">Entradas y salidas</MenuItem>
                             <MenuItem key="4" value="TipoServicio" width="300">Tipo servicio</MenuItem>
 
                         </Select>
@@ -430,25 +429,6 @@ const Informes = () => {
                                         );
                                     })}
                                 </Select>
-                            </Stack><br /></>) : ""}
-                    {(tipoInforme === "ReporteEntradasSalidas")
-                        ? (<>
-                            <Stack direction="row" spacing={2} >
-
-                                <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Número documento
-                                </Typography>
-                            </Stack>
-                            <Stack direction="row" spacing={8}>
-                                <br />
-                                <TextField
-                                    required
-                                    id="Cedula"
-                                    name="Cedula"
-                                    label="Número documento"
-                                    variant="outlined"
-                                    onChange={handleChange}
-                                    value={cedula} />
                             </Stack><br /></>) : ""}
                     {(tipoInforme === "TipoServicio")
                         ? (<>

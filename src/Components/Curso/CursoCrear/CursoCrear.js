@@ -2,7 +2,7 @@ import React from 'react'
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
 import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
-import './EmpresaCrear.css'
+import './CursoCrear.css'
 import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import '../../../App.css'
@@ -15,17 +15,17 @@ const validateForm = errors => {
     return valid;
 };
 
-class CrearEmpresa extends React.Component {
+class CrearCurso extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             checkVisualiza: false,
             nombre: "",
-            nit: 0,
+            codigo: 0,
             errors: {
                 nombre: "",
-                nit: ""
+                codigo: ""
             }
         };
     }
@@ -51,10 +51,10 @@ class CrearEmpresa extends React.Component {
         console.log("validations");
         let errors = this.state.errors;
         switch (name) {
-            case 'nit':
-                errors.nit =
-                    value.length < 9
-                        ? 'nit must be 9 characters long!'
+            case 'codigo':
+                errors.codigo =
+                    value.length < 4
+                        ? 'codigo must be at least 4 characters long!'
                         : '';
                 break;
             case 'nombre':
@@ -79,12 +79,12 @@ class CrearEmpresa extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "empresa/create", {
+            fetch(window.$basicUri + "curso/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
                     nombre: this.state.nombre,
-                    nit: this.state.nit
+                    codigo: this.state.codigo
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -113,7 +113,7 @@ class CrearEmpresa extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear empresa
+                        Crear curso
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -140,26 +140,26 @@ class CrearEmpresa extends React.Component {
                                                                 <Stack direction="row" spacing={2} >
 
                                                                     <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIT
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Codigo
                                                                     </Typography>
                                                                 </Stack>
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
                                                                     <TextField
                                                                         required
-                                                                        id="nit"
-                                                                        name="nit"
-                                                                        label="nit"
+                                                                        id="codigo"
+                                                                        name="codigo"
+                                                                        label="codigo"
                                                                         variant="outlined"
-                                                                        value={this.state.nit}
+                                                                        value={this.state.codigo}
                                                                         onChange={this.handleChange}
                                                                         style={{ width: 300 }}
                                                                     />
                                                                 </Stack>
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
-                                                                    {errors.nit.length > 0 &&
-                                                                        <span className='error'>{errors.nit}</span>}
+                                                                    {errors.codigo.length > 0 &&
+                                                                        <span className='error'>{errors.codigo}</span>}
                                                                 </Stack>
                                                                 <br />
                                                                 
@@ -218,4 +218,4 @@ class CrearEmpresa extends React.Component {
     }
 };
 
-export default CrearEmpresa;
+export default CrearCurso;

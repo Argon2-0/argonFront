@@ -1,6 +1,6 @@
 export class Empresa {
-    constructor(id, nombre) {
-      this.id = id;
+    constructor(nit, nombre) {
+      this.nit = nit;
       this.nombre = nombre;
     }
 }

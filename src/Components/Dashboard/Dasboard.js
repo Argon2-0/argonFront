@@ -20,10 +20,6 @@ const Dasboard = () => {
   const [fechaFin, setFechaFin] = useState(dayjs(new Date()));
   const [labelsVisitsByService, setLabelsVisitsByService] = useState([""]);
   const [DataVisitsByService, setDataVisitsByService] = useState([""]);
-  const [labelsVisitsByEdad, setLabelsVisitsByEdad] = useState([""]);
-  const [DataVisitsByEdad, setDataVisitsByEdad] = useState([""]);
-  const [labelsVisitsBySexo, setLabelsVisitsBySexo] = useState([""]);
-  const [DataVisitsBySexo, setDataVisitsBySexo] = useState([""]);
   const [labelsComputadores, setLabelsComputadores] = useState([""]);
   const [DataComputadores, setDataComputadores] = useState([""]);
   const [visitas, setVisitas] = useState(0);
@@ -48,8 +44,6 @@ const Dasboard = () => {
   const setData = () => {
     if (vista === "VISITANTES") {
       getvisitsByService();
-      getvisitsByEdad();
-      getvisitsBySexo();
       getvisits();
     }
     else if (vista === "COMPUTADORES") {
@@ -85,30 +79,7 @@ const Dasboard = () => {
       });
   }
 
-  const getvisitsByEdad = () => {
-    fetch(
-      window.$basicUri +
-      "participante/countByEdad/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
-      {
-        mode: "cors",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': window.$token,
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        window.$token = json[0];
-        console.log(json)
-        setLabelsVisitsByEdad(json[1]);
-        setDataVisitsByEdad(json[2]);
-      });
-  }
+  
 
   const changeToVisitantes = () => {
     setVista("VISITANTES");
@@ -118,29 +89,7 @@ const Dasboard = () => {
     setVista("COMPUTADORES");
     setData();
   }
-  const getvisitsBySexo = () => {
-    fetch(
-      window.$basicUri +
-      "participante/countBySexo/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
-      {
-        mode: "cors",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': window.$token,
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        window.$token = json[0];
-        setLabelsVisitsBySexo(json[1]);
-        setDataVisitsBySexo(json[2]);
-      });
-  }
+ 
 
   const getvisits = () => {
     fetch(
@@ -246,31 +195,9 @@ const Dasboard = () => {
     ],
   };
 
-  const visitsByEdad = {
-    labels: labelsVisitsByEdad,
-    datasets: [
-      {
-        label: 'Numero de visitas por edad',
-        data: DataVisitsByEdad,
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-        borderWidth: 1,
-      },
-    ],
-  };
+  
 
-  const visitsBySexo = {
-    labels: labelsVisitsBySexo,
-    datasets: [
-      {
-        label: 'Numero de visitas por sexo',
-        data: DataVisitsBySexo,
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-        borderWidth: 1,
-      },
-    ],
-  };
+ 
 
   const computersStates = {
     labels: labelsComputadores,
@@ -370,34 +297,13 @@ const Dasboard = () => {
                                   </Stack>
                                 </Box>
                               </TableCell>
-                              <TableCell>
-                                <Box className="cardin sizer">
-                                  <Stack direction="row" spacing={8} >
-                                    <br />
-                                    <Pie data={visitsByEdad} style={{ width: "500px" }} options={{ maintainAspectRatio: false }} />
-
-                                  </Stack>
-                                </Box>
-                              </TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
                       </TableContainer>
                     </TableCell>
                   </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <center>
-                        <Box className="cardin sizer">
-                          <Stack direction="row" spacing={8} >
-                            <br />
-                            <Pie data={visitsBySexo} style={{ width: "500px" }} options={{ maintainAspectRatio: false }} />
-
-                          </Stack>
-                        </Box>
-                      </center>
-                    </TableCell>
-                  </TableRow>
+                  
                 </TableBody>
               </Table>
             </TableContainer>

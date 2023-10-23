@@ -21,6 +21,8 @@ import DevolverComputadores from "../../Components/PrestamoComputadores/Devolver
 import '../../App.css';
 import CrearEmpresa from "../../Components/Empresa/EmpresaCrear/EmpresaCrear";
 import EmpresaListar from "../../Components/Empresa/EmpresaListar/EmpresaListar";
+import CrearCurso from "../../Components/Curso/CursoCrear/CursoCrear";
+import CursoListar from "../../Components/Curso/CursoListar/CursoListar";
 const Home = () => {
   let history = useNavigate();
   const [section, setSection] = useState("Dasboard");
@@ -67,6 +69,10 @@ const Home = () => {
         return <CrearEmpresa />;
       case "EmpresasListar":
         return <EmpresaListar />;
+        case "CursoCrear":
+        return <CrearCurso />;
+      case "CursoListar":
+        return <CursoListar />;
       case "Exit":
         history.push("/");
       default:

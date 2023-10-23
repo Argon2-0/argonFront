@@ -13,6 +13,7 @@ import Switch from '@mui/material/Switch';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { Participante } from "../../../Data/Participante";
+import { Curso } from "../../../Data/Curso";
 
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
@@ -30,6 +31,8 @@ class CrearVisitantes extends React.Component {
         this.state = {
             checkTratDatos: false,
             tiposservicios: [""],
+            cursos: [""],
+            curso: "",
             tipoDocumento: "",
             cedula: "",
             nombres: "",
@@ -41,6 +44,7 @@ class CrearVisitantes extends React.Component {
             tratDatos: "NO",
             tipoDocumentoZK: "",
             errors: {
+                curso: "",
                 tipoDocumento: "",
                 cedula: "",
                 nombres: "",
@@ -329,12 +333,46 @@ class CrearVisitantes extends React.Component {
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
+                    }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        window.$token = json[0];
+                        fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/"+this.state.tipoDocumento+"/"+this.state.cedula, {
+                            mode: "cors",
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': window.$token,
+                                "LastTime": window.$lastTime,
+                                "CurrentTime": window.$currentTime
+                            },
+                        }).then((responserequest) => responserequest.json())
+                            .then((jsonrequest) => {
+                                console.log(jsonrequest)
+                                console.log((jsonrequest[1])['id'])
+                                fetch(window.$basicUri + "visitantecurso/create", {
+                                    mode: "cors",
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        visitanteId: (jsonrequest[1])['id'],
+                                        cursoCodigo: this.state.curso,
+                    
+                                    }),
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        'Authorization': window.$token,
+                                        "LastTime": window.$lastTime,
+                                        "CurrentTime": window.$currentTime
+                                    },
+                                }).then((response) => response.json())
+                                .then((json) => {
+                                    console.log(json);
+                                    window.$token = json[0];
+                                })
+                            })
                     })
-                }).then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
-                    window.$token = json[0];
                 })
+                
         } else {
             console.error('Invalid Form')
         }
@@ -376,6 +414,35 @@ class CrearVisitantes extends React.Component {
                         body[pos]['form']));
                 }
                 this.setState({ ["tiposservicios"]: tiposServiciosJson });
+            })
+            .then(() => {
+                fetch(
+                    window.$basicUri +
+                    "curso/getAll",
+                    {
+                        mode: "cors",
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': window.$token,
+                            "LastTime": window.$lastTime,
+                            "CurrentTime": window.$currentTime
+                        },
+                    }
+                ).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        window.$token = json[0];
+                        var body = json[1];
+                        console.log(body)
+                        let cursosJson = [];
+                        for (let pos = 0; pos < body.length; pos++) {
+                            cursosJson.push(new Curso(
+                                body[pos]['codigo'],
+                                body[pos]['nombre'],));
+                        }
+                        this.setState({ ["cursos"]: cursosJson });
+                    })
             })
     };
     render() {
@@ -642,6 +709,42 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
                                                             </TableCell>
 
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Curso
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <Select
+                                                                        required
+                                                                        id="curso"
+                                                                        name="curso"
+                                                                        value={this.state.curso}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    >
+                                                                        if(this.state.cursos !== [""]){
+                                                                            this.state.cursos?.map((element) => {
+                                                                                return (
+                                                                                    <MenuItem key={element?.codigo} value={element?.codigo} width="300">{element?.nombre}</MenuItem>
+
+                                                                                );
+                                                                            })}
+                                                                    </Select>
+
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.curso.length > 0 &&
+                                                                        <span className='error'>{errors.curso}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 

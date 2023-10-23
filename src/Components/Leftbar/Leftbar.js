@@ -65,6 +65,7 @@ export default function Leftbar({ changeSection }) {
   const [openTipoServicio, setOpenTipoServicio] = useState(false);
   const [openPrestamoComputadores, setOpenPrestamoComputadores] = useState(false);
   const [openEmpresas, setOpenEmpresa] = useState(false);
+  const [openCursos, setOpenCursos] = useState(false);
 
   const [nConjunto, setnConjunto] = useState([]);
 
@@ -114,11 +115,20 @@ export default function Leftbar({ changeSection }) {
   }
 
   const handleClickEmpresas = () =>{
-    if(openTipoServicio){
+    if(openEmpresas){
       setOpenEmpresa(false);
     }
     else{
       setOpenEmpresa(true);
+    }
+  }
+
+  const handleClickCurso = () =>{
+    if(openCursos){
+      setOpenCursos(false);
+    }
+    else{
+      setOpenCursos(true);
     }
   }
 
@@ -458,6 +468,47 @@ export default function Leftbar({ changeSection }) {
               </List>
             </Collapse>
 
+
+            <ListItemButton
+              name="Cursos"
+              className="Cursos"
+              onClick={handleClickCurso}
+            >
+              <ListItemIcon>
+                <MiscellaneousServices className="sidebarIcon letrasDark" />{" "}
+              </ListItemIcon>
+              <ListItemText className="letrasDark">Cursos</ListItemText>
+              {openCursos ? <ExpandLess /> : <ExpandMore />}
+
+            </ListItemButton>
+            <Collapse in={openCursos} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  name="CursoCrear"
+                  className="CursoCrear"
+                  onClick={changeSection("CursoCrear")}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemIcon>
+                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
+                  </ListItemIcon>
+                  <ListItemText className="letrasDark">Crear nuevo curso</ListItemText>
+                </ListItemButton>
+              </List>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  name="CursoListar"
+                  className="CursoListar"
+                  onClick={changeSection("CursoListar")}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemIcon>
+                    <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
+                  </ListItemIcon>
+                  <ListItemText className="letrasDark">Listar cursos</ListItemText>
+                </ListItemButton>
+              </List>
+            </Collapse>
 
             <ListItemButton
               name="Exit"

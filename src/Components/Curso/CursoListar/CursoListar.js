@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import './EmpresaListar.css';
+import './CursoListar.css';
 import Swal from "sweetalert2";
 import { json, useHistory } from 'react-router-dom';
 import { renderEditProgress, renderEditStatus, renderProgress, renderStatus, useDemoData } from '@mui/x-data-grid-generator';
@@ -18,22 +18,22 @@ import {
 import { makeStyles } from '@material-ui/core';
 import * as XLSX from "xlsx";
 import '../../../App.css'
-import { Empresa } from '../../../Data/Empresa';
+import { Curso } from '../../../Data/Curso';
 
 
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
 
-const EmpresaListar = () => {
+const CursoListar = () => {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
-  const [empresa, setEmpresa] = useState([]);
+  const [curso, setCurso] = useState([]);
 
   useEffect(() => {
     fetch(
       window.$basicUri +
-      "empresa/getAll",
+      "curso/getAll",
       {
         mode: "cors",
         method: "GET",
@@ -51,22 +51,22 @@ const EmpresaListar = () => {
         window.$token = json[0];
         var body = json[1];
         console.log(body)
-        let empresas = [];
+        let cursos = [];
         console.log(json);
-        console.log(empresas);
+        console.log(cursos);
         for (let pos = 0; pos < body.length; pos++) {
-          empresas.push(new Empresa(
-            body[pos]['nit'],
+          cursos.push(new Curso(
+            body[pos]['codigo'],
             body[pos]['nombre']));
         }
-        setRows(empresas);
+        setRows(cursos);
       }).then(() => {
       });
   }, []);
 
 
   const columns = [
-    { field: 'nit', headerName: 'NIT' },
+    { field: 'codigo', headerName: 'Codigo' },
     {
       field: 'nombre',
       headerName: 'Nombre',
@@ -106,7 +106,7 @@ const EmpresaListar = () => {
     promise.then((d) => {
       for (var i in d) {
         console.log(d[i]);
-        setEmpresa(d)
+        setCurso(d)
       }
     });
   };
@@ -115,10 +115,10 @@ const EmpresaListar = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "empresa/createMasive", {
+    fetch(window.$basicUri + "curso/createMasive", {
       mode: "cors",
       method: "POST",
-      body: JSON.stringify(empresa),
+      body: JSON.stringify(curso),
       headers: {
         "Content-Type": "application/json",
         'Authorization': window.$token,
@@ -137,7 +137,7 @@ const EmpresaListar = () => {
     <div>
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
-          Empresas
+          Cursos
         </Typography>
 
         <a href="/Empresas.xlsx" download="Empresas.xlsx">
@@ -159,7 +159,7 @@ const EmpresaListar = () => {
 
           <DataGrid
             className={classes.esEs}
-            getRowId={(row) => row.nit}
+            getRowId={(row) => row.codigo}
             rows={rows}
             slots={{ toolbar: GridToolbar }}
             columns={columns}
@@ -176,4 +176,4 @@ const EmpresaListar = () => {
   );
 };
 
-export default EmpresaListar;
+export default CursoListar;
