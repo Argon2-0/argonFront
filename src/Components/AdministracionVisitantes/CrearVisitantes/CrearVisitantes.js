@@ -43,6 +43,8 @@ class CrearVisitantes extends React.Component {
             sexo: "",
             tratDatos: "NO",
             tipoDocumentoZK: "",
+            fechaInicio: dayjs(new Date()),
+            fechaFin: dayjs(new Date()),
             errors: {
                 curso: "",
                 tipoDocumento: "",
@@ -55,12 +57,21 @@ class CrearVisitantes extends React.Component {
                 tratDatos: "",
                 sexo: "",
                 tipoDocumentoZK: "",
+                fechaInicio: "",
+                fechaFin: "",
             }
         };
     }
 
     handleDatechange = (event) => {
+        console.log(event.$d.toISOString().toString().split("T")[0])
         this.setState({ ["fechaNacimiento"]: event.$d })
+    }
+    handleDateIniciochange = (event) => {
+        this.setState({ ["fechaInicio"]: event.$d })
+    }
+    handleDateFinchange = (event) => {
+        this.setState({ ["fechaFin"]: event.$d })
     }
     handleCheckchange = (event) => {
         if (event.target.checked) {
@@ -264,7 +275,18 @@ class CrearVisitantes extends React.Component {
                         ? 'Should select a sex!'
                         : ''
                 break;
-
+            case 'fechaInicio':
+                errors.fechaInicio =
+                    value === ""
+                        ? 'Should select a start date!'
+                        : '';
+                break;
+            case 'fechaFin':
+                errors.fechaFin =
+                    value === ""
+                        ? 'Should select a end date!'
+                        : '';
+                break;
             default:
                 break;
         }
@@ -334,45 +356,48 @@ class CrearVisitantes extends React.Component {
                             "CurrentTime": window.$currentTime
                         },
                     }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        window.$token = json[0];
-                        fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/"+this.state.tipoDocumento+"/"+this.state.cedula, {
-                            mode: "cors",
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': window.$token,
-                                "LastTime": window.$lastTime,
-                                "CurrentTime": window.$currentTime
-                            },
-                        }).then((responserequest) => responserequest.json())
-                            .then((jsonrequest) => {
-                                console.log(jsonrequest)
-                                console.log((jsonrequest[1])['id'])
-                                fetch(window.$basicUri + "visitantecurso/create", {
-                                    mode: "cors",
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        visitanteId: (jsonrequest[1])['id'],
-                                        cursoCodigo: this.state.curso,
-                    
-                                    }),
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        'Authorization': window.$token,
-                                        "LastTime": window.$lastTime,
-                                        "CurrentTime": window.$currentTime
-                                    },
-                                }).then((response) => response.json())
-                                .then((json) => {
-                                    console.log(json);
-                                    window.$token = json[0];
+                        .then((json) => {
+                            console.log(json);
+                            window.$token = json[0];
+                            fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula, {
+                                mode: "cors",
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': window.$token,
+                                    "LastTime": window.$lastTime,
+                                    "CurrentTime": window.$currentTime
+                                },
+                            }).then((responserequest) => responserequest.json())
+                                .then((jsonrequest) => {
+                                    console.log(jsonrequest)
+                                    console.log((jsonrequest[1])['id'])
+                                    console.log(this.state.fechaInicio)
+                                    console.log(this.state.fechaFin)
+                                    fetch(window.$basicUri + "visitantecurso/create", {
+                                        mode: "cors",
+                                        method: "POST",
+                                        body: JSON.stringify({
+                                            visitanteId: (jsonrequest[1])['id'],
+                                            cursoCodigo: this.state.curso,
+                                            diaInicio: this.state.fechaInicio.toISOString().toString().split("T")[0],
+                                            diaFin: this.state.fechaFin.toISOString().toString().split("T")[0],
+                                        }),
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            'Authorization': window.$token,
+                                            "LastTime": window.$lastTime,
+                                            "CurrentTime": window.$currentTime
+                                        },
+                                    }).then((response) => response.json())
+                                        .then((json) => {
+                                            console.log(json);
+                                            window.$token = json[0];
+                                        })
                                 })
-                            })
-                    })
+                        })
                 })
-                
+
         } else {
             console.error('Invalid Form')
         }
@@ -745,6 +770,60 @@ class CrearVisitantes extends React.Component {
 
                                                         </TableRow>
                                                         <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <DatePicker
+                                                                        required
+                                                                        autoOk={true}
+                                                                        id="fechaInicio"
+                                                                        name="fechaInicio"
+                                                                        value={this.state.fechaInicio}
+                                                                        onChange={this.handleDateIniciochange}
+                                                                        style={{ width: 300 }}
+                                                                        noValidate
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.fechaInicio.length > 0 &&
+                                                                        <span className='error'>{errors.fechaInicio}</span>}
+                                                                </Stack>
+
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <DatePicker
+                                                                        required
+                                                                        autoOk={true}
+                                                                        id="fechaFin"
+                                                                        name="fechaFin"
+                                                                        value={this.state.fechaFin}
+                                                                        onChange={this.handleDateFinchange}
+                                                                        style={{ width: 300 }}
+                                                                        noValidate
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.fechaFin.length > 0 &&
+                                                                        <span className='error'>{errors.fechaFin}</span>}
+                                                                </Stack>
+
+                                                            </TableCell>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 

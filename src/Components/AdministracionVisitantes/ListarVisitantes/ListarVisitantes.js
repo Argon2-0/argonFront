@@ -4,9 +4,19 @@ import React, { useEffect, useState } from "react";
 import { Participante } from "../../../Data/Participante";
 import './ListarVisitantes.css';
 import '../../../App.css'
+import SendIcon from '@mui/icons-material/Send';
+import { makeStyles } from '@material-ui/core';
+import * as XLSX from "xlsx";
+import Button from '@mui/material/Button';
+import { ParticipanteMasivo } from "../../../Data/ParticipanteMasivo";
+import { TipoServicio } from "../../../Data/TipoServico";
+import { zktPerson } from "../../../Data/zkt/zktPersona";
+
 
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
+  const [visitantesArray, setVisitantesArray] = useState([]);
+  const [zktUsersArray, setZktUsersArray] = useState([]);
   useEffect(() => {
     fetch(
       window.$basicUri +
@@ -157,7 +167,168 @@ const ListarVisitantes = () => {
 
   const apiRef = useGridApiRef();
 
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
 
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+    let participantes = [];
+    let zktUsers = [];
+    promise.then((d) => {
+
+      for (var i in d) {
+        console.log(Date.now());
+        participantes.push(
+          new ParticipanteMasivo(
+            (d[i])['tipoDocumento'],
+            (d[i])['cedula'],
+            (d[i])['nombres'],
+            (d[i])['apellidos'],
+            (d[i])['celular'],
+            (d[i])['sexo'],
+            (d[i])['tratDatos'],
+            new Date((d[i])['fechaNacimiento'].toISOString()).getTime(),
+            Date.now(),
+            new TipoServicio((d[i])['tiposervicioId']),
+          ))
+
+        zktUsers.push(
+          new zktPerson(
+            new Date((d[i])['fechaNacimiento'].toISOString()).getTime(),
+            (d[i])['cedula'],
+            (d[i])['cedula'],
+            (d[i])['cedula'],
+            documentosZK((d[i])['tipoDocumento']),
+            (d[i])['sexo'],
+            (d[i])['apellidos'],
+            (d[i])['celular'],
+            (d[i])['nombres'],
+            (d[i])['cedula'],
+          )
+        )
+      }
+    }).then(() => { setVisitantesArray(participantes) }).then(() => { setZktUsersArray(zktUsers) });
+  };
+
+
+
+  const documentosZK = (value) => {
+    switch (value) {
+      case 'C.C':
+        this.setState({ ["tipoDocumentoZK"]: 2000 });
+        break;
+      case 'C.E':
+        this.setState({ ["tipoDocumentoZK"]: 2002 });
+        break;
+      case 'Registro único tributario':
+        this.setState({ ["tipoDocumentoZK"]: 8 });
+        break;
+      case 'Registro civil':
+        this.setState({ ["tipoDocumentoZK"]: 8 });
+        break;
+      case 'Numero identificación tributaria':
+        this.setState({ ["tipoDocumentoZK"]: 8 });
+        break;
+      case 'Pasaporte':
+        this.setState({ ["tipoDocumentoZK"]: 3 });
+        break;
+      case 'T.I':
+        this.setState({ ["tipoDocumentoZK"]: 2001 });
+        break;
+      case 'Permiso de permanencia':
+        this.setState({ ["tipoDocumentoZK"]: 2004 });
+        break;
+      case 'NIT':
+        this.setState({ ["tipoDocumentoZK"]: 8 });
+        break;
+      case 'Desconocido':
+        this.setState({ ["tipoDocumentoZK"]: 8 });
+        break;
+      default:
+        break;
+
+
+
+    }
+  }
+
+  const handleSubmit = (e) => {
+    console.log(visitantesArray)
+    console.log("handlesubmit")
+    e.preventDefault();
+
+    console.info('Valid Form')
+    console.log(visitantesArray)
+    console.log(visitantesArray[0])
+    //for (var i in visitantesArray) {
+    //  console.log(i)      ;
+    fetch(window.$basicUri + "participante/createMasive", {
+      mode: "cors",
+      method: "POST",
+      body: JSON.stringify(visitantesArray),
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': window.$token,
+        "LastTime": window.$lastTime,
+        "CurrentTime": window.$currentTime
+      },
+    }).then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        window.$token = json[0];
+        fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula, {
+          mode: "cors",
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': window.$token,
+            "LastTime": window.$lastTime,
+            "CurrentTime": window.$currentTime
+          },
+        }).then((responserequest) => responserequest.json())
+          .then((jsonrequest) => {
+            console.log(jsonrequest)
+            console.log((jsonrequest[1])['id'])
+            console.log(this.state.fechaInicio)
+            console.log(this.state.fechaFin)
+            fetch(window.$basicUri + "visitantecurso/create", {
+              mode: "cors",
+              method: "POST",
+              body: JSON.stringify({ zktUsersArray }),
+              headers: {
+                "Content-Type": "application/json",
+                'Authorization': window.$token,
+                "LastTime": window.$lastTime,
+                "CurrentTime": window.$currentTime
+              },
+            }).then((response) => response.json())
+              .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+              })
+          })
+      })
+    //}
+
+  };
   return (
 
     <div className="RegisterComponent">
@@ -166,6 +337,21 @@ const ListarVisitantes = () => {
         <Typography variant="h4" component="h4" gutterBottom>
           Administracion de visitantes
         </Typography>
+        <a href="/visitantes.xlsx" download="visitantes.xlsx">
+          Descargar Archivo
+        </a>
+        <div>
+          <input
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              readExcel(file);
+            }}
+          />
+          <Box textAlign='center'>
+            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
+          </Box>
+        </div>
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid

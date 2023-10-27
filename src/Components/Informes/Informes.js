@@ -16,11 +16,14 @@ import { HerramientaParticipante } from '../../Data/HerramientaParticipante';
 import '../../App.css'
 import { TipoServicio } from '../../Data/TipoServico';
 import { Herramienta } from '../../Data/Herramienta';
+import { Curso } from '../../Data/Curso';
+import { CursoInforme } from '../../Data/CursoInforme';
 
 const Informes = () => {
 
     const handleChange = e => {
         const { name, value } = e.target;
+        console.log(name)
         switch (name) {
             case "MarcaEquipo":
                 setMarca(value);
@@ -30,6 +33,8 @@ const Informes = () => {
                 break;
             case "TipoDeServicio":
                 setTiposervicio(value);
+            case "Cursos":
+                setCurso(value);
                 break;
             default:
                 break;
@@ -44,8 +49,10 @@ const Informes = () => {
     const [tipoInforme, setTipoInforme] = useState("");
     const [tiposservicios, setTiposservicios] = useState([""]);
     const [herramientas, setHerramientas] = useState([""]);
+    const [cursos, setCursos] = useState([""]);
     const [tiposervicio, setTiposervicio] = useState("");
     const [marca, setMarca] = useState("");
+    const [curso, setCurso] = useState("");
     const [cedula, setCedula] = useState("");
 
     const handleSubmit = (e) => {
@@ -70,6 +77,10 @@ const Informes = () => {
         else if (value === "InformePrestamosComputador") {
             console.log("InformePrestamosComputador")
             GetMarcas();
+        }
+        else if (value === "Cursos") {
+            console.log("Cursos")
+            GetCursos();
         }
         setTipoInforme(value);
         console.log(tipoInforme)
@@ -203,7 +214,7 @@ const Informes = () => {
 
 
     const informeTipoServicio = () => {
-        
+
         let herramientas = [];
         fetch(
             window.$basicUri +
@@ -266,6 +277,42 @@ const Informes = () => {
 
     }
 
+    const informeCursos = () => {
+
+        let herramientas = [];
+        fetch(
+            window.$basicUri +
+            "visitantecurso/getByTimeAndCurso/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + curso,
+            {
+                mode: "cors",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
+                for (let pos = 0; pos < body.length; pos++) {
+                    herramientas.push(new CursoInforme(
+                        body[pos]['codigo'],
+                        body[pos]['nombre'],
+                        body[pos]['visitante'],
+                    ));
+                }
+            }).then(() => {
+                download(herramientas);
+            });
+
+    }
+
     const traer = () => {
         console.log(tipoInforme)
         if (tipoInforme === "InformeRegistro") {
@@ -274,8 +321,11 @@ const Informes = () => {
         else if (tipoInforme === "InformePrestamosComputador") {
             informeMarca();
         }
-        else if(tipoInforme === "TipoServicio"){
+        else if (tipoInforme === "TipoServicio") {
             informeTipoServicio();
+        }
+        else if(tipoInforme === "Cursos"){
+            informeCursos();
         }
     }
 
@@ -349,6 +399,37 @@ const Informes = () => {
             })
     };
 
+    const GetCursos = (data) => {
+        console.log(window.$token);
+        fetch(
+            window.$basicUri +
+            "curso/getAll",
+            {
+                mode: "cors",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': window.$token,
+                    "LastTime": window.$lastTime,
+                    "CurrentTime": window.$currentTime
+                },
+            }
+        ).then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                window.$token = json[0];
+                var body = json[1];
+                console.log(body)
+                let cursosJson = [];
+                for (let pos = 0; pos < body.length; pos++) {
+                    cursosJson.push(new Curso(
+                        body[pos]['codigo'],
+                        body[pos]['nombre'],));
+                }
+                setCursos(cursosJson);
+            })
+    };
+
     document.addEventListener("DOMContentLoaded", () => {
         const $codigo = document.querySelector("#codigo");
         $codigo.addEventListener("keydown", evento => {
@@ -394,6 +475,7 @@ const Informes = () => {
                         >
                             <MenuItem key="1" value="InformeRegistro" width="300">Registro</MenuItem>
                             <MenuItem key="2" value="InformePrestamosComputador" width="300">Cantidad de prestamos por computador</MenuItem>
+                            <MenuItem key="3" value="Cursos" width="300">Registro de cursos</MenuItem>
                             <MenuItem key="4" value="TipoServicio" width="300">Tipo servicio</MenuItem>
 
                         </Select>
@@ -452,6 +534,33 @@ const Informes = () => {
                                     {tiposservicios !== [""] && tiposservicios.map((element, index = element.id) => {
                                         return (
                                             <MenuItem key={index} value={element.id} width="300">{element.nombre}</MenuItem>
+
+                                        );
+                                    })}
+                                </Select>
+                            </Stack><br /></>) : ""}
+                    {(tipoInforme === "Cursos")
+                        ? (<>
+                            <Stack direction="row" spacing={2} >
+
+                                <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Curso
+                                </Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={8}>
+                                <br />
+                                <Select
+                                    required
+                                    id="Cursos"
+                                    name="Cursos"
+                                    value={curso}
+                                    onChange={handleChange}
+                                    style={{ width: 300 }}
+                                >
+                                    <MenuItem key="Todos" value="Todos" width="300">Todos</MenuItem>
+                                    {cursos !== [""] && cursos.map((element) => {
+                                        return (
+                                            <MenuItem key={element.codigo} value={element.codigo} width="300">{element.nombre}</MenuItem>
 
                                         );
                                     })}
