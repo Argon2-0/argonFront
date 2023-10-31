@@ -11,12 +11,17 @@ import Button from '@mui/material/Button';
 import { ParticipanteMasivo } from "../../../Data/ParticipanteMasivo";
 import { TipoServicio } from "../../../Data/TipoServico";
 import { zktPerson } from "../../../Data/zkt/zktPersona";
+import dayjs from "dayjs";
+import { Empresa } from "../../../Data/Empresa";
+import { RegistroCurso } from "../../../Data/RegistroCurso";
+
 
 
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
   const [visitantesArray, setVisitantesArray] = useState([]);
   const [zktUsersArray, setZktUsersArray] = useState([]);
+  const [registroCursos, setRegistroCursos] = useState([]);
   useEffect(() => {
     fetch(
       window.$basicUri +
@@ -192,6 +197,7 @@ const ListarVisitantes = () => {
     });
     let participantes = [];
     let zktUsers = [];
+    let registrosCursos = [];
     promise.then((d) => {
 
       for (var i in d) {
@@ -205,27 +211,43 @@ const ListarVisitantes = () => {
             (d[i])['celular'],
             (d[i])['sexo'],
             (d[i])['tratDatos'],
-            new Date((d[i])['fechaNacimiento'].toISOString()).getTime(),
+            new Date(new dayjs((d[i])['fechaNacimiento']).toISOString()).getTime(),
             Date.now(),
             new TipoServicio((d[i])['tiposervicioId']),
+            new Empresa((d[i])['empresaNit'])
+
           ))
 
         zktUsers.push(
           new zktPerson(
-            new Date((d[i])['fechaNacimiento'].toISOString()).getTime(),
+            (d[i])['fechaNacimiento'],
             (d[i])['cedula'],
             (d[i])['cedula'],
             (d[i])['cedula'],
             documentosZK((d[i])['tipoDocumento']),
-            (d[i])['sexo'],
+            genero((d[i])['sexo']),
             (d[i])['apellidos'],
             (d[i])['celular'],
             (d[i])['nombres'],
             (d[i])['cedula'],
+            new Date(new dayjs((d[i])['fechaInicio']).toISOString()).getTime(),
+            new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime()
+          )
+        )
+
+        registrosCursos.push(
+          new RegistroCurso(
+            (d[i])['cursoId'],
+            (d[i])['tipoDocumento'],
+            (d[i])['cedula'],
+            new Date(new dayjs((d[i])['fechaInicio']).toISOString()).getTime(),
+            new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime()
           )
         )
       }
-    }).then(() => { setVisitantesArray(participantes) }).then(() => { setZktUsersArray(zktUsers) });
+    }).then(() => { setVisitantesArray(participantes) })
+    .then(() => { setZktUsersArray(zktUsers) })
+    .then(() => { setRegistroCursos(registrosCursos) });
   };
 
 
@@ -233,40 +255,39 @@ const ListarVisitantes = () => {
   const documentosZK = (value) => {
     switch (value) {
       case 'C.C':
-        this.setState({ ["tipoDocumentoZK"]: 2000 });
-        break;
+        return 2000 ;
       case 'C.E':
-        this.setState({ ["tipoDocumentoZK"]: 2002 });
-        break;
+        return 2002 ;
       case 'Registro único tributario':
-        this.setState({ ["tipoDocumentoZK"]: 8 });
-        break;
+        return 8;
       case 'Registro civil':
-        this.setState({ ["tipoDocumentoZK"]: 8 });
-        break;
+        return 8;
       case 'Numero identificación tributaria':
-        this.setState({ ["tipoDocumentoZK"]: 8 });
-        break;
+        return 8;
       case 'Pasaporte':
-        this.setState({ ["tipoDocumentoZK"]: 3 });
-        break;
+        return 3 ;
       case 'T.I':
-        this.setState({ ["tipoDocumentoZK"]: 2001 });
-        break;
+        return 2001 ;
       case 'Permiso de permanencia':
-        this.setState({ ["tipoDocumentoZK"]: 2004 });
-        break;
+        return 2004;
       case 'NIT':
-        this.setState({ ["tipoDocumentoZK"]: 8 });
-        break;
+        return 8 ;
       case 'Desconocido':
-        this.setState({ ["tipoDocumentoZK"]: 8 });
-        break;
+        return 8 ;
       default:
-        break;
+        return 8;
 
 
 
+    }
+  }
+
+  const genero = (value) => {
+    switch (value) {
+      case 'Masculino':
+        return "M" ;
+      case 'Femenino':
+        return "F" ;
     }
   }
 
@@ -294,9 +315,10 @@ const ListarVisitantes = () => {
       .then((json) => {
         console.log(json);
         window.$token = json[0];
-        fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula, {
+        fetch(window.$basicUri + "visitantecurso/createMasive/", {
           mode: "cors",
-          method: "GET",
+          method: "POST",
+          body: JSON.stringify(registroCursos),
           headers: {
             "Content-Type": "application/json",
             'Authorization': window.$token,
@@ -305,14 +327,10 @@ const ListarVisitantes = () => {
           },
         }).then((responserequest) => responserequest.json())
           .then((jsonrequest) => {
-            console.log(jsonrequest)
-            console.log((jsonrequest[1])['id'])
-            console.log(this.state.fechaInicio)
-            console.log(this.state.fechaFin)
-            fetch(window.$basicUri + "visitantecurso/create", {
+            fetch(window.$basicUri + "zkt/persona/createMasive", {
               mode: "cors",
               method: "POST",
-              body: JSON.stringify({ zktUsersArray }),
+              body: JSON.stringify(zktUsersArray),
               headers: {
                 "Content-Type": "application/json",
                 'Authorization': window.$token,

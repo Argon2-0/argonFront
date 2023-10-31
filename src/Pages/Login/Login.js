@@ -77,7 +77,7 @@ const Login = () => {
 };
 
 return (
-  <div >
+  <div className="side" style={{backgroundImage: `url('/images/colsubsidio.png')`, backgroundSize: "100%", backgroundPositionX:"220px", backgroundPositionY:"-50px"}}>
     <div className="verticalbar" />
     <div className="topbar"></div><Grid>
       <form onSubmit={handleSubmit} className="sizer position spaceLogin">

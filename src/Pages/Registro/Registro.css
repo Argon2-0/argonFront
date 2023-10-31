@@ -1,4 +1,14 @@
 .spaceRegistro {
-    left: 15%;
+    left:40%;
     position: relative;
 }
+.spaceLogin {
+    left: 5%;
+    top: 200px;
+    
+}
+
+.side{
+    height: 1000px;
+    
+  }

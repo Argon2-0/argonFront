@@ -14,6 +14,7 @@ import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { Participante } from "../../../Data/Participante";
 import { Curso } from "../../../Data/Curso";
+import { Empresa } from "../../../Data/Empresa";
 
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
@@ -32,6 +33,7 @@ class CrearVisitantes extends React.Component {
             checkTratDatos: false,
             tiposservicios: [""],
             cursos: [""],
+            empresas: [""],
             curso: "",
             tipoDocumento: "",
             cedula: "",
@@ -45,6 +47,7 @@ class CrearVisitantes extends React.Component {
             tipoDocumentoZK: "",
             fechaInicio: dayjs(new Date()),
             fechaFin: dayjs(new Date()),
+            empresaId: 0,
             errors: {
                 curso: "",
                 tipoDocumento: "",
@@ -59,6 +62,7 @@ class CrearVisitantes extends React.Component {
                 tipoDocumentoZK: "",
                 fechaInicio: "",
                 fechaFin: "",
+                empresaId: ""
             }
         };
     }
@@ -175,7 +179,7 @@ class CrearVisitantes extends React.Component {
                     }).then(() => {
                         console.log(errors);
                         this.setState({ errors });
-                    });
+                    })
             }
         });
 
@@ -287,6 +291,13 @@ class CrearVisitantes extends React.Component {
                         ? 'Should select a end date!'
                         : '';
                 break;
+
+            case 'empresaId':
+                errors.empresaId =
+                    value === ""
+                        ? 'Should have a long of 9!'
+                        : '';
+                break;
             default:
                 break;
         }
@@ -298,6 +309,7 @@ class CrearVisitantes extends React.Component {
     handleSubmit = (e) => {
         console.log(this.state.tipoDocumentoZK)
         console.log("handleSubmit")
+        console.log(this.state.empresaId)
         const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "fechaNacimiento", "celular", "tiposervicio", "tratDatos", "sexo"];
         fields.forEach(field => {
             this.validations(field, this.state[field]);
@@ -319,7 +331,10 @@ class CrearVisitantes extends React.Component {
                         id: this.state.tiposervicio,
                     },
                     createdAt: Date.now(),
-                    sexo: this.state.sexo
+                    sexo: this.state.sexo,
+                    empresa: {
+                        nit: this.state.empresaId,
+                    },
 
                 }),
                 headers: {
@@ -346,6 +361,8 @@ class CrearVisitantes extends React.Component {
                             mobilePhone: this.state.celular,
                             name: this.state.nombres,
                             pin: this.state.cedula,
+                            accStartTime: new Date(new dayjs(this.state.fechaInicio.toISOString().toString().split("T")[0]).toISOString()).getTime(),
+                            accEndTime: new Date(new dayjs(this.state.fechaFin.toISOString().toString().split("T")[0]).toISOString()).getTime()
 
 
                         }),
@@ -467,6 +484,38 @@ class CrearVisitantes extends React.Component {
                                 body[pos]['nombre'],));
                         }
                         this.setState({ ["cursos"]: cursosJson });
+                    }).then(()=>{
+                        let empresas = [];
+                        fetch(
+                            window.$basicUri +
+                            "empresa/getAll",
+                            {
+                              mode: "cors",
+                              method: "GET",
+                              headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': window.$token,
+                                "LastTime": window.$lastTime,
+                                "CurrentTime": window.$currentTime
+                              },
+                            }
+                          )
+                            .then((response) => response.json())
+                            .then((json) => {
+                              console.log(json);
+                              window.$token = json[0];
+                              var body = json[1];
+                              console.log(body)
+                              
+                              console.log(json);
+                              console.log(empresas);
+                              for (let pos = 0; pos < body.length; pos++) {
+                                empresas.push(new Empresa(
+                                  body[pos]['nit'],
+                                  body[pos]['nombre']));
+                              }
+                              this.setState({ ["empresas"]: empresas });
+                            })
                     })
             })
     };
@@ -770,6 +819,42 @@ class CrearVisitantes extends React.Component {
 
                                                         </TableRow>
                                                         <TableRow>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empresa
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <Select
+                                                                        required
+                                                                        id="empresaId"
+                                                                        name="empresaId"
+                                                                        value={this.state.empresaId}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    >
+                                                                        <MenuItem key="0" value="0" width="300">Ninguna</MenuItem>
+                                                                        if(this.state.empresas !== [""]){
+                                                                            this.state.empresas?.map((element) => {
+                                                                                return (
+                                                                                    <MenuItem key={element?.nit} value={element?.nit} width="300">{element?.nombre}</MenuItem>
+
+                                                                                );
+                                                                            })}
+                                                                    </Select>
+
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    
+                                                                    {errors.tiposervicio.length > 0 &&
+                                                                        <span className='error'>{errors.tiposervicio}</span>}
+                                                                </Stack>
+                                                            </TableCell>
+
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 

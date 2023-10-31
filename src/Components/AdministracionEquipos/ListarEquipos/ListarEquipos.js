@@ -5,7 +5,7 @@ import {
   GridToolbar,
   useGridApiRef,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box, Input } from '@mui/material';
 import { Herramienta } from '../../../Data/Herramienta';
 import { Participante } from '../../../Data/Participante';
 import { TipoServicio } from '../../../Data/TipoServico';
@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import * as XLSX from "xlsx";
 import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 const ListarEquipos = () => {
   const [rows, setRows] = useState([]);
@@ -208,20 +209,22 @@ const ListarEquipos = () => {
         <Typography variant="h4" component="h4" gutterBottom>
           Listar equipos
         </Typography>
-        <a href="/Computadores.xlsx" download="Computadores.xlsx">
+        <div className="margen">
+        <Button className="button" variant="contained" href="/Computadores.xlsx" download="Computadores.xlsx">
           Descargar Archivo
-        </a>
-        <div>
-          <input
+        </Button><Typography variant="h5" component="h5" className='blancas'>
+          Listar equipos
+
+          <Input
             type="file"
+            variant="contained"
             onChange={(e) => {
               const file = e.target.files[0];
               readExcel(file);
             }}
           />
-          <Box textAlign='center'>
-            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
-          </Box>
+        </Typography>
+        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
         </div>
         <Box sx={{ height: 520 }} className="cardin">
 

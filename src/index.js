@@ -38,8 +38,8 @@ root.render(
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ProSidebarProvider>
         <BrowserRouter>
-
-          <App />
+          
+          <App/>
 
         </BrowserRouter>
       </ProSidebarProvider>

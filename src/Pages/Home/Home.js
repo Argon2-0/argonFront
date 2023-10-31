@@ -23,6 +23,7 @@ import CrearEmpresa from "../../Components/Empresa/EmpresaCrear/EmpresaCrear";
 import EmpresaListar from "../../Components/Empresa/EmpresaListar/EmpresaListar";
 import CrearCurso from "../../Components/Curso/CursoCrear/CursoCrear";
 import CursoListar from "../../Components/Curso/CursoListar/CursoListar";
+//import colsubsidio from "/images/colsubsidio.png";
 const Home = () => {
   let history = useNavigate();
   const [section, setSection] = useState("Dasboard");
@@ -88,7 +89,7 @@ const Home = () => {
   }
 
   return (
-    <div onClick={handleTime} onKeyUp={handleTime}>
+    <div style={{backgroundImage: `url('/images/colsubsidio.png')`, backgroundSize: "110%", backgroundPositionX:"20px", backgroundPositionY:"-100px"}} onClick={handleTime} onKeyUp={handleTime}>
       <div className="Container">
         {showSidebar &&
 
