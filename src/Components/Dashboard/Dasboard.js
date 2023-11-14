@@ -74,8 +74,11 @@ const Dasboard = () => {
       .then((json) => {
         console.log(json);
         window.$token = json[0];
-        setLabelsVisitsByService(json[1]);
-        setDataVisitsByService(json[2]);
+        console.log(json[1])
+        console.log((json[1])[0])
+        console.log((json[1])[1])
+        setLabelsVisitsByService((json[1])[0]);
+        setDataVisitsByService((json[1])[1]);
       });
   }
 
@@ -134,9 +137,11 @@ const Dasboard = () => {
       .then((json) => {
         console.log(json);
         window.$token = json[0];
-        setUsuariosPrestados(json[1]);
-        setPrestamos(json[2]);
-        setHorasPrestamo(json[3]);
+        console.log(json)
+        console.log(json[1])
+        setUsuariosPrestados((json[1])[0]);
+        setPrestamos((json[1])[1]);
+        setHorasPrestamo((json[1])[2]);
       });
   }
 
@@ -159,8 +164,9 @@ const Dasboard = () => {
       .then((json) => {
         console.log(json);
         window.$token = json[0];
-        setLabelsComputadores(json[1]);
-        setDataComputadores(json[2]);
+        console.log(json)
+        setLabelsComputadores((json[1])[0]);
+        setDataComputadores((json[1])[1]);
       });
   }
 
@@ -292,7 +298,7 @@ const Dasboard = () => {
                                 <Box className="cardin sizer">
                                   <Stack direction="row" spacing={8} >
                                     <br />
-                                    <Pie data={visitsByService} style={{ width: "500px" }} options={{ maintainAspectRatio: false }} />
+                                    <Pie data={visitsByService} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
 
                                   </Stack>
                                 </Box>
@@ -332,7 +338,7 @@ const Dasboard = () => {
                         <Box className="cardin sizer">
                           <Stack direction="row" spacing={8} >
                             <br />
-                            <Pie data={computersStates} style={{ width: "500px" }} options={{ maintainAspectRatio: false }} />
+                            <Pie data={computersStates} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
 
                           </Stack>
                         </Box>

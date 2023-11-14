@@ -25,7 +25,7 @@ const Registro = () => {
  
 
   return (
-    <div className="side" style={{backgroundImage: `url('/images/colsubsidio.png')`, backgroundSize: "48%", backgroundPositionX:"75px", backgroundPositionY:"-50px"}}>
+    <div className="side" style={{backgroundImage: `url('/images/black.png'),url('/images/colsubsidioce.png'),url('/images/colsubsidiobanner.png')`, backgroundSize: "48%,48%, 12.5%", backgroundPositionX:"0px, 0px, 1700px", backgroundPositionY:"700px, 50px,50px", backgroundRepeat:"no-repeat"}}>
       <div className="verticalbar" />
       <div className="topbar"></div>
         <form  className=" position spaceRegistro">

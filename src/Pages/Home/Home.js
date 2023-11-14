@@ -75,21 +75,27 @@ const Home = () => {
       case "CursoListar":
         return <CursoListar />;
       case "Exit":
-        history.push("/");
+        window.$token="";
+        history("../Bio/public/login");
       default:
         return <Dashboard />;
     }
   };
 
   const handleTime = () => {
-    window.$lastTime = window.$currentTime;
-    window.$currentTime = Date.now();
-    console.log(window.$lastTime);
-    console.log(window.$currentTime);
+    
+    if(((((Date.now()-window.$currentTime)% 86400000)% 3600000)/ 60000)<20){
+      window.$lastTime = window.$currentTime;
+      window.$currentTime = Date.now();
+    }
+    else{
+      window.$token="";
+      history("../Bio/public/login");
+    }
   }
 
   return (
-    <div style={{backgroundImage: `url('/images/colsubsidio.png')`, backgroundSize: "110%", backgroundPositionX:"20px", backgroundPositionY:"-100px"}} onClick={handleTime} onKeyUp={handleTime}>
+    <div style={{backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX:"1700px", backgroundPositionY:"50px", backgroundRepeat:"no-repeat"}} onClick={handleTime} onKeyUp={handleTime}>
       <div className="Container">
         {showSidebar &&
 

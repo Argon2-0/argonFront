@@ -484,37 +484,37 @@ class CrearVisitantes extends React.Component {
                                 body[pos]['nombre'],));
                         }
                         this.setState({ ["cursos"]: cursosJson });
-                    }).then(()=>{
+                    }).then(() => {
                         let empresas = [];
                         fetch(
                             window.$basicUri +
                             "empresa/getAll",
                             {
-                              mode: "cors",
-                              method: "GET",
-                              headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': window.$token,
-                                "LastTime": window.$lastTime,
-                                "CurrentTime": window.$currentTime
-                              },
+                                mode: "cors",
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': window.$token,
+                                    "LastTime": window.$lastTime,
+                                    "CurrentTime": window.$currentTime
+                                },
                             }
-                          )
+                        )
                             .then((response) => response.json())
                             .then((json) => {
-                              console.log(json);
-                              window.$token = json[0];
-                              var body = json[1];
-                              console.log(body)
-                              
-                              console.log(json);
-                              console.log(empresas);
-                              for (let pos = 0; pos < body.length; pos++) {
-                                empresas.push(new Empresa(
-                                  body[pos]['nit'],
-                                  body[pos]['nombre']));
-                              }
-                              this.setState({ ["empresas"]: empresas });
+                                console.log(json);
+                                window.$token = json[0];
+                                var body = json[1];
+                                console.log(body)
+
+                                console.log(json);
+                                console.log(empresas);
+                                for (let pos = 0; pos < body.length; pos++) {
+                                    empresas.push(new Empresa(
+                                        body[pos]['nit'],
+                                        body[pos]['nombre']));
+                                }
+                                this.setState({ ["empresas"]: empresas });
                             })
                     })
             })
@@ -849,7 +849,7 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
-                                                                    
+
                                                                     {errors.tiposervicio.length > 0 &&
                                                                         <span className='error'>{errors.tiposervicio}</span>}
                                                                 </Stack>
@@ -909,6 +909,11 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell>
+                                                            </TableCell>
+                                                            
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 

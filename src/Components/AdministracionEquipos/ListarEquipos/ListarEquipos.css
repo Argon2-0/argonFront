@@ -29,6 +29,8 @@
       transition: all 0.2s ease-in-out;
       text-decoration: none;
       font-weight:bold;
+      overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .button:hover{
@@ -37,4 +39,11 @@
   }
   
   
-  
+  .inline-buttons .et_pb_button_module_wrapper {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.inline-buttons {
+    text-align: center !important; /* cambia"Center" a "left" o "right" si quieres la que alineación sea a la izquierda o derecha */
+}

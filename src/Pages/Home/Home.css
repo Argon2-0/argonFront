@@ -6,7 +6,7 @@
 .Container {
     background: rgb(227, 228, 229);
     display: flex;
-    width: 100%;
+    width: 90%;
     height: 100%;
     margin: 0;
         padding: 0;
@@ -17,11 +17,11 @@
   
 }
 .leftabsolute {
-  width: 80%;
+  width: 70%;
   margin-top: 50px;
   margin-bottom: 50px;
   overflow-y: auto;
-  left: 18%;
+  left: 15%;
   position: relative;
   right: 5%;
   height: 100%;

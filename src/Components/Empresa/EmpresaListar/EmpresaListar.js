@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import './EmpresaListar.css';
 import Swal from "sweetalert2";
 import { json, useHistory } from 'react-router-dom';
 import { renderEditProgress, renderEditStatus, renderProgress, renderStatus, useDemoData } from '@mui/x-data-grid-generator';
@@ -19,6 +17,8 @@ import { makeStyles } from '@material-ui/core';
 import * as XLSX from "xlsx";
 import '../../../App.css'
 import { Empresa } from '../../../Data/Empresa';
+import { Box, Input } from '@mui/material';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -140,21 +140,36 @@ const EmpresaListar = () => {
           Empresas
         </Typography>
 
-        <a href="/Empresas.xlsx" download="Empresas.xlsx">
-          Descargar Archivo
-        </a>
-        <div>
-          <input
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              readExcel(file);
-            }}
-          />
-          <Box textAlign='center'>
-            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
-          </Box>
-        </div>
+        <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
+          <Table style={{ width: "auto", alignContent: "center" }}>
+            <TableBody>
+              <TableRow>
+                <TableCell >
+                  <Button className="button" variant="contained" href="/Empresas.xlsx" download="Empresas.xlsx">
+                    Descargar plantilla
+                  </Button>
+                </TableCell>
+                <TableCell >
+                  <Typography variant="h5" component="h5" >
+                    Cargar masivo
+                    <Input
+                      type="file"
+                      variant="contained"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        readExcel(file);
+                      }}
+                    />
+                  </Typography>
+                </TableCell>
+                <TableCell > 
+                <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid

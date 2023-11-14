@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import * as XLSX from "xlsx";
 import '../../../App.css'
+
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 const ListarEquipos = () => {
@@ -209,23 +210,36 @@ const ListarEquipos = () => {
         <Typography variant="h4" component="h4" gutterBottom>
           Listar equipos
         </Typography>
-        <div className="margen">
-        <Button className="button" variant="contained" href="/Computadores.xlsx" download="Computadores.xlsx">
-          Descargar Archivo
-        </Button><Typography variant="h5" component="h5" className='blancas'>
-          Listar equipos
-
-          <Input
-            type="file"
-            variant="contained"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              readExcel(file);
-            }}
-          />
-        </Typography>
-        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
-        </div>
+        <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
+          <Table style={{ width: "auto", alignContent: "center" }}>
+            <TableBody>
+              <TableRow>
+                <TableCell >
+                  <Button className="button" variant="contained" href="/Computadores.xlsx" download="Computadores.xlsx">
+                    Descargar plantilla
+                  </Button>
+                </TableCell>
+                <TableCell >
+                  <Typography variant="h5" component="h5" >
+                    Cargar masivo
+                    <Input
+                      type="file"
+                      variant="contained"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        readExcel(file);
+                      }}
+                    />
+                  </Typography>
+                </TableCell>
+                <TableCell > 
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar masivo</Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <br/>
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid

@@ -392,7 +392,7 @@ class AutoCrearVisitante extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear visitante
+                        Crear visitantess
                     </Typography>
                     <TableContainer>
                         <Table>

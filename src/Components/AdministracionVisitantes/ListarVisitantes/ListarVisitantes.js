@@ -1,11 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Input } from "@mui/material";
 import { GridToolbar, DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { Participante } from "../../../Data/Participante";
-import './ListarVisitantes.css';
 import '../../../App.css'
 import SendIcon from '@mui/icons-material/Send';
-import { makeStyles } from '@material-ui/core';
 import * as XLSX from "xlsx";
 import Button from '@mui/material/Button';
 import { ParticipanteMasivo } from "../../../Data/ParticipanteMasivo";
@@ -14,7 +12,7 @@ import { zktPerson } from "../../../Data/zkt/zktPersona";
 import dayjs from "dayjs";
 import { Empresa } from "../../../Data/Empresa";
 import { RegistroCurso } from "../../../Data/RegistroCurso";
-
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 
 const ListarVisitantes = () => {
@@ -246,8 +244,8 @@ const ListarVisitantes = () => {
         )
       }
     }).then(() => { setVisitantesArray(participantes) })
-    .then(() => { setZktUsersArray(zktUsers) })
-    .then(() => { setRegistroCursos(registrosCursos) });
+      .then(() => { setZktUsersArray(zktUsers) })
+      .then(() => { setRegistroCursos(registrosCursos) });
   };
 
 
@@ -255,9 +253,9 @@ const ListarVisitantes = () => {
   const documentosZK = (value) => {
     switch (value) {
       case 'C.C':
-        return 2000 ;
+        return 2000;
       case 'C.E':
-        return 2002 ;
+        return 2002;
       case 'Registro único tributario':
         return 8;
       case 'Registro civil':
@@ -265,15 +263,15 @@ const ListarVisitantes = () => {
       case 'Numero identificación tributaria':
         return 8;
       case 'Pasaporte':
-        return 3 ;
+        return 3;
       case 'T.I':
-        return 2001 ;
+        return 2001;
       case 'Permiso de permanencia':
         return 2004;
       case 'NIT':
-        return 8 ;
+        return 8;
       case 'Desconocido':
-        return 8 ;
+        return 8;
       default:
         return 8;
 
@@ -285,9 +283,9 @@ const ListarVisitantes = () => {
   const genero = (value) => {
     switch (value) {
       case 'Masculino':
-        return "M" ;
+        return "M";
       case 'Femenino':
-        return "F" ;
+        return "F";
     }
   }
 
@@ -355,21 +353,34 @@ const ListarVisitantes = () => {
         <Typography variant="h4" component="h4" gutterBottom>
           Administracion de visitantes
         </Typography>
-        <a href="/visitantes.xlsx" download="visitantes.xlsx">
-          Descargar Archivo
-        </a>
-        <div>
-          <input
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              readExcel(file);
-            }}
-          />
-          <Box textAlign='center'>
-            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
-          </Box>
-        </div>
+        <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
+          <Table style={{ width: "auto", alignContent: "center" }}>
+            <TableBody>
+              <TableRow>
+                <TableCell >
+                  <Button className="button" variant="contained" href="/visitantes.xlsx" download="visitantes.xlsx">
+                    Descargar plantilla
+                  </Button>
+                </TableCell>
+                <TableCell >
+                  <Typography variant="h5" component="h5" >
+                    Cargar masivo
+                    <Input
+                      type="file"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        readExcel(file);
+                      }}
+                    />
+                  </Typography>
+                </TableCell>
+                <TableCell >
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid

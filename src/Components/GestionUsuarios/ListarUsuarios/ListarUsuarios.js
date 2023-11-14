@@ -2,13 +2,17 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import { UserInfo } from "../../../Data/User/UserInfo";
 import { GridToolbar, DataGrid, useGridApiRef } from "@mui/x-data-grid";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Input } from "@mui/material";
 import './ListarUsuarios.css';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import * as XLSX from "xlsx";
 import { Role } from "../../../Data/Role";
 import '../../../App.css'
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { UserCreate } from "../../../Data/User/UserCreate";
+import Protege from "../../../Auth/Protege";
+
 const ListarUsuarios = () => {
   const [rows, setRows] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
@@ -201,15 +205,23 @@ const ListarUsuarios = () => {
         reject(error);
       };
     });
+    let users = [];
 
     promise.then((d) => {
       for (var i in d) {
-        d[i]["createdAt"] = Date.now();
-        d[i]["role"] = { ["id"]: d[i]["roleId"] }
-        console.log(d[i]);
-        setUsuarios(d)
+        users.push(
+          Protege(this.state.password).then(response => {
+            new UserCreate(
+              (d[i])['name'],
+              (d[i])['email'],
+              response,
+              new Role((d[i])['role_id']),
+              Date.now(),
+            )
+          })
+        )
       }
-    });
+    }).then(() => { setUsuarios(users) });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -241,24 +253,41 @@ const ListarUsuarios = () => {
         <Typography variant="h4" component="h4" gutterBottom>
           Gestión de usuarios
         </Typography>
-        <a href="/Computadores.xlsx" download="Computadores.xlsx">
-          Descargar plantilla
-        </a>
-        <Box textAlign='center'>
-          <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={getRoles}>Descargar listado de roles</Button>
-        </Box>
-        <div>
-          <input
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              readExcel(file);
-            }}
-          />
-          <Box textAlign='center'>
-            <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
-          </Box>
-        </div>
+
+        <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
+          <Table style={{ width: "auto", alignContent: "center" }}>
+            <TableBody>
+              <TableRow>
+                <TableCell >
+                  <Button className="button" variant="contained" href="/Usuarios.xlsx" download="Usuarios.xlsx">
+                    Descargar plantilla
+                  </Button>
+                </TableCell>
+                <TableCell >
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={getRoles}>
+                    Descargar listado de roles
+                  </Button>
+                </TableCell>
+                <TableCell >
+                  <Typography variant="h5" component="h5" >
+                    Cargar masivo
+                    <Input
+                      type="file"
+                      variant="contained"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        readExcel(file);
+                      }}
+                    />
+                  </Typography>
+                </TableCell>
+                <TableCell >
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid
@@ -273,7 +302,7 @@ const ListarUsuarios = () => {
           />
         </Box>
       </Box>
-    </div>
+    </div >
   );
 };
 
