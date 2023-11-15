@@ -127,7 +127,7 @@ class CrearTipoServicio extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACION DEL EQUIPO
+                                                Información del equipo
                                             </Typography>
                                         </Box>
                                     </TableCell>

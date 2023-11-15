@@ -47,13 +47,13 @@ const Perfil = () => {
                             <TableRow>
                                 <TableCell>
                                     <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
-                                        INFORMACIÓN DEL USUARIO
+                                        Información del usuario
                                     </Typography>
 
                                 </TableCell>
                                 <TableCell>
                                     <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
-                                        CAMBIAR LA CONTRASEÑA
+                                        Cambiar contraseña
                                     </Typography>
 
                                 </TableCell>

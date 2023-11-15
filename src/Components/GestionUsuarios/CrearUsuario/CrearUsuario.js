@@ -184,7 +184,7 @@ class CrearUsuario extends React.Component {
                                     <TableCell>
                                         <Box >
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACION DEL USUARIO
+                                                Información del usuario
                                             </Typography>
                                         </Box>
                                     </TableCell>

@@ -392,7 +392,7 @@ class AutoCrearVisitante extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear visitantess
+                        Crear visitantes
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -401,7 +401,7 @@ class AutoCrearVisitante extends React.Component {
                                     <TableCell>
                                         <Box className="cardin">
                                             <Typography variant="h5" align="center" component="h5" gutterBottom>
-                                                INFORMACION DEL VISITANTE
+                                                Información del visitante
                                             </Typography>
                                         </Box>
                                     </TableCell>
@@ -486,7 +486,7 @@ class AutoCrearVisitante extends React.Component {
                                                         </TableRow>
                                                         {(this.state.validado === false) ? (<>
                                                             <Box textAlign='center'>
-                                                                <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleValidado}>Crear visitante</Button>
+                                                                <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleValidado}>Ver más</Button>
 
                                                             </Box>
                                                         </>) : ""}

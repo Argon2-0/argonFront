@@ -136,7 +136,7 @@ class CrearEquipos extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACIÓN DEL EQUIPO
+                                                Información del equipo
                                             </Typography>
                                         </Box>
                                     </TableCell>

@@ -122,7 +122,7 @@ class CrearEmpresa extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACION DE LA EMPRESA
+                                                Información de la empresa
                                             </Typography>
                                         </Box>
                                     </TableCell>

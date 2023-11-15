@@ -270,7 +270,7 @@ const ListarUsuarios = () => {
                 </TableCell>
                 <TableCell >
                   <Typography variant="h5" component="h5" >
-                    Cargar masivo
+                    Cargar masivo &nbsp;
                     <Input
                       type="file"
                       variant="contained"

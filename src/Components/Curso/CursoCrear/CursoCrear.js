@@ -122,7 +122,7 @@ class CrearCurso extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                INFORMACION DE LA EMPRESA
+                                                Información del curso
                                             </Typography>
                                         </Box>
                                     </TableCell>

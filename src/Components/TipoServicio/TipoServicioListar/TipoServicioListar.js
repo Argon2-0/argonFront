@@ -181,12 +181,12 @@ const TipoServicioListar = () => {
               <TableRow>
                 <TableCell >
                   <Button className="button" variant="contained" href="/Tipos de servicio.xlsx" download="Tipos de servicio.xlsx">
-                    Descargar plantilla
+                    Descargar plantilla 
                   </Button>
                 </TableCell>
                 <TableCell >
                   <Typography variant="h5" component="h5" >
-                    Cargar masivo
+                    Cargar masivo &nbsp;
                     <Input
                       type="file"
                       variant="contained"
