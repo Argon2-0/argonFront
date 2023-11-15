@@ -474,9 +474,8 @@ const Informes = () => {
                             style={{ width: 300 }}
                         >
                             <MenuItem key="1" value="InformePrestamosComputador" width="300">Cantidad de prestamos por computador</MenuItem>
-                            <MenuItem key="2" value="Cursos" width="300">Registro de cursos</MenuItem>
+                            <MenuItem key="2" value="Cursos" width="300">Registro de personas por curso</MenuItem>
                             <MenuItem key="3" value="TipoServicio" width="300">Tipo servicio</MenuItem>
-                            <MenuItem key="4" value="ReporteEntradasSalidas" width="300">Entradas y salidas</MenuItem>
                         </Select>
 
                     </Stack>

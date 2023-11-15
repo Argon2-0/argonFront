@@ -356,7 +356,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon  >
                     <ReplyIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon  >
-                  <ListItemText className="letrasDark">Devolver computadotr</ListItemText>
+                  <ListItemText className="letrasDark">Devolver computador</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
