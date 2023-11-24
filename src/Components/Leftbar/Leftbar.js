@@ -143,7 +143,7 @@ export default function Leftbar({ changeSection }) {
   return (
 
     <div className="drawer" >
-      <Sidebar backgroundColor="#090811">
+      <Sidebar backgroundColor="#090811" className="side">
 
         <div className="sidebarWrapper">
 

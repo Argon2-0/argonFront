@@ -64,7 +64,7 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -73,7 +73,7 @@ const Dasboard = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         console.log(json[1])
         console.log((json[1])[0])
         console.log((json[1])[1])
@@ -103,7 +103,7 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -112,7 +112,7 @@ const Dasboard = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         setVisitantes(json[1]);
         setVisitas(json[2]);
       });
@@ -127,7 +127,7 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -136,7 +136,7 @@ const Dasboard = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         console.log(json)
         console.log(json[1])
         setUsuariosPrestados((json[1])[0]);
@@ -154,7 +154,7 @@ const Dasboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -163,7 +163,7 @@ const Dasboard = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         console.log(json)
         setLabelsComputadores((json[1])[0]);
         setDataComputadores((json[1])[1]);

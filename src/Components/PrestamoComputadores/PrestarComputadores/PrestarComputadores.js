@@ -102,7 +102,7 @@ class PrestarComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
@@ -111,7 +111,7 @@ class PrestarComputadores extends React.Component {
                     .then((response) => response.json())
                     .then((json) => {
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
                         console.log(json);
@@ -152,7 +152,7 @@ class PrestarComputadores extends React.Component {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
-                                        'Authorization': window.$token,
+                                        'Authorization': ReactSession.get("token"),
                                         "LastTime": window.$lastTime,
                                         "CurrentTime": window.$currentTime
                                     },
@@ -161,7 +161,7 @@ class PrestarComputadores extends React.Component {
                                 .then((response) => response.json())
                                 .then((json) => {
                                     console.log(json);
-                                    window.$token = json[0];
+                                    ReactSession.set("token", json[0]);
                                     var body = json[1];
                                     console.log(body)
                                     if (body === 0) {
@@ -208,7 +208,7 @@ class PrestarComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -217,7 +217,7 @@ class PrestarComputadores extends React.Component {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 console.log(json)
@@ -248,7 +248,7 @@ class PrestarComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
@@ -256,7 +256,7 @@ class PrestarComputadores extends React.Component {
                 ).then((response) => response.json())
                     .then((json) => {
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         console.log(json);
                         errors.CodigoDeBarras = 'El equipo se encuentra préstado';
                         this.validations(name, value);
@@ -363,27 +363,27 @@ class PrestarComputadores extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                     fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.cedula, {
                         mode: "cors",
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
                     }).then((response) => response.json())
                         .then((json) => {
                             console.log(json);
-                            window.$token = json[0];
+                            ReactSession.set("token", json[0]);
                         })
                 });
         } else {
@@ -401,7 +401,7 @@ class PrestarComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -409,7 +409,7 @@ class PrestarComputadores extends React.Component {
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 let tiposServiciosJson = [];

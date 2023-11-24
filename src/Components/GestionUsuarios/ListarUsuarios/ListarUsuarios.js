@@ -26,7 +26,7 @@ const ListarUsuarios = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -35,7 +35,7 @@ const ListarUsuarios = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         let participantes = [];
@@ -132,7 +132,7 @@ const ListarUsuarios = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -141,7 +141,7 @@ const ListarUsuarios = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         for (let pos = 0; pos < body.length; pos++) {
@@ -234,14 +234,14 @@ const ListarUsuarios = () => {
       body: JSON.stringify(usuarios),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': window.$token,
+        'Authorization': ReactSession.get("token"),
         "LastTime": window.$lastTime,
         "CurrentTime": window.$currentTime
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
       })
 
   };

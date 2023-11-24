@@ -116,7 +116,7 @@ class CrearVisitantes extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
@@ -125,7 +125,7 @@ class CrearVisitantes extends React.Component {
                     .then((response) => response.json())
                     .then((json) => {
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
 
@@ -339,14 +339,14 @@ class CrearVisitantes extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                     fetch(window.$basicUri + "zkt/persona/create", {
                         mode: "cors",
                         method: "POST",
@@ -368,20 +368,20 @@ class CrearVisitantes extends React.Component {
                         }),
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
                     }).then((response) => response.json())
                         .then((json) => {
                             console.log(json);
-                            window.$token = json[0];
+                            ReactSession.set("token", json[0]);
                             fetch(window.$basicUri + "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula, {
                                 mode: "cors",
                                 method: "GET",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    'Authorization': window.$token,
+                                    'Authorization': ReactSession.get("token"),
                                     "LastTime": window.$lastTime,
                                     "CurrentTime": window.$currentTime
                                 },
@@ -402,14 +402,14 @@ class CrearVisitantes extends React.Component {
                                         }),
                                         headers: {
                                             "Content-Type": "application/json",
-                                            'Authorization': window.$token,
+                                            'Authorization': ReactSession.get("token"),
                                             "LastTime": window.$lastTime,
                                             "CurrentTime": window.$currentTime
                                         },
                                     }).then((response) => response.json())
                                         .then((json) => {
                                             console.log(json);
-                                            window.$token = json[0];
+                                            ReactSession.set("token", json[0]);
                                         })
                                 })
                         })
@@ -431,7 +431,7 @@ class CrearVisitantes extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -439,7 +439,7 @@ class CrearVisitantes extends React.Component {
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 let tiposServiciosJson = [];
@@ -466,7 +466,7 @@ class CrearVisitantes extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
@@ -474,7 +474,7 @@ class CrearVisitantes extends React.Component {
                 ).then((response) => response.json())
                     .then((json) => {
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
                         let cursosJson = [];
@@ -494,7 +494,7 @@ class CrearVisitantes extends React.Component {
                                 method: "GET",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    'Authorization': window.$token,
+                                    'Authorization': ReactSession.get("token"),
                                     "LastTime": window.$lastTime,
                                     "CurrentTime": window.$currentTime
                                 },
@@ -503,7 +503,7 @@ class CrearVisitantes extends React.Component {
                             .then((response) => response.json())
                             .then((json) => {
                                 console.log(json);
-                                window.$token = json[0];
+                                ReactSession.set("token", json[0]);
                                 var body = json[1];
                                 console.log(body)
 

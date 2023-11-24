@@ -70,12 +70,12 @@ const Home = () => {
         return <CrearEmpresa />;
       case "EmpresasListar":
         return <EmpresaListar />;
-        case "CursoCrear":
+      case "CursoCrear":
         return <CrearCurso />;
       case "CursoListar":
         return <CursoListar />;
       case "Exit":
-        window.$token="";
+        window.$token = "";
         history("../Bio/public/login");
       default:
         return <Dashboard />;
@@ -83,34 +83,36 @@ const Home = () => {
   };
 
   const handleTime = () => {
-    
-    if(((((Date.now()-window.$currentTime)% 86400000)% 3600000)/ 60000)<20){
+
+    if (((((Date.now() - window.$currentTime) % 86400000) % 3600000) / 60000) < 20) {
       window.$lastTime = window.$currentTime;
       window.$currentTime = Date.now();
     }
-    else{
-      window.$token="";
+    else {
+      window.$token = "";
       history("../Bio/public/login");
     }
   }
 
   return (
-    <div style={{backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX:"1700px", backgroundPositionY:"50px", backgroundRepeat:"no-repeat"}} onClick={handleTime} onKeyUp={handleTime}>
-      <div className="Container">
-        {showSidebar &&
+    <div onClick={handleTime} onKeyUp={handleTime}>
+      <div className="topbar" ></div>
+      <div style={{backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX: "100%", backgroundRepeat: "no-repeat", height: "1%" }}>
+        <div className="Container">
+          {showSidebar &&
 
-          <Leftbar changeSection={changeSection} />}
-        {!showSidebar && <Button><MenuOpen></MenuOpen></Button>}
-      </div>
-      <div className="rightside">
-        <div className="topbar"></div>
-        <div className="leftabsolute">
-          <center>
-            {switchSection(section)}
-          </center>
+            <Leftbar changeSection={changeSection} />}
+          {!showSidebar && <Button><MenuOpen></MenuOpen></Button>}
+        </div>
+        <div className="rightside">
+
+          <div className="leftabsolute">
+            <center>
+              {switchSection(section)}
+            </center>
+          </div>
         </div>
       </div>
-
     </div>
   );
 };

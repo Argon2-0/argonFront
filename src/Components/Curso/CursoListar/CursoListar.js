@@ -40,7 +40,7 @@ const CursoListar = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -49,7 +49,7 @@ const CursoListar = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         let cursos = [];
@@ -122,14 +122,14 @@ const CursoListar = () => {
       body: JSON.stringify(curso),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': window.$token,
+        'Authorization': ReactSession.get("token"),
         "LastTime": window.$lastTime,
         "CurrentTime": window.$currentTime
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
       })
 
   };

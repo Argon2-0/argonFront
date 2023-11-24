@@ -96,7 +96,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -105,7 +105,7 @@ const Informes = () => {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
@@ -164,7 +164,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -173,7 +173,7 @@ const Informes = () => {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
@@ -224,7 +224,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -233,7 +233,7 @@ const Informes = () => {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
@@ -288,7 +288,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -297,7 +297,7 @@ const Informes = () => {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
@@ -346,7 +346,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -354,7 +354,7 @@ const Informes = () => {
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 let tiposServiciosJson = [];
@@ -384,7 +384,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -392,7 +392,7 @@ const Informes = () => {
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body);
                 setHerramientas(body);
@@ -409,7 +409,7 @@ const Informes = () => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -417,7 +417,7 @@ const Informes = () => {
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 let cursosJson = [];

@@ -30,6 +30,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-chartjs-2": "^5.2.0",
+    "react-client-session": "^0.0.8",
     "react-date-picker": "^10.0.3",
     "react-dom": "^18.2.0",
     "react-excel-renderer": "^1.1.0",

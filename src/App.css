@@ -49,6 +49,7 @@
   border: 1px solid #ffcf00;
   width: fit-content;
   color: #fff;
+  height: fit-content;
 }
 
 .cardin {
@@ -60,6 +61,7 @@
   border: 1px solid rgba(255, 207, 0, 255);
   width: 100%;
   color: #090811;
+  height: 100%;
 }
 
 .topbar {
@@ -70,7 +72,7 @@
 .verticalbar {
   background-color: #090811;
   width: 50px;
-  height: 1000px;
+  height: 200%;
   float: left;
   display: flex;
   position: fixed;
@@ -84,13 +86,13 @@
 
   position: relative;
   right: 5%;
-  height: auto;
-  max-height: 650px;
+  max-height: fit-content;
 
 }
 
 .sizer {
   width: fit-content;
+  height: 60%;
 }
 
 .letrasBlack{

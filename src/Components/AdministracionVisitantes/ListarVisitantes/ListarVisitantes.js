@@ -29,7 +29,7 @@ const ListarVisitantes = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -38,7 +38,7 @@ const ListarVisitantes = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         let participantes = [];
@@ -305,21 +305,21 @@ const ListarVisitantes = () => {
       body: JSON.stringify(visitantesArray),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': window.$token,
+        'Authorization': ReactSession.get("token"),
         "LastTime": window.$lastTime,
         "CurrentTime": window.$currentTime
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         fetch(window.$basicUri + "visitantecurso/createMasive/", {
           mode: "cors",
           method: "POST",
           body: JSON.stringify(registroCursos),
           headers: {
             "Content-Type": "application/json",
-            'Authorization': window.$token,
+            'Authorization': ReactSession.get("token"),
             "LastTime": window.$lastTime,
             "CurrentTime": window.$currentTime
           },
@@ -331,14 +331,14 @@ const ListarVisitantes = () => {
               body: JSON.stringify(zktUsersArray),
               headers: {
                 "Content-Type": "application/json",
-                'Authorization': window.$token,
+                'Authorization': ReactSession.get("token"),
                 "LastTime": window.$lastTime,
                 "CurrentTime": window.$currentTime
               },
             }).then((response) => response.json())
               .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
               })
           })
       })

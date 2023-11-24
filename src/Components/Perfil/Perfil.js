@@ -5,10 +5,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import './Perfil.css';
 import '../../App.css'
 import Swal from "sweetalert2";
-import { useHistory } from 'react-router-dom';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
 

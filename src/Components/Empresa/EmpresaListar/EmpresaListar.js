@@ -39,7 +39,7 @@ const EmpresaListar = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
+          'Authorization': ReactSession.get("token"),
           "LastTime": window.$lastTime,
           "CurrentTime": window.$currentTime
         },
@@ -48,7 +48,7 @@ const EmpresaListar = () => {
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         let empresas = [];
@@ -121,14 +121,14 @@ const EmpresaListar = () => {
       body: JSON.stringify(empresa),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': window.$token,
+        'Authorization': ReactSession.get("token"),
         "LastTime": window.$lastTime,
         "CurrentTime": window.$currentTime
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
       })
 
   };

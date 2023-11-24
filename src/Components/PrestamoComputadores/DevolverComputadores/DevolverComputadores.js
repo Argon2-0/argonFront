@@ -54,7 +54,7 @@ class DevolverComputadores extends React.Component {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
@@ -63,7 +63,7 @@ class DevolverComputadores extends React.Component {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 console.log(json)
@@ -94,7 +94,7 @@ class DevolverComputadores extends React.Component {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
@@ -102,7 +102,7 @@ class DevolverComputadores extends React.Component {
                 ).then((response) => response.json())
                     .then((json) => {
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
                         console.log(json)
@@ -170,14 +170,14 @@ class DevolverComputadores extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                     console.log(this.state.herramientaParticipante);
                     console.log(this.state.herramientaParticipante.participante_cedula);
                     fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
@@ -185,14 +185,14 @@ class DevolverComputadores extends React.Component {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
+                            'Authorization': ReactSession.get("token"),
                             "LastTime": window.$lastTime,
                             "CurrentTime": window.$currentTime
                         },
                     }).then((response) => response.json())
                         .then((json) => {
                             console.log(json);
-                            window.$token = json[0];
+                            ReactSession.set("token", json[0]);
                         })
                 });
         } else {

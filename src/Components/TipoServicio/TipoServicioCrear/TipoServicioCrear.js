@@ -93,14 +93,14 @@ class CrearTipoServicio extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
+                    'Authorization': ReactSession.get("token"),
                     "LastTime": window.$lastTime,
                     "CurrentTime": window.$currentTime
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                 })
         } else {
             console.error('Invalid Form')
