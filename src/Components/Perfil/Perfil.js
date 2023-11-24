@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,13 +9,7 @@ import '../../App.css'
 import Swal from "sweetalert2";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 
-
 const Perfil = () => {
-
-    const handleChange = e => {
-        const { name, value } = e.target;
-    };
-    const [open, setOpen] = useState(false);
 
     const handleSubmit = (e) => {
         let body = {}

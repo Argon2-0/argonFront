@@ -13,7 +13,7 @@ import * as XLSX from "xlsx";
 import '../../../App.css'
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { Box, Typography, Input } from "@mui/material";
-
+import { ReactSession } from 'react-client-session';
 
 const useStyles = makeStyles((theme) => ({
   esES,
@@ -25,7 +25,7 @@ const TipoServicioListar = () => {
   const [tiposServicios, setTiposServico] = useState([]);
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "tiposervicio/getAll",
       {
         mode: "cors",
@@ -33,8 +33,8 @@ const TipoServicioListar = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -72,7 +72,6 @@ const TipoServicioListar = () => {
         }
         setRows(tiposServicios);
       }).then(() => {
-        console.log(rows)
       });
   }, []);
 
@@ -151,15 +150,15 @@ const TipoServicioListar = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "/tiposervicio/createMasive", {
+    fetch(ReactSession.get("basicUri") + "/tiposervicio/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(tiposServicios),
       headers: {
         "Content-Type": "application/json",
         'Authorization': ReactSession.get("token"),
-        "LastTime": window.$lastTime,
-        "CurrentTime": window.$currentTime
+        "LastTime": ReactSession.get("lastTime"),
+        "CurrentTime": ReactSession.get("currentTime")
       },
     }).then((response) => response.json())
       .then((json) => {

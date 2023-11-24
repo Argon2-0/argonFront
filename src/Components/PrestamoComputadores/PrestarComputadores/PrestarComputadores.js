@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import React from "react";
 import SendIcon from '@mui/icons-material/Send';
 import './PrestarComputadores.css';
@@ -7,20 +7,14 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { TipoServicio } from "../../../Data/TipoServico";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
-import Switch from '@mui/material/Switch';
 import { Participante } from "../../../Data/Participante";
 import { Herramienta } from "../../../Data/Herramienta";
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { ReactSession } from 'react-client-session';
 
-
-
-const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-);
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -60,15 +54,15 @@ class PrestarComputadores extends React.Component {
     }
 
     handleDatechange = (event, date) => {
-        this.setState({ ["fechaNacimiento"]: date })
+        this.setState({ "fechaNacimiento": date })
     }
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
-            this.setState({ ["tratDatos"]: "SI", ["checkTratDatos"]: true })
+            this.setState({ "tratDatos": "SI", "checkTratDatos": true })
         }
         else {
-            this.setState({ ["tratDatos"]: "NO", ["checkTratDatos"]: false })
+            this.setState({ "tratDatos": "NO", "checkTratDatos": false })
         }
     }
     handleChange = (event) => {
@@ -95,7 +89,7 @@ class PrestarComputadores extends React.Component {
                 let participante = "";
 
                 fetch(
-                    window.$basicUri +
+                    ReactSession.get("basicUri") +
                     "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula,
                     {
                         mode: "cors",
@@ -103,8 +97,8 @@ class PrestarComputadores extends React.Component {
                         headers: {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }
                 )
@@ -139,13 +133,13 @@ class PrestarComputadores extends React.Component {
                             body['updatedAt'],
                             body['tiposervicio']
                         );
-                        return Promise.resolve(this.setState({ ["participante"]: participante, ["id"]: body['id'], ["nombres"]: body['nombres'], ["apellidos"]: body['apellidos'], ["celular"]: body['celular'] }));
+                        return Promise.resolve(this.setState({ "participante": participante, "id": body['id'], "nombres": body['nombres'], "apellidos": body['apellidos'], "celular": body['celular'] }));
 
                     }).then((response) => {
                         if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
                             let errors = this.state.errors;
                             fetch(
-                                window.$basicUri +
+                                ReactSession.get("basicUri") +
                                 "herramientaparticipante/getByParticipanteIdAndEstado/" + this.state.tipoDocumento + "/" + this.state.cedula + "/Préstado",
                                 {
                                     mode: "cors",
@@ -153,8 +147,8 @@ class PrestarComputadores extends React.Component {
                                     headers: {
                                         "Content-Type": "application/json",
                                         'Authorization': ReactSession.get("token"),
-                                        "LastTime": window.$lastTime,
-                                        "CurrentTime": window.$currentTime
+                                        "LastTime": ReactSession.get("lastTime"),
+                                        "CurrentTime": ReactSession.get("currentTime")
                                     },
                                 }
                             )
@@ -177,10 +171,10 @@ class PrestarComputadores extends React.Component {
                     }).then().catch((reason) => {
                         console.log(reason);
                         errors.cedula = 'El documento no existe';
-                        this.setState({ ["participante"]: '' });
-                        this.setState({ ["nombres"]: '' });
-                        this.setState({ ["apellidos"]: '' });
-                        this.setState({ ["celular"]: '' });
+                        this.setState({ "participante": '' });
+                        this.setState({ "nombres": '' });
+                        this.setState({ "apellidos": '' });
+                        this.setState({ "celular": '' });
 
 
                     }).then(() => {
@@ -201,7 +195,7 @@ class PrestarComputadores extends React.Component {
         this.validations(name, value);
         fetch(
 
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "herramienta/getByCodigoBarras/" + value,
             {
                 mode: "cors",
@@ -209,8 +203,8 @@ class PrestarComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -239,9 +233,9 @@ class PrestarComputadores extends React.Component {
             }).then(() => {
                 errors.CodigoDeBarras = '';
                 this.validations(name, value);
-                this.setState({ errors, ['herramienta']: herramienta });
+                this.setState({ errors, 'herramienta': herramienta });
                 fetch(
-                    window.$basicUri +
+                    ReactSession.get("basicUri") +
                     "herramientaparticipante/getByHerramientaIdAndEstado/" + herramienta.id + "/Préstado",
                     {
                         mode: "cors",
@@ -249,8 +243,8 @@ class PrestarComputadores extends React.Component {
                         headers: {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }
                 ).then((response) => response.json())
@@ -285,17 +279,17 @@ class PrestarComputadores extends React.Component {
     }
 
     setStopStream = (e) => {
-        this.setState({ ['stopStream']: true });
+        this.setState({ 'stopStream': true });
     }
 
     setClickOnDocumento = (e) => {
         console.log("documento")
-        this.setState({ ['actual']: "documento" });
+        this.setState({ 'actual': "documento" });
     }
 
     setClickOnCodigoBarras = (e) => {
         console.log("codigoBarras")
-        this.setState({ ['actual']: "codigoBarras" });
+        this.setState({ 'actual': "codigoBarras" });
     }
 
     validations = (name, value) => {
@@ -312,11 +306,13 @@ class PrestarComputadores extends React.Component {
                     value.length < 5
                         ? 'Id must be at least 5 characters long!'
                         : '';
+                break;
             case 'nombres':
                 errors.nombres =
                     value.length < 2
                         ? 'Nombres must be at least 2 characters long!'
                         : '';
+                break;
             case 'apellidos':
                 errors.apellidos =
                     value.length < 2
@@ -350,7 +346,7 @@ class PrestarComputadores extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "herramientaparticipante/create", {
+            fetch(ReactSession.get("basicUri") + "herramientaparticipante/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -364,21 +360,21 @@ class PrestarComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
                     ReactSession.set("token", json[0]);
-                    fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.cedula, {
+                    fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula, {
                         mode: "cors",
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
@@ -394,7 +390,7 @@ class PrestarComputadores extends React.Component {
 
     componentDidMount() {
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "tiposervicio/getAll",
             {
                 mode: "cors",
@@ -402,8 +398,8 @@ class PrestarComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
@@ -424,7 +420,7 @@ class PrestarComputadores extends React.Component {
                         body[pos]['updatedAt'],
                         body[pos]['form']));
                 }
-                this.setState({ ["tiposservicios"]: tiposServiciosJson });
+                this.setState({ "tiposservicios": tiposServiciosJson });
             })
     };
     render() {

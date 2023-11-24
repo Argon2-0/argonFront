@@ -6,8 +6,6 @@ import Informes from "../../Components/Informes/Informes"
 import TipoServicioListar from "../../Components/TipoServicio/TipoServicioListar/TipoServicioListar"
 import Leftbar from "../../Components/Leftbar/Leftbar";
 import './Home.css';
-import { Button } from "react-bootstrap";
-import { MenuOpen } from "@material-ui/icons";
 import ListarUsuarios from "../../Components/GestionUsuarios/ListarUsuarios/ListarUsuarios";
 import CrearUsuario from "../../Components/GestionUsuarios/CrearUsuario/CrearUsuario";
 import ListarVisitantes from "../../Components/AdministracionVisitantes/ListarVisitantes/ListarVisitantes";
@@ -23,14 +21,11 @@ import CrearEmpresa from "../../Components/Empresa/EmpresaCrear/EmpresaCrear";
 import EmpresaListar from "../../Components/Empresa/EmpresaListar/EmpresaListar";
 import CrearCurso from "../../Components/Curso/CursoCrear/CursoCrear";
 import CursoListar from "../../Components/Curso/CursoListar/CursoListar";
+import { ReactSession } from 'react-client-session';
 //import colsubsidio from "/images/colsubsidio.png";
 const Home = () => {
   let history = useNavigate();
   const [section, setSection] = useState("Dasboard");
-  const [showSidebar, setShowSidebar] = useState(true);
-  const handleToggleSideBar = () => {
-    setShowSidebar(!showSidebar);
-  }
 
   const changeSection = (some) => () => {
     console.log(section);
@@ -38,6 +33,8 @@ const Home = () => {
   };
   const switchSection = (param) => {
     switch (param) {
+      default:
+        return <Dashboard />;
       case "Dasboard":
         return <Dashboard />;
       case "Perfil":
@@ -75,21 +72,20 @@ const Home = () => {
       case "CursoListar":
         return <CursoListar />;
       case "Exit":
-        window.$token = "";
+        ReactSession.set("token", "");
         history("../Bio/public/login");
-      default:
-        return <Dashboard />;
+      break;
     }
   };
 
   const handleTime = () => {
 
-    if (((((Date.now() - window.$currentTime) % 86400000) % 3600000) / 60000) < 20) {
-      window.$lastTime = window.$currentTime;
-      window.$currentTime = Date.now();
+    if (((((Date.now() - ReactSession.get("currentTime")) % 86400000) % 3600000) / 60000) < 20) {
+      ReactSession.set("lastTime", ReactSession.get("currentTime"));
+      ReactSession.set("currentTime", Date.now());
     }
     else {
-      window.$token = "";
+      ReactSession.set("token", "");
       history("../Bio/public/login");
     }
   }
@@ -99,10 +95,8 @@ const Home = () => {
       <div className="topbar" ></div>
       <div style={{backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX: "100%", backgroundRepeat: "no-repeat", height: "1%" }}>
         <div className="Container">
-          {showSidebar &&
 
-            <Leftbar changeSection={changeSection} />}
-          {!showSidebar && <Button><MenuOpen></MenuOpen></Button>}
+            <Leftbar changeSection={changeSection} />
         </div>
         <div className="rightside">
 

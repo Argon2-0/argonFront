@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
+import { ReactSession } from 'react-client-session';
 
 const validateForm = errors => {
     let valid = true;
@@ -36,10 +36,10 @@ class CrearTipoServicio extends React.Component {
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
-            this.setState({ ["form"]: "SI", ["checkVisualiza"]: true })
+            this.setState({ "form": "SI", "checkVisualiza": true })
         }
         else {
-            this.setState({ ["form"]: "NO", ["checkVisualiza"]: false })
+            this.setState({ "form": "NO", "checkVisualiza": false })
         }
     }
 
@@ -65,6 +65,7 @@ class CrearTipoServicio extends React.Component {
                     value.length < 5
                         ? 'descripcion must be at least 5 characters long!'
                         : '';
+                break;
             default:
                 break;
         }
@@ -81,7 +82,7 @@ class CrearTipoServicio extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "tiposervicio/create", {
+            fetch(ReactSession.get("basicUri") + "tiposervicio/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -94,8 +95,8 @@ class CrearTipoServicio extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {

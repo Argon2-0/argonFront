@@ -13,7 +13,7 @@ import dayjs from "dayjs";
 import { Empresa } from "../../../Data/Empresa";
 import { RegistroCurso } from "../../../Data/RegistroCurso";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
+import { ReactSession } from 'react-client-session';
 
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
@@ -22,7 +22,7 @@ const ListarVisitantes = () => {
   const [registroCursos, setRegistroCursos] = useState([]);
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "participante/getToday",
       {
         mode: "cors",
@@ -30,8 +30,8 @@ const ListarVisitantes = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -299,41 +299,41 @@ const ListarVisitantes = () => {
     console.log(visitantesArray[0])
     //for (var i in visitantesArray) {
     //  console.log(i)      ;
-    fetch(window.$basicUri + "participante/createMasive", {
+    fetch(ReactSession.get("basicUri") + "participante/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(visitantesArray),
       headers: {
         "Content-Type": "application/json",
         'Authorization': ReactSession.get("token"),
-        "LastTime": window.$lastTime,
-        "CurrentTime": window.$currentTime
+        "LastTime": ReactSession.get("lastTime"),
+        "CurrentTime": ReactSession.get("currentTime")
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-        fetch(window.$basicUri + "visitantecurso/createMasive/", {
+        fetch(ReactSession.get("basicUri") + "visitantecurso/createMasive/", {
           mode: "cors",
           method: "POST",
           body: JSON.stringify(registroCursos),
           headers: {
             "Content-Type": "application/json",
             'Authorization': ReactSession.get("token"),
-            "LastTime": window.$lastTime,
-            "CurrentTime": window.$currentTime
+            "LastTime": ReactSession.get("lastTime"),
+            "CurrentTime": ReactSession.get("currentTime")
           },
         }).then((responserequest) => responserequest.json())
           .then((jsonrequest) => {
-            fetch(window.$basicUri + "zkt/persona/createMasive", {
+            fetch(ReactSession.get("basicUri") + "zkt/persona/createMasive", {
               mode: "cors",
               method: "POST",
               body: JSON.stringify(zktUsersArray),
               headers: {
                 "Content-Type": "application/json",
                 'Authorization': ReactSession.get("token"),
-                "LastTime": window.$lastTime,
-                "CurrentTime": window.$currentTime
+                "LastTime": ReactSession.get("lastTime"),
+                "CurrentTime": ReactSession.get("currentTime")
               },
             }).then((response) => response.json())
               .then((json) => {

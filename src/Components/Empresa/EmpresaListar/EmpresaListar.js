@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
-import Swal from "sweetalert2";
-import { json, useHistory } from 'react-router-dom';
-import { renderEditProgress, renderEditStatus, renderProgress, renderStatus, useDemoData } from '@mui/x-data-grid-generator';
 import {
   DataGrid,
   GridToolbar,
@@ -18,10 +13,10 @@ import * as XLSX from "xlsx";
 import '../../../App.css'
 import { Empresa } from '../../../Data/Empresa';
 import { Box, Input } from '@mui/material';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
+import { ReactSession } from 'react-client-session';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   esES,
 }));
 
@@ -32,7 +27,7 @@ const EmpresaListar = () => {
 
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "empresa/getAll",
       {
         mode: "cors",
@@ -40,8 +35,8 @@ const EmpresaListar = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -115,15 +110,15 @@ const EmpresaListar = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "empresa/createMasive", {
+    fetch(ReactSession.get("basicUri") + "empresa/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(empresa),
       headers: {
         "Content-Type": "application/json",
         'Authorization': ReactSession.get("token"),
-        "LastTime": window.$lastTime,
-        "CurrentTime": window.$currentTime
+        "LastTime": ReactSession.get("lastTime"),
+        "CurrentTime": ReactSession.get("currentTime")
       },
     }).then((response) => response.json())
       .then((json) => {

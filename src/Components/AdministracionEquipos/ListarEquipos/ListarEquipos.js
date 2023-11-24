@@ -13,16 +13,15 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import * as XLSX from "xlsx";
 import '../../../App.css'
-
+import { ReactSession } from 'react-client-session';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
 const ListarEquipos = () => {
   const [rows, setRows] = useState([]);
   const [computadores, setComputadores] = useState([]);
 
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "herramienta/getAll",
       {
         mode: "cors",
@@ -30,16 +29,16 @@ const ListarEquipos = () => {
 
         headers: {
           "Content-Type": "application/json",
-          'Authorization': window.$token,
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          'Authorization': ReactSession.get("token"),
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
         var body = json[1];
         console.log(body)
         let herramientas = [];
@@ -184,20 +183,20 @@ const ListarEquipos = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(window.$basicUri + "herramienta/createMasive", {
+    fetch(ReactSession.get("basicUri") + "herramienta/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(computadores),
       headers: {
         "Content-Type": "application/json",
-        'Authorization': window.$token,
-        "LastTime": window.$lastTime,
-        "CurrentTime": window.$currentTime
+        'Authorization': ReactSession.get("token"),
+        "LastTime": ReactSession.get("lastTime"),
+        "CurrentTime": ReactSession.get("currentTime")
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
-        window.$token = json[0];
+        ReactSession.set("token", json[0]);
       })
 
   };

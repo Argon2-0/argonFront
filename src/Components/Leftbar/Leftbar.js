@@ -1,64 +1,24 @@
 import "./Leftbar.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-
 import Divider from "@material-ui/core/Divider";
-
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import List from "@mui/material/List";
 import Exit from "@mui/icons-material/ExitToApp";
-import { Dashboard, Devices, ExpandLess, ExpandMore, MenuBook, MenuOpen, Person, ScreenShare, TransferWithinAStation } from "@material-ui/icons";
+import { Dashboard, Devices, ExpandLess, ExpandMore, MenuBook, Person, ScreenShare, TransferWithinAStation } from "@material-ui/icons";
 import { Article, ManageAccounts, MiscellaneousServices } from "@mui/icons-material";
-import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
+import { Sidebar, useProSidebar } from 'react-pro-sidebar';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Collapse from "@mui/material/Collapse";
 import ReplyIcon from '@mui/icons-material/Reply';
 import SendIcon from '@mui/icons-material/Send';
-
-const drawerWidth = 240;
-
-const styleSidebar = () => ({
-  bgcolor: `red`
-})
-
-const styles = (theme) => ({
-  root: {
-  },
-  drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
-    },
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-  },
-});
+import { ReactSession }  from 'react-client-session';
 
 export default function Leftbar({ changeSection }) {
   const { collapseSidebar } = useProSidebar();
-
-  const [open, setOpen] = useState(false);
   const [openGestionUsuarios, setOpenGestionUsuarios] = useState(false);
   const [openAdministracionVisitantes, setOpenAdministracionVisitantes] = useState(false);
   const [openAdministracionEquipos, setOpenAdministracionEquipos] = useState(false);
@@ -66,8 +26,6 @@ export default function Leftbar({ changeSection }) {
   const [openPrestamoComputadores, setOpenPrestamoComputadores] = useState(false);
   const [openEmpresas, setOpenEmpresa] = useState(false);
   const [openCursos, setOpenCursos] = useState(false);
-
-  const [nConjunto, setnConjunto] = useState([]);
 
   const handleClickGestionUsuarios = () =>{
     if(openGestionUsuarios){
@@ -132,14 +90,6 @@ export default function Leftbar({ changeSection }) {
     }
   }
 
-
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-
-
-
   return (
 
     <div className="drawer" >
@@ -159,16 +109,16 @@ export default function Leftbar({ changeSection }) {
               <ListItemText className="letrasDark">
                 <center>
                   <Avatar
-                    alt={window.$name}
-                    src={"/people/" + window.$foto}
+                    alt={ReactSession.get("name")}
+                    src={"/people/" + ReactSession.get("foto")}
                     sx={{ width: 156, height: 156 }}
                   />
                   <div className="profileInfo">
                     <h4 className="letrasDark">
-                      {window.$name}
+                      {ReactSession.get("name")}
                     </h4>
-                    <p className="letrasDark">{window.$email}</p>
-                    <p className="letrasDark">{window.$nameRol}</p>
+                    <p className="letrasDark">{ReactSession.get("email")}</p>
+                    <p className="letrasDark">{ReactSession.get("nameRol")}</p>
                   </div>
                 </center>
               </ListItemText>

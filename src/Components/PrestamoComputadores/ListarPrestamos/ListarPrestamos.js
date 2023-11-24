@@ -1,16 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { GridToolbar, DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
-import { Participante } from "../../../Data/Participante";
 import './ListarPrestamos.css';
 import { HerramientaParticipante } from "../../../Data/HerramientaParticipante";
 import '../../../App.css'
-
+import { ReactSession } from 'react-client-session';
 const ListarPrestamos = () => {
   const [rows, setRows] = useState([]);
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "herramientaparticipante/getToday",
       {
         mode: "cors",
@@ -18,8 +17,8 @@ const ListarPrestamos = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )

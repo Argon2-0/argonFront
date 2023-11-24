@@ -9,8 +9,9 @@ import Button from '@mui/material/Button';
 import React, { useState } from 'react'
 import SendIcon from '@mui/icons-material/Send';
 import '../../App.css'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import Token from '../../Auth/Token';
+import { ReactSession } from 'react-client-session';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -57,7 +58,7 @@ const Dasboard = () => {
 
   const getvisitsByService = () => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "participante/countByTiposervicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
@@ -65,8 +66,8 @@ const Dasboard = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -96,7 +97,7 @@ const Dasboard = () => {
 
   const getvisits = () => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "participante/findVisitantes/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
@@ -104,8 +105,8 @@ const Dasboard = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -120,7 +121,7 @@ const Dasboard = () => {
 
   const getComputadores = () => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "herramientaparticipante/getDataForDashboard/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
@@ -128,8 +129,8 @@ const Dasboard = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -147,7 +148,7 @@ const Dasboard = () => {
 
   const getComputadoresEstados = () => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "herramienta/getEstadosForDasboard",
       {
         mode: "cors",
@@ -155,8 +156,8 @@ const Dasboard = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )

@@ -9,17 +9,17 @@ import SendIcon from '@mui/icons-material/Send';
 import * as XLSX from "xlsx";
 import { Role } from "../../../Data/Role";
 import '../../../App.css'
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { UserCreate } from "../../../Data/User/UserCreate";
 import Protege from "../../../Auth/Protege";
-
+import { ReactSession } from 'react-client-session';
 const ListarUsuarios = () => {
   const [rows, setRows] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "userInfo/getAll",
       {
         mode: "cors",
@@ -27,8 +27,8 @@ const ListarUsuarios = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -39,8 +39,6 @@ const ListarUsuarios = () => {
         var body = json[1];
         console.log(body)
         let participantes = [];
-        let roleJson = "";
-        let role = "";
         for (let pos = 0; pos < body.length; pos++) {
           if (body[pos]['fechaNacimiento'] != null) {
             body[pos]['fechaNacimiento'] = (body[pos]['fechaNacimiento'])[2] + "/" + (body[pos]['fechaNacimiento'])[1] + "/" + (body[pos]['fechaNacimiento'])[0];
@@ -125,7 +123,7 @@ const ListarUsuarios = () => {
 
     let roles = [];
     fetch(
-      window.$basicUri +
+      ReactSession.get("basicUri") +
       "role/getAll",
       {
         mode: "cors",
@@ -133,8 +131,8 @@ const ListarUsuarios = () => {
         headers: {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
-          "LastTime": window.$lastTime,
-          "CurrentTime": window.$currentTime
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
         },
       }
     )
@@ -228,15 +226,15 @@ const ListarUsuarios = () => {
 
     console.info('Valid Form')
     console.log(usuarios);
-    fetch(window.$basicUri + "user/createMasive", {
+    fetch(ReactSession.get("basicUri") + "user/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(usuarios),
       headers: {
         "Content-Type": "application/json",
         'Authorization': ReactSession.get("token"),
-        "LastTime": window.$lastTime,
-        "CurrentTime": window.$currentTime
+        "LastTime": ReactSession.get("lastTime"),
+        "CurrentTime": ReactSession.get("currentTime")
       },
     }).then((response) => response.json())
       .then((json) => {

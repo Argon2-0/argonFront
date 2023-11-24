@@ -1,15 +1,14 @@
 import React from 'react'
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
-import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
+import { Box, Stack, TextField } from '@mui/material';
 import './DevolverComputadores.css'
 import Button from '@mui/material/Button';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { Herramienta } from '../../../Data/Herramienta';
 import { HerramientaParticipante } from '../../../Data/HerramientaParticipante';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
+import { ReactSession } from 'react-client-session';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -47,7 +46,7 @@ class DevolverComputadores extends React.Component {
         var herramientaParticipante;
         this.validations(name, value);
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "herramienta/getByCodigoBarras/" + value,
             {
                 mode: "cors",
@@ -55,8 +54,8 @@ class DevolverComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -85,9 +84,9 @@ class DevolverComputadores extends React.Component {
             }).then(() => {
                 errors.CodigoDeBarras = '';
                 this.validations(name, value);
-                this.setState({ errors, ['herramienta']: herramienta });
+                this.setState({ errors, 'herramienta': herramienta });
                 fetch(
-                    window.$basicUri +
+                    ReactSession.get("basicUri") +
                     "herramientaparticipante/getByHerramientaIdAndEstado/" + herramienta.id + "/Préstado",
                     {
                         mode: "cors",
@@ -95,8 +94,8 @@ class DevolverComputadores extends React.Component {
                         headers: {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }
                 ).then((response) => response.json())
@@ -121,7 +120,7 @@ class DevolverComputadores extends React.Component {
                         errors.CodigoDeBarras = '';
 
                     }).then(() => {
-                        this.setState({ errors, ["herramientaParticipante"]: herramientaParticipante });
+                        this.setState({ errors, "herramientaParticipante": herramientaParticipante });
                     }).catch((reason) => {
                         console.log(reason);
                         errors.CodigoDeBarras = 'El equipo no se encuentra préstado';
@@ -153,7 +152,7 @@ class DevolverComputadores extends React.Component {
         console.log(this.state.herramientaParticipante);
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "herramientaparticipante/update", {
+            fetch(ReactSession.get("basicUri") + "herramientaparticipante/update", {
                 mode: "cors",
                 method: "PUT",
                 body: JSON.stringify({
@@ -171,8 +170,8 @@ class DevolverComputadores extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {
@@ -180,14 +179,14 @@ class DevolverComputadores extends React.Component {
                     ReactSession.set("token", json[0]);
                     console.log(this.state.herramientaParticipante);
                     console.log(this.state.herramientaParticipante.participante_cedula);
-                    fetch(window.$basicUri + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
+                    fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
                         mode: "cors",
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }).then((response) => response.json())
                         .then((json) => {

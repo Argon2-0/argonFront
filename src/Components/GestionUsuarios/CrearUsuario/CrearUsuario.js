@@ -1,30 +1,23 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { GridToolbar, DataGrid, useGridApiRef } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React from "react";
 import SendIcon from '@mui/icons-material/Send';
 import './CrearUsuario.css';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Role } from "../../../Data/Role";
-import { useEffect } from "react";
-import { InputLabel, Menu, NativeSelect } from "@material-ui/core";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import bcrypt from 'bcryptjs'
 import Protege from "../../../Auth/Protege";
-
-const validEmailRegex = RegExp(
-    /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-);
+import { ReactSession } from 'react-client-session';
+//eslint-disable-next-line
+const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
     return valid;
 };
-const rounds = 16;
 class CrearUsuario extends React.Component {
     constructor(props) {
         super(props);
@@ -103,7 +96,7 @@ class CrearUsuario extends React.Component {
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
             Protege(this.state.password).then(response => {
-                fetch(window.$basicUri + "user/create", {
+                fetch(ReactSession.get("basicUri") + "user/create", {
                     mode: "cors",
                     method: "POST",
                     body: JSON.stringify({
@@ -119,8 +112,8 @@ class CrearUsuario extends React.Component {
                     headers: {
                         "Content-Type": "application/json",
                         'Authorization': ReactSession.get("token"),
-                        "LastTime": window.$lastTime,
-                        "CurrentTime": window.$currentTime
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime")
                     },
                 }).then((response) => response.json())
                     .then((json) => {
@@ -136,7 +129,7 @@ class CrearUsuario extends React.Component {
 
     componentDidMount() {
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "role/getAll",
             {
                 mode: "cors",
@@ -144,8 +137,8 @@ class CrearUsuario extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
@@ -165,7 +158,7 @@ class CrearUsuario extends React.Component {
                         body[pos]['createdAt'],
                         body[pos]['updatedAt']));
                 }
-                this.setState({ ["roles"]: rolesJson });
+                this.setState({ "roles": rolesJson });
             })
     };
     render() {

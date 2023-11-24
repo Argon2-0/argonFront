@@ -6,7 +6,7 @@ import './CrearEquipos.css'
 import Button from '@mui/material/Button';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
+import { ReactSession } from 'react-client-session';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -89,7 +89,7 @@ class CrearEquipos extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "herramienta/create", {
+            fetch(ReactSession.get("basicUri") + "herramienta/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -104,14 +104,14 @@ class CrearEquipos extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    'Authorization': ReactSession.get("token"),
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                 })
         } else {
             console.error('Invalid Form')

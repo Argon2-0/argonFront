@@ -1,13 +1,12 @@
 import React from 'react'
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
-import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
+import { Box, Stack, TextField } from '@mui/material';
 import './CursoCrear.css'
 import Button from '@mui/material/Button';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-
+import { ReactSession } from 'react-client-session';
 
 const validateForm = errors => {
     let valid = true;
@@ -33,10 +32,10 @@ class CrearCurso extends React.Component {
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
-            this.setState({ ["form"]: "SI", ["checkVisualiza"]: true })
+            this.setState({ "form": "SI", "checkVisualiza": true })
         }
         else {
-            this.setState({ ["form"]: "NO", ["checkVisualiza"]: false })
+            this.setState({ "form": "NO", "checkVisualiza": false })
         }
     }
 
@@ -79,7 +78,7 @@ class CrearCurso extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "curso/create", {
+            fetch(ReactSession.get("basicUri") + "curso/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -89,8 +88,8 @@ class CrearCurso extends React.Component {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {

@@ -13,7 +13,7 @@ import Switch from '@mui/material/Switch';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { Participante } from "../../../Data/Participante";
-
+import { ReactSession } from 'react-client-session';
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
 );
@@ -98,16 +98,16 @@ class AutoCrearVisitante extends React.Component {
                 let participante = "";
 
                 fetch(
-                    window.$basicUri +
+                    ReactSession.get("basicUri") +
                     "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula,
                     {
                         mode: "cors",
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }
                 )
@@ -115,7 +115,7 @@ class AutoCrearVisitante extends React.Component {
                     .then((json) => {
 
                         console.log(json);
-                        window.$token = json[0];
+                        ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
 
@@ -285,7 +285,7 @@ class AutoCrearVisitante extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(window.$basicUri + "participante/create", {
+            fetch(ReactSession.get("basicUri") + "participante/create", {
                 mode: "cors",
                 method: "POST",
                 body: JSON.stringify({
@@ -305,17 +305,17 @@ class AutoCrearVisitante extends React.Component {
                 }),
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    'Authorization': ReactSession.get("token"),
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }).then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    window.$token = json[0];
+                    ReactSession.set("token", json[0]);
                     var body = json[1];
                     console.log(body)
-                    fetch(window.$basicUri + "zkt/persona/create", {
+                    fetch(ReactSession.get("basicUri") + "zkt/persona/create", {
                         mode: "cors",
                         method: "POST",
                         body: JSON.stringify({
@@ -334,14 +334,14 @@ class AutoCrearVisitante extends React.Component {
                         }),
                         headers: {
                             "Content-Type": "application/json",
-                            'Authorization': window.$token,
-                            "LastTime": window.$lastTime,
-                            "CurrentTime": window.$currentTime
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
                             console.log(json);
-                            window.$token = json[0];
+                            ReactSession.set("token", json[0]);;
                         })
                 });
         } else {
@@ -352,22 +352,22 @@ class AutoCrearVisitante extends React.Component {
 
     componentDidMount() {
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "tiposervicio/getAll",
             {
                 mode: "cors",
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    'Authorization': window.$token,
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    'Authorization': ReactSession.get("token"),
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                window.$token = json[0];
+                ReactSession.set("token", json[0]);
                 var body = json[1];
                 console.log(body)
                 let tiposServiciosJson = [];

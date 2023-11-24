@@ -1,17 +1,19 @@
+import { ReactSession } from 'react-client-session';
+
 class Token {
     constructor() { }
 
     generar() {
-        fetch(window.$basicUri + "auth/generate", {
+        fetch(ReactSession.get("basicUri") + "auth/generate", {
             mode: "cors",
             method: "POST",
             body: JSON.stringify({
-                id: window.$id,
-                name: window.$name,
-                email: window.$email,
+                id: ReactSession.get("id"),
+                name: ReactSession.get("name"),
+                email: ReactSession.get("email"),
                 role:{
-                    id: window.$idRol,
-                    name: window.$nameRol
+                    id: ReactSession.get("idRol"),
+                    name: ReactSession.get("nameRol")
                 }
             }),
             headers: {
@@ -21,27 +23,27 @@ class Token {
             .then((responseToken) => responseToken.json())
             .then((jsonToken) => {
                 console.log(jsonToken)
-                window.$token = jsonToken["token"];
-                window.$expirationDate = jsonToken["expirationDate"];
+                ReactSession.set("token", jsonToken["token"]);
+                ReactSession.set("expirationDate", jsonToken["expirationDate"]);
             })
     }
 
     validar() {
-        fetch(window.$basicUri + "auth/validate", {
+        fetch(ReactSession.get("basicUri") + "auth/validate", {
             mode: "cors",
             method: "POST",
             body: JSON.stringify({
-                id: window.$id,
-                name: window.$name,
-                email: window.$email,
+                id: ReactSession.get("id"),
+                name: ReactSession.get("name"),
+                email: ReactSession.get("email"),
                 role:{
-                    id: window.$idRol,
-                    name: window.$nameRol,
+                    id: ReactSession.get("idRol"),
+                    name: ReactSession.get("nameRol"),
                 }
             }),
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : `Bearer ${window.$token}`
+                "Authorization" : `Bearer ${ReactSession.get("token")}`
             },
         })
             .then((responseToken) => responseToken.json())

@@ -15,10 +15,9 @@ import * as XLSX from "xlsx";
 import { HerramientaParticipante } from '../../Data/HerramientaParticipante';
 import '../../App.css'
 import { TipoServicio } from '../../Data/TipoServico';
-import { Herramienta } from '../../Data/Herramienta';
 import { Curso } from '../../Data/Curso';
 import { CursoInforme } from '../../Data/CursoInforme';
-
+import { ReactSession } from 'react-client-session';
 const Informes = () => {
 
     const handleChange = e => {
@@ -33,17 +32,16 @@ const Informes = () => {
                 break;
             case "TipoDeServicio":
                 setTiposervicio(value);
+                break;
             case "Cursos":
                 setCurso(value);
                 break;
             default:
                 break;
-                break;
         }
         setTiposervicio(value);
 
     };
-    const [open, setOpen] = useState(false);
     const [fechaInicio, setFechaInicio] = useState(dayjs(new Date()));
     const [fechaFin, setFechaFin] = useState(dayjs(new Date()));
     const [tipoInforme, setTipoInforme] = useState("");
@@ -55,8 +53,6 @@ const Informes = () => {
     const [curso, setCurso] = useState("");
     const [cedula, setCedula] = useState("");
 
-    const handleSubmit = (e) => {
-    };
     const handleDateIniciochange = (event) => {
         setFechaInicio(event.$d);
     }
@@ -89,7 +85,7 @@ const Informes = () => {
     const informeRegistro = () => {
         let participantes = [];
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "participante/getBetween/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
             {
                 mode: "cors",
@@ -97,8 +93,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -157,7 +153,7 @@ const Informes = () => {
 
         let herramientas = [];
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "herramientaparticipante/getByTimeAndMarca/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + marca,
             {
                 mode: "cors",
@@ -165,8 +161,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -217,7 +213,7 @@ const Informes = () => {
 
         let herramientas = [];
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "participante/getByTimeAndTipoServicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + tiposervicio,
             {
                 mode: "cors",
@@ -225,8 +221,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -281,7 +277,7 @@ const Informes = () => {
 
         let herramientas = [];
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "visitantecurso/getByTimeAndCurso/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + curso,
             {
                 mode: "cors",
@@ -289,8 +285,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         )
@@ -337,9 +333,8 @@ const Informes = () => {
     }
 
     const GetTipoServicios = (data) => {
-        console.log(window.$token);
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "tiposervicio/getAll",
             {
                 mode: "cors",
@@ -347,8 +342,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
@@ -375,9 +370,8 @@ const Informes = () => {
     };
 
     const GetMarcas = (data) => {
-        console.log(window.$token);
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "herramienta/getAllMarcas",
             {
                 mode: "cors",
@@ -385,8 +379,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
@@ -400,9 +394,8 @@ const Informes = () => {
     };
 
     const GetCursos = (data) => {
-        console.log(window.$token);
         fetch(
-            window.$basicUri +
+            ReactSession.get("basicUri") +
             "curso/getAll",
             {
                 mode: "cors",
@@ -410,8 +403,8 @@ const Informes = () => {
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
-                    "LastTime": window.$lastTime,
-                    "CurrentTime": window.$currentTime
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
                 },
             }
         ).then((response) => response.json())
@@ -455,7 +448,7 @@ const Informes = () => {
                 </Typography>
 
                 <br />
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }} className="cardin">
+                <Box component="form" sx={{ mt: 1 }} className="cardin">
 
                     <Stack direction="row" spacing={2} >
 

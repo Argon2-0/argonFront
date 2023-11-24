@@ -9,8 +9,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { DataGrid, esES } from '@mui/x-data-grid';
-
+import { esES } from '@mui/x-data-grid';
+import { ReactSession } from 'react-client-session';
 const theme = createTheme(
   {
     palette: {
@@ -20,18 +20,8 @@ const theme = createTheme(
   esES,
 );
 const root = ReactDOM.createRoot(document.getElementById('root'));
-window.$id = "";
-window.$name = "";
-window.$email = "";
-window.$idRol = "";
-window.$nameRol = "";
-window.$foto = "";
-window.$token = "";
-window.$token_due = "";
-window.$lastTime = "";
-window.$currentTime = "";
-window.$basicUri = "http://localhost:8080/accessbiosecurity/";
-
+ReactSession.setStoreType("localStorage");
+ReactSession.set("basicUri", "http://localhost:8080/accessbiosecurity/")
 root.render(
   <ThemeProvider theme={theme}>
 
