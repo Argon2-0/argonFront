@@ -25,7 +25,6 @@ class DevolverComputadores extends React.Component {
             Observacion: "",
             errors: {
                 CodigoDeBarras: "",
-                Observacion: "",
             }
         };
     }
@@ -209,7 +208,7 @@ class DevolverComputadores extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Devolver computador
+                        Devolver Computador
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -285,11 +284,6 @@ class DevolverComputadores extends React.Component {
                                                                         noValidate
                                                                     />
                                                                 </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.Observacion.length > 0 &&
-                                                                        <span className='error'>{errors.Observacion}</span>}
-                                                                </Stack>
                                                             </TableCell>
                                                         </TableRow>
                                                     </TableBody>
@@ -303,7 +297,7 @@ class DevolverComputadores extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear visitante</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Devolución</Button>
 
                     </Box>
                 </Box>

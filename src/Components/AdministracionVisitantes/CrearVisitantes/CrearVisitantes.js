@@ -39,10 +39,8 @@ class CrearVisitantes extends React.Component {
             cedula: "",
             nombres: "",
             apellidos: "",
-            fechaNacimiento: dayjs(new Date()),
             celular: "",
             tiposervicio: "",
-            sexo: "",
             tratDatos: "NO",
             tipoDocumentoZK: "",
             fechaInicio: dayjs(new Date()),
@@ -54,11 +52,9 @@ class CrearVisitantes extends React.Component {
                 cedula: "",
                 nombres: "",
                 apellidos: "",
-                fechaNacimiento: "",
                 celular: "",
                 tiposervicio: "",
                 tratDatos: "",
-                sexo: "",
                 tipoDocumentoZK: "",
                 fechaInicio: "",
                 fechaFin: "",
@@ -67,10 +63,6 @@ class CrearVisitantes extends React.Component {
         };
     }
 
-    handleDatechange = (event) => {
-        console.log(event.$d.toISOString().toString().split("T")[0])
-        this.setState({ "fechaNacimiento": event.$d })
-    }
     handleDateIniciochange = (event) => {
         this.setState({ "fechaInicio": event.$d })
     }
@@ -128,10 +120,6 @@ class CrearVisitantes extends React.Component {
                         ReactSession.set("token", json[0]);
                         var body = json[1];
                         console.log(body)
-
-                        if (body['fechaNacimiento'] != null) {
-                            body['fechaNacimiento'] = (body['fechaNacimiento'])[2] + "/" + (body['fechaNacimiento'])[1] + "/" + (body['fechaNacimiento'])[0];
-                        }
                         body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
                         body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
 
@@ -141,9 +129,7 @@ class CrearVisitantes extends React.Component {
                             body['cedula'],
                             body['nombres'],
                             body['apellidos'],
-                            body['fechaNacimiento'],
                             body['celular'],
-                            body['sexo'],
                             body['email'],
                             body['curso'],
                             body['tratDatos'],
@@ -156,7 +142,6 @@ class CrearVisitantes extends React.Component {
                         this.setState({ "nombres": body['nombres'] });
                         this.setState({ "apellidos": body['apellidos'] });
                         this.setState({ "celular": body['celular'] });
-                        this.setState({ "sexo": body['sexo'] });
                         this.setState({ "tratDatos": body['tratDatos'] });
                         this.setState({ "tiposervicio": body['tiposervicio']['id'] });
                         if (body['tratDatos'] === "SI") {
@@ -172,7 +157,6 @@ class CrearVisitantes extends React.Component {
                         this.setState({ "nombres": '' });
                         this.setState({ "apellidos": '' });
                         this.setState({ "celular": '' });
-                        this.setState({ "sexo": '' });
                         this.setState({ "tratDatos": '' });
                         this.setState({ "tiposervicio": '' });
 
@@ -255,12 +239,6 @@ class CrearVisitantes extends React.Component {
                         ? 'Id must be at least 2 characters long!'
                         : '';
                 break;
-            case 'fechaNacimiento':
-                errors.fechaNacimiento =
-                    value === ""
-                        ? 'Should select a birth date!'
-                        : '';
-                break;
             case 'celular':
                 errors.celular =
                     validPhoneRegex.test(value)
@@ -272,12 +250,6 @@ class CrearVisitantes extends React.Component {
                     value === ""
                         ? 'Tipo servicio select a document type!'
                         : '';
-                break;
-            case 'sexo':
-                errors.tipoDocumento =
-                    value === ""
-                        ? 'Should select a sex!'
-                        : ''
                 break;
             case 'fechaInicio':
                 errors.fechaInicio =
@@ -310,7 +282,7 @@ class CrearVisitantes extends React.Component {
         console.log(this.state.tipoDocumentoZK)
         console.log("handleSubmit")
         console.log(this.state.empresaId)
-        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "fechaNacimiento", "celular", "tiposervicio", "tratDatos", "sexo"];
+        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "celular", "tiposervicio", "tratDatos"];
         fields.forEach(field => {
             this.validations(field, this.state[field]);
         });
@@ -324,14 +296,12 @@ class CrearVisitantes extends React.Component {
                     cedula: this.state.cedula,
                     nombres: this.state.nombres,
                     apellidos: this.state.apellidos,
-                    fechaNacimiento: new Date(this.state.fechaNacimiento.toISOString()).getTime(),
                     tratDatos: this.state.tratDatos,
                     celular: this.state.celular,
                     tiposervicio: {
                         id: this.state.tiposervicio,
                     },
                     createdAt: Date.now(),
-                    sexo: this.state.sexo,
                     empresa: {
                         nit: this.state.empresaId,
                     },
@@ -351,12 +321,10 @@ class CrearVisitantes extends React.Component {
                         mode: "cors",
                         method: "POST",
                         body: JSON.stringify({
-                            birthday: this.state.fechaNacimiento.toISOString().toString().split("T")[0],
                             carPlate: this.state.cedula,
                             cardNo: this.state.cedula,
                             certNumber: this.state.cedula,
                             certType: this.state.tipoDocumentoZK,
-                            gender: this.state.sexo,
                             lastName: this.state.apellidos,
                             mobilePhone: this.state.celular,
                             name: this.state.nombres,
@@ -524,9 +492,11 @@ class CrearVisitantes extends React.Component {
             <div className="sizer">
 
                 <Box className="cardout">
+                    <center>
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear visitante
+                        Crear Visitante
                     </Typography>
+                    </center>
                     <TableContainer>
                         <Table>
                             <TableHead>
@@ -615,36 +585,6 @@ class CrearVisitantes extends React.Component {
                                                                 <Stack direction="row" spacing={2} >
 
                                                                     <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sexo
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <Select
-                                                                        required
-                                                                        id="Sexo"
-                                                                        name="sexo"
-                                                                        value={this.state.sexo}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                    >
-                                                                        <MenuItem key="F" value="F" width="300">Femenino</MenuItem>
-                                                                        <MenuItem key="M" value="M" width="300">Masculino</MenuItem>
-                                                                    </Select>
-
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.tipoDocumento.length > 0 &&
-                                                                        <span className='error'>{errors.sexo}</span>}
-                                                                </Stack>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                                     </Typography>
                                                                 </Stack>
@@ -666,6 +606,9 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.nombres}</span>}
                                                                 </Stack>
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -691,36 +634,6 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.apellidos}</span>}
                                                                 </Stack>
                                                             </TableCell>
-
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de nacimiento
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <DatePicker
-                                                                        required
-                                                                        autoOk={true}
-                                                                        id="FechaDeNacimiento"
-                                                                        name="fechaNacimiento"
-                                                                        value={this.state.fechaNacimiento}
-                                                                        onChange={this.handleDatechange}
-                                                                        style={{ width: 300 }}
-                                                                        noValidate
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.fechaNacimiento.length > 0 &&
-                                                                        <span className='error'>{errors.fechaNacimiento}</span>}
-                                                                </Stack>
-
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -781,6 +694,9 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.tiposervicio}</span>}
                                                                 </Stack>
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
@@ -815,9 +731,6 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.curso}</span>}
                                                                 </Stack>
                                                             </TableCell>
-
-                                                        </TableRow>
-                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -881,6 +794,9 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -907,10 +823,6 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.fechaFin}</span>}
                                                                 </Stack>
 
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-                                                            <TableCell>
                                                             </TableCell>
                                                             
                                                             <TableCell>

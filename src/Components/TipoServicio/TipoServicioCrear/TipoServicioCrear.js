@@ -119,7 +119,7 @@ class CrearTipoServicio extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear tipo de servicio
+                        Crear Tipo de Servicio
                     </Typography>
                     <TableContainer>
                         <Table>

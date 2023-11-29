@@ -50,11 +50,6 @@ class CrearEquipos extends React.Component {
                         ? 'Referencia must be at least 5 characters long!'
                         : '';
                 break;
-            case 'Descripcion':
-                errors.Descripcion =
-                    value.length < 5
-                        ? 'Descripcion must be at least 5 characters long!'
-                        : '';
             case 'Marca':
                 errors.Marca =
                     value.length < 5
@@ -127,7 +122,7 @@ class CrearEquipos extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear equipo
+                        Crear Equipo
                     </Typography>
                     <TableContainer>
                         <Table>

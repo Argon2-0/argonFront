@@ -48,7 +48,6 @@ class PrestarComputadores extends React.Component {
                 tiposervicio: "",
                 tratDatos: "",
                 CodigoDeBarras: "",
-                Observacion: "",
             }
         };
     }
@@ -430,7 +429,7 @@ class PrestarComputadores extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Prestar computador
+                        Prestar Computador
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -678,11 +677,6 @@ class PrestarComputadores extends React.Component {
                                                     noValidate
                                                 />
                                             </Stack>
-                                            <Stack direction="row" spacing={8} >
-                                                <br />
-                                                {errors.Observacion.length > 0 &&
-                                                    <span className='error'>{errors.Observacion}</span>}
-                                            </Stack>
                                             <br />
                                             <br />
 
@@ -695,7 +689,7 @@ class PrestarComputadores extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Crear visitante</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Préstamo</Button>
 
                     </Box>
                 </Box>

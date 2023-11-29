@@ -74,7 +74,7 @@ const Home = () => {
       case "Exit":
         ReactSession.set("token", "");
         history("../Bio/public/login");
-      break;
+        break;
     }
   };
 
@@ -92,11 +92,13 @@ const Home = () => {
 
   return (
     <div onClick={handleTime} onKeyUp={handleTime}>
-      <div className="topbar" ></div>
-      <div style={{backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX: "100%", backgroundRepeat: "no-repeat", height: "1%" }}>
+      <div className="topbar">© 2023<a href="https://www.vision2cloud.com/" target="_blank" rel="noreferrer">
+        Vision2Cloud
+      </a></div>
+      <div style={{ backgroundImage: `url('/images/colsubsidiobanner.png')`, backgroundSize: "12.5%", backgroundPositionX: "100%", backgroundRepeat: "no-repeat", height: "1%" }}>
         <div className="Container">
 
-            <Leftbar changeSection={changeSection} />
+          <Leftbar changeSection={changeSection} />
         </div>
         <div className="rightside">
 

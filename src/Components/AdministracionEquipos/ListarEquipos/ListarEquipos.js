@@ -207,7 +207,7 @@ const ListarEquipos = () => {
 
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
-          Listar equipos
+          Listar Equipos
         </Typography>
         <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
           <Table style={{ width: "auto", alignContent: "center" }}>

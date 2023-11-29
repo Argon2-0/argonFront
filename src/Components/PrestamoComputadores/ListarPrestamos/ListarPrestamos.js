@@ -123,7 +123,7 @@ const ListarPrestamos = () => {
 
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
-          Historial de computadores prestados
+          Historial de Computadores Prestados
         </Typography>
         <Box sx={{ height: 520, width: 'auto' }} className="cardin">
 

@@ -168,7 +168,7 @@ class CrearUsuario extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear usuario
+                        Crear Usuario
                     </Typography>
                     <TableContainer>
                         <Table>

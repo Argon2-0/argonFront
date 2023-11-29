@@ -33,36 +33,37 @@ const Perfil = () => {
                 <Typography variant="h4" align="Left" component="h4" gutterBottom className="letras">
                     Editar perfil
                 </Typography>
-                <TableContainer className="letras">
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>
-                                    <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
-                                        Información del usuario
-                                    </Typography>
 
-                                </TableCell>
-                                <TableCell>
-                                    <Typography variant="h5" align="Left" component="h5" gutterBottom className="letras">
-                                        Cambiar contraseña
-                                    </Typography>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                    <TableContainer >
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="h5" align="Left" component="h5" gutterBottom>
+                                            Información del usuario
+                                        </Typography>
 
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="h5" align="Left" component="h5" gutterBottom >
+                                            Cambiar contraseña
+                                        </Typography>
 
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+
+                                <TableRow>
+                                    <TableCell>
                                         <Stack direction="row" spacing={2} >
 
                                             <Typography variant="h6" component="h6" spacing={2}>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                             </Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={4} >
+                                        <Stack direction="row" spacing={8} >
                                             <br />
                                             <TextField
                                                 required
@@ -73,41 +74,15 @@ const Perfil = () => {
                                             />
                                         </Stack>
                                         <br />
-                                        <Stack direction="row" spacing={2} >
-
-                                            <Typography variant="h6" component="h6" spacing={2}>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
-                                            </Typography>
-                                        </Stack>
-                                        <Stack direction="row" spacing={4} >
-                                            <br />
-                                            <TextField
-                                                required
-                                                id="Email"
-                                                name="Email"
-                                                label="Email"
-                                                variant="outlined"
-                                            />
-                                        </Stack>
-                                        <br />
-                                        <Box textAlign='center'>
-                                            <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
-
-                                        </Box>
-                                    </Box>
-                                </TableCell>
-                                <TableCell>
-                                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
-
-
-
+                                    </TableCell>
+                                    <TableCell>
                                         <Stack direction="row" spacing={2} >
 
                                             <Typography variant="h6" component="h6" spacing={2}>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña Actual
                                             </Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={4} >
+                                        <Stack direction="row" spacing={8} >
                                             <br />
                                             <TextField
                                                 required
@@ -117,14 +92,35 @@ const Perfil = () => {
                                                 variant="outlined"
                                             />
                                         </Stack>
-                                        <br />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Stack direction="row" spacing={2} >
+
+                                            <Typography variant="h6" component="h6" spacing={2}>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
+                                            </Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={8} >
+                                            <br />
+                                            <TextField
+                                                required
+                                                id="Email"
+                                                name="Email"
+                                                label="Email"
+                                                variant="outlined"
+                                            />
+                                        </Stack>
+                                    </TableCell>
+                                    <TableCell>
                                         <Stack direction="row" spacing={2} >
 
                                             <Typography variant="h6" component="h6" spacing={2}>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva Contraseña
                                             </Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={4} >
+                                        <Stack direction="row" spacing={8} >
                                             <br />
                                             <TextField
                                                 required
@@ -134,14 +130,18 @@ const Perfil = () => {
                                                 variant="outlined"
                                             />
                                         </Stack>
-                                        <br />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell />
+                                    <TableCell>
                                         <Stack direction="row" spacing={2} >
 
                                             <Typography variant="h6" component="h6" spacing={2}>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar Nueva Contraseña
                                             </Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={4} >
+                                        <Stack direction="row" spacing={8} >
                                             <br />
                                             <TextField
                                                 required
@@ -151,19 +151,31 @@ const Perfil = () => {
                                                 variant="outlined"
                                             />
                                         </Stack>
-                                        <br />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>
+                                        <Box textAlign='center'>
+                                            <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell>
                                         <Box textAlign='center'>
                                             <Button type="submit" class="button" variant="contained" endIcon={<SendIcon />}>Cambiar Contraseña</Button>
 
                                         </Box>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Box>
-        </div>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
+
+
+
+            </Box >
+        </div >
     );
 };
 

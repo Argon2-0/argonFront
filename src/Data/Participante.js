@@ -1,14 +1,12 @@
 export class Participante {
-  constructor(id, tipoDocumento, cedula, nombres, apellidos, fechaNacimiento, celular, sexo, email, curso,
+  constructor(id, tipoDocumento, cedula, nombres, apellidos, celular, email, curso,
     tratDatos, estado, createdAt, updatedAt, tiposervicio) {
     this.id = id;
     this.tipoDocumento = tipoDocumento;
     this.cedula = cedula;
     this.nombres = nombres;
     this.apellidos = apellidos;
-    this.fechaNacimiento = fechaNacimiento;
     this.celular = celular;
-    this.sexo = sexo;
     this.email = email;
     this.curso = curso;
     this.tratDatos = tratDatos;

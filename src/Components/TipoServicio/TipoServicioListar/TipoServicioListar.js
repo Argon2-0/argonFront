@@ -106,7 +106,6 @@ const TipoServicioListar = () => {
     }
   ];
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
-    id: false,
     createdAt: false,
     updatedAt: false
   });
@@ -172,7 +171,7 @@ const TipoServicioListar = () => {
     <div>
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
-          Tipos de servicios
+          Tipos de Servicios
         </Typography>
         <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
           <Table style={{ width: "auto", alignContent: "center" }}>

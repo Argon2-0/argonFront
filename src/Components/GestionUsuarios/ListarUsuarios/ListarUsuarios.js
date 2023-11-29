@@ -249,7 +249,7 @@ const ListarUsuarios = () => {
 
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
-          Gestión de usuarios
+          Gestión de Usuarios
         </Typography>
 
         <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>
