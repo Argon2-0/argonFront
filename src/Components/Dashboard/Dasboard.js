@@ -21,6 +21,8 @@ const Dasboard = () => {
   const [fechaFin, setFechaFin] = useState(dayjs(new Date()));
   const [labelsVisitsByService, setLabelsVisitsByService] = useState([""]);
   const [DataVisitsByService, setDataVisitsByService] = useState([""]);
+  const [labelsVisitsByCurso, setLabelsVisitsByCurso] = useState([""]);
+  const [DataVisitsByCurso, setDataVisitsByCurso] = useState([""]);
   const [labelsComputadores, setLabelsComputadores] = useState([""]);
   const [DataComputadores, setDataComputadores] = useState([""]);
   const [visitas, setVisitas] = useState(0);
@@ -45,6 +47,7 @@ const Dasboard = () => {
   const setData = () => {
     if (vista === "VISITANTES") {
       getvisitsByService();
+      getvisitsByCurso();
       getvisits();
     }
     else if (vista === "COMPUTADORES") {
@@ -83,7 +86,32 @@ const Dasboard = () => {
       });
   }
 
-  
+  const getvisitsByCurso = () => {
+    fetch(
+      ReactSession.get("basicUri") +
+      "visitantecurso/getByTimeAndCursoForDash/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+      {
+        mode: "cors",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': ReactSession.get("token"),
+          "LastTime": ReactSession.get("lastTime"),
+          "CurrentTime": ReactSession.get("currentTime")
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        ReactSession.set("token", json[0]);
+        console.log(json[1])
+        console.log((json[1])[0])
+        console.log((json[1])[1])
+        setLabelsVisitsByCurso((json[1])[0]);
+        setDataVisitsByCurso((json[1])[1]);
+      });
+  }
 
   const changeToVisitantes = () => {
     setVista("VISITANTES");
@@ -211,7 +239,18 @@ const Dasboard = () => {
     ],
   };
 
-  
+  const visitsByCurso = {
+    labels: labelsVisitsByCurso,
+    datasets: [
+      {
+        label: 'Numero de visitas por curso',
+        data: DataVisitsByCurso,
+        backgroundColor: backgroundColor,
+        borderColor: borderColor,
+        borderWidth: 1,
+      },
+    ],
+  };
 
  
 
@@ -309,6 +348,15 @@ const Dasboard = () => {
                                   <Stack direction="row" spacing={8} >
                                     <br />
                                     <Pie data={visitsByService} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
+
+                                  </Stack>
+                                </Box>
+                              </TableCell>
+                              <TableCell>
+                                <Box className="cardin sizer">
+                                  <Stack direction="row" spacing={8} >
+                                    <br />
+                                    <Pie data={visitsByCurso} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
 
                                   </Stack>
                                 </Box>

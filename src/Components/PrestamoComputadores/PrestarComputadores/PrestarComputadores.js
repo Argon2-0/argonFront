@@ -431,209 +431,112 @@ class PrestarComputadores extends React.Component {
                     <Typography variant="h4" component="h4" gutterBottom>
                         Prestar Computador
                     </Typography>
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>
-                                        <Box>
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                Información del solicitante
-                                            </Typography>
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Box>
-                                            <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                Información del equipo
-                                            </Typography>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell>
-                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
-                                            <BarcodeScannerComponent
-                                                width={0}
-                                                height={0}
-                                                stopStream={this.state.stopStream}
-                                                onUpdate={(err, result) => {
-                                                    console.log(result)
-                                                    if (result) {
-                                                        console.log("Cedula")
-                                                    } else {
-                                                        console.log("Not Found");
-                                                    }
-                                                }}
-                                            />
+                    <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardin">
+                        <BarcodeScannerComponent
+                            width={0}
+                            height={0}
+                            stopStream={this.state.stopStream}
+                            onUpdate={(err, result) => {
+                                console.log(result)
+                                if (result) {
+                                    console.log("Cedula")
+                                } else {
+                                    console.log("Not Found");
+                                }
+                            }}
+                        />
 
-                                            <TableContainer>
-                                                <Table>
-                                                    <TableBody>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
+                        <TableContainer>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Box>
+                                                <Typography variant="h5" align="center" component="h5" gutterBottom >
+                                                    Información del solicitante
+                                                </Typography>
+                                            </Box>
+                                        </TableCell>
+                                        <TableCell>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Box>
+                                                <Typography variant="h5" align="center" component="h5" gutterBottom >
+                                                    Información del equipo
+                                                </Typography>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <Select
-                                                                        required
-                                                                        id="TipoDeDocumento"
-                                                                        name="tipoDocumento"
-                                                                        key={this.state.tipoDocumento}
-                                                                        value={this.state.tipoDocumento}
-                                                                        onChange={this.handleChangeDocument}
-                                                                        style={{ width: 300 }}
-                                                                        variant="filled"
+                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
+                                                </Typography>
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                <Select
+                                                    required
+                                                    id="TipoDeDocumento"
+                                                    name="tipoDocumento"
+                                                    key={this.state.tipoDocumento}
+                                                    value={this.state.tipoDocumento}
+                                                    onChange={this.handleChangeDocument}
+                                                    style={{ width: 300 }}
+                                                    variant="filled"
 
-                                                                    >
-                                                                        <MenuItem key="C.C" value="C.C" width="300">Cédula de ciudadania</MenuItem>
-                                                                        <MenuItem key="C.E" value="C.E" width="300">Cédula de extranjeria</MenuItem>
-                                                                        <MenuItem key="Registro único tributario" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
-                                                                        <MenuItem key="Registro civil" value="Registro civil" width="300">Registro civil</MenuItem>
-                                                                        <MenuItem key="Numero identificación tributaria" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
-                                                                        <MenuItem key="Pasaporte" value="Pasaporte" width="300">Pasaporte</MenuItem>
-                                                                        <MenuItem key="T.I" value="T.I" width="300">Tarjeta de identidad</MenuItem>
-                                                                        <MenuItem key="Permiso de permanencia" value="Permiso de permanencia" width="300">Permiso especial de permanencia</MenuItem>
-                                                                        <MenuItem key="NIT" value="NIT" width="300">NIT</MenuItem>
-                                                                        <MenuItem key="Desconocido" value="Desconocido" width="300">Desconocido</MenuItem>
-                                                                    </Select>
+                                                >
+                                                    <MenuItem key="C.C" value="C.C" width="300">Cédula de ciudadania</MenuItem>
+                                                    <MenuItem key="C.E" value="C.E" width="300">Cédula de extranjeria</MenuItem>
+                                                    <MenuItem key="Registro único tributario" value="Registro único tributario" width="300">Registro único tributario</MenuItem>
+                                                    <MenuItem key="Registro civil" value="Registro civil" width="300">Registro civil</MenuItem>
+                                                    <MenuItem key="Numero identificación tributaria" value="Numero identificación tributaria" width="300">Numero identificación tributaria</MenuItem>
+                                                    <MenuItem key="Pasaporte" value="Pasaporte" width="300">Pasaporte</MenuItem>
+                                                    <MenuItem key="T.I" value="T.I" width="300">Tarjeta de identidad</MenuItem>
+                                                    <MenuItem key="Permiso de permanencia" value="Permiso de permanencia" width="300">Permiso especial de permanencia</MenuItem>
+                                                    <MenuItem key="NIT" value="NIT" width="300">NIT</MenuItem>
+                                                    <MenuItem key="Desconocido" value="Desconocido" width="300">Desconocido</MenuItem>
+                                                </Select>
 
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.tipoDocumento.length > 0 &&
-                                                                        <span className='error'>{errors.tipoDocumento}</span>}
-                                                                </Stack>
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                {errors.tipoDocumento.length > 0 &&
+                                                    <span className='error'>{errors.tipoDocumento}</span>}
+                                            </Stack>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextField
-                                                                        required
-                                                                        id="Cedula"
-                                                                        name="cedula"
-                                                                        value={this.state.cedula}
-                                                                        onChange={this.handleChangeDocument}
-                                                                        style={{ width: 300 }}
-                                                                        noValidate
-                                                                        onClick={this.setClickOnDocumento}
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.cedula.length > 0 &&
-                                                                        <span className='error'>{errors.cedula}</span>}
-                                                                </Stack>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
+                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
+                                                </Typography>
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                <TextField
+                                                    required
+                                                    id="Cedula"
+                                                    name="cedula"
+                                                    value={this.state.cedula}
+                                                    onChange={this.handleChangeDocument}
+                                                    style={{ width: 300 }}
+                                                    noValidate
+                                                    onClick={this.setClickOnDocumento}
+                                                />
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                {errors.cedula.length > 0 &&
+                                                    <span className='error'>{errors.cedula}</span>}
+                                            </Stack>
+                                        </TableCell>
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextField
-                                                                        required
-                                                                        id="Nombres"
-                                                                        name="nombres"
-                                                                        value={this.state.nombres}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                        noValidate
-                                                                        disabled
-                                                                        variant="filled"
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.nombres.length > 0 &&
-                                                                        <span className='error'>{errors.nombres}</span>}
-                                                                </Stack>
-                                                            </TableCell>
-
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextField
-                                                                        required
-                                                                        id="Apellidos"
-                                                                        name="apellidos"
-                                                                        value={this.state.apellidos}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                        noValidate
-                                                                        disabled
-                                                                        variant="filled"
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.apellidos.length > 0 &&
-                                                                        <span className='error'>{errors.apellidos}</span>}
-                                                                </Stack>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextField
-                                                                        required
-                                                                        id="Celular"
-                                                                        name="celular"
-                                                                        value={this.state.celular}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                        disabled
-                                                                        variant="filled"
-                                                                    />
-
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.celular.length > 0 &&
-                                                                        <span className='error'>{errors.celular}</span>}
-                                                                </Stack>
-
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="card">
-
+                                        <TableCell>
                                             <Stack direction="row" spacing={2} >
 
                                                 <Typography variant="h6" component="h6" spacing={2}>
@@ -658,7 +561,66 @@ class PrestarComputadores extends React.Component {
                                                 {errors.CodigoDeBarras.length > 0 &&
                                                     <span className='error'>{errors.CodigoDeBarras}</span>}
                                             </Stack>
-                                            <br />
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Stack direction="row" spacing={2} >
+
+                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
+                                                </Typography>
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                <TextField
+                                                    required
+                                                    id="Nombres"
+                                                    name="nombres"
+                                                    value={this.state.nombres}
+                                                    onChange={this.handleChange}
+                                                    style={{ width: 300 }}
+                                                    noValidate
+                                                    disabled
+                                                    variant="filled"
+                                                />
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                {errors.nombres.length > 0 &&
+                                                    <span className='error'>{errors.nombres}</span>}
+                                            </Stack>
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <Stack direction="row" spacing={2} >
+
+                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
+                                                </Typography>
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                <TextField
+                                                    required
+                                                    id="Apellidos"
+                                                    name="apellidos"
+                                                    value={this.state.apellidos}
+                                                    onChange={this.handleChange}
+                                                    style={{ width: 300 }}
+                                                    noValidate
+                                                    disabled
+                                                    variant="filled"
+                                                />
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                {errors.apellidos.length > 0 &&
+                                                    <span className='error'>{errors.apellidos}</span>}
+                                            </Stack>
+                                        </TableCell>
+
+                                        <TableCell>
                                             <Stack direction="row" spacing={2} >
 
                                                 <Typography variant="h6" component="h6" spacing={2}>
@@ -677,21 +639,51 @@ class PrestarComputadores extends React.Component {
                                                     noValidate
                                                 />
                                             </Stack>
-                                            <br />
-                                            <br />
+                                        </TableCell>
 
 
-                                        </Box>
 
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <Box textAlign='center'>
-                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Préstamo</Button>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Stack direction="row" spacing={2} >
 
+                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
+                                                </Typography>
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                <TextField
+                                                    required
+                                                    id="Celular"
+                                                    name="celular"
+                                                    value={this.state.celular}
+                                                    onChange={this.handleChange}
+                                                    style={{ width: 300 }}
+                                                    disabled
+                                                    variant="filled"
+                                                />
+
+                                            </Stack>
+                                            <Stack direction="row" spacing={8} >
+                                                <br />
+                                                {errors.celular.length > 0 &&
+                                                    <span className='error'>{errors.celular}</span>}
+                                            </Stack>
+
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Box>
+
+
+                </Box>
+                <Box textAlign='center'>
+                    <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Préstamo</Button>
+
                 </Box>
             </div>
         );
