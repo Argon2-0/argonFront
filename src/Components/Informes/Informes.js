@@ -18,6 +18,7 @@ import { TipoServicio } from '../../Data/TipoServico';
 import { Curso } from '../../Data/Curso';
 import { CursoInforme } from '../../Data/CursoInforme';
 import { ReactSession } from 'react-client-session';
+import { Transaction } from '../../Data/zkt/Transaction';
 const Informes = () => {
 
     const handleChange = e => {
@@ -145,13 +146,60 @@ const Informes = () => {
                     ));
                 }
             }).then(() => {
-                download(participantes);
+                download(participantes, "Registro participantes");
+            });
+    }
+
+    const informeTransacciones = () => {
+        let transacciones = [];
+        fetch(
+            ReactSession.get("basicUri") +
+            "zkt/transaction/get/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+            {
+                mode: "cors",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': ReactSession.get("token"),
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime")
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                ReactSession.set("token", json[0]);
+                var body = json[1];
+                console.log(body)
+                for (let pos = 0; pos < body.length; pos++) {
+                    transacciones.push(new Transaction(
+                        body[pos]['id'],
+                        body[pos]['eventTime'],
+                        body[pos]['pin'],
+                        body[pos]['name'],
+                        body[pos]['lastName'],
+                        body[pos]['deptName'],
+                        body[pos]['areaName'],
+                        body[pos]['cardNo'],
+                        body[pos]['devSn'],
+                        body[pos]['verifyModeName'],
+                        body[pos]['eventName'],
+                        body[pos]['eventPointName'],
+                        body[pos]['readerName'],
+                        body[pos]['accZone'],
+                        body[pos]['devName'],
+                        body[pos]['logId']
+                    ));
+                }
+            }).then(() => {
+                download(transacciones, "Informe transacciones");
             });
     }
 
     const informeMarca = () => {
 
-        let herramientas = [];
+        let marcas = [];
         fetch(
             ReactSession.get("basicUri") +
             "herramientaparticipante/getByTimeAndMarca/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + marca,
@@ -189,7 +237,7 @@ const Informes = () => {
                             year: "numeric",
                         }
                     );;
-                    herramientas.push(new HerramientaParticipante(
+                    marcas.push(new HerramientaParticipante(
                         body[pos]['id'],
                         body[pos]['observacionEntrada'],
                         body[pos]['observacionSalida'],
@@ -202,7 +250,7 @@ const Informes = () => {
                     ));
                 }
             }).then(() => {
-                download(herramientas);
+                download(marcas, "Informe marcas");
             });
 
     }
@@ -211,7 +259,7 @@ const Informes = () => {
 
     const informeTipoServicio = () => {
 
-        let herramientas = [];
+        let informeTipoServicio = [];
         fetch(
             ReactSession.get("basicUri") +
             "participante/getByTimeAndTipoServicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + tiposervicio,
@@ -249,7 +297,7 @@ const Informes = () => {
                             year: "numeric",
                         }
                     );;
-                    herramientas.push(new Participante(
+                    informeTipoServicio.push(new Participante(
                         body[pos]['id'],
                         body[pos]['tipoDocumento'],
                         body[pos]['cedula'],
@@ -268,14 +316,14 @@ const Informes = () => {
                     ));
                 }
             }).then(() => {
-                download(herramientas);
+                download(informeTipoServicio, "Informe tipo servicio");
             });
 
     }
 
     const informeCursos = () => {
 
-        let herramientas = [];
+        let cursos = [];
         fetch(
             ReactSession.get("basicUri") +
             "visitantecurso/getByTimeAndCurso/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + curso,
@@ -297,14 +345,14 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    herramientas.push(new CursoInforme(
+                    cursos.push(new CursoInforme(
                         body[pos]['codigo'],
                         body[pos]['nombre'],
                         body[pos]['visitante'],
                     ));
                 }
             }).then(() => {
-                download(herramientas);
+                download(cursos, "Informe registro cursos");
             });
 
     }
@@ -323,13 +371,16 @@ const Informes = () => {
         else if(tipoInforme === "Cursos"){
             informeCursos();
         }
+        else if(tipoInforme ==="Transacciones"){
+            informeTransacciones();
+        }
     }
 
-    const download = (data) => {
+    const download = (data, name) => {
         let binaryParticipantes = XLSX.utils.json_to_sheet(data);
         var book = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(book, binaryParticipantes, 'Binary values')
-        XLSX.writeFile(book, 'Informe registros.xlsx');
+        XLSX.writeFile(book, name+'.xlsx');
     }
 
     const GetTipoServicios = (data) => {
@@ -469,6 +520,7 @@ const Informes = () => {
                             <MenuItem key="1" value="InformePrestamosComputador" width="300">Cantidad de prestamos por computador</MenuItem>
                             <MenuItem key="2" value="Cursos" width="300">Registro de personas por curso</MenuItem>
                             <MenuItem key="3" value="TipoServicio" width="300">Tipo servicio</MenuItem>
+                            <MenuItem key="4" value="Transacciones" width="300">Transacciones</MenuItem>
                         </Select>
 
                     </Stack>
