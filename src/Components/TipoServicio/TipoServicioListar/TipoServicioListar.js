@@ -14,12 +14,13 @@ import '../../../App.css'
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { Box, Typography, Input } from "@mui/material";
 import { ReactSession } from 'react-client-session';
-
+import { useAlert } from '../../../AlertProvider';
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
 
 const TipoServicioListar = () => {
+  const { showAlert } = useAlert();
   const classes = useStyles();
   const [rows, setRows] = useState([]);
   const [tiposServicios, setTiposServico] = useState([]);
@@ -74,7 +75,6 @@ const TipoServicioListar = () => {
       }).then(() => {
       });
   }, []);
-
 
   const columns = [
     { field: 'id', headerName: 'Id' },
@@ -144,6 +144,14 @@ const TipoServicioListar = () => {
       }
     });
   };
+
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
   const handleSubmit = (e) => {
     console.log("handlesubmit")
     e.preventDefault();
@@ -163,7 +171,10 @@ const TipoServicioListar = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-      })
+        handleShowSuccessAlert()
+      }).catch(
+        handleShowErrorAlert()
+      )
 
   };
   return (
@@ -179,7 +190,7 @@ const TipoServicioListar = () => {
               <TableRow>
                 <TableCell >
                   <Button className="button" variant="contained" href="/Tipos de servicio.xlsx" download="Tipos de servicio.xlsx">
-                    Descargar plantilla 
+                    Descargar plantilla
                   </Button>
                 </TableCell>
                 <TableCell >
@@ -196,7 +207,7 @@ const TipoServicioListar = () => {
                   </Typography>
                 </TableCell>
                 <TableCell >
-                <Button className="button" variant="contained" endIcon={<SendIcon />} onSubmit={handleSubmit}>Guardar cambios</Button>
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onSubmit={handleSubmit}>Guardar cambios</Button>
                 </TableCell>
               </TableRow>
             </TableBody>

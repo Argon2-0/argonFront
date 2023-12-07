@@ -16,7 +16,7 @@ import '../../../App.css'
 import { Curso } from '../../../Data/Curso';
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import { useAlert } from '../../../AlertProvider';
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
@@ -25,7 +25,7 @@ const CursoListar = () => {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
   const [curso, setCurso] = useState([]);
-
+  const { showAlert } = useAlert();
   useEffect(() => {
     fetch(
       ReactSession.get("basicUri") +
@@ -106,6 +106,15 @@ const CursoListar = () => {
       }
     });
   };
+
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
+
   const handleSubmit = (e) => {
     console.log("handlesubmit")
     e.preventDefault();
@@ -125,15 +134,17 @@ const CursoListar = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-      })
-
+        handleShowSuccessAlert()
+      }).catch(
+        handleShowErrorAlert()
+      )
   };
   return (
 
     <div>
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
-          Cursos
+          Eventos
         </Typography>
 
         <TableContainer style={{ alignItems: "right", width: "100%", background: "#ffcf00" }}>

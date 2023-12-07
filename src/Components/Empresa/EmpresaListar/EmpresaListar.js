@@ -15,7 +15,7 @@ import { Empresa } from '../../../Data/Empresa';
 import { Box, Input } from '@mui/material';
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import { useAlert } from '../../../AlertProvider';
 const useStyles = makeStyles(() => ({
   esES,
 }));
@@ -24,7 +24,7 @@ const EmpresaListar = () => {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
   const [empresa, setEmpresa] = useState([]);
-
+  const { showAlert } = useAlert();
   useEffect(() => {
     fetch(
       ReactSession.get("basicUri") +
@@ -105,6 +105,15 @@ const EmpresaListar = () => {
       }
     });
   };
+
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
+
   const handleSubmit = (e) => {
     console.log("handlesubmit")
     e.preventDefault();
@@ -124,7 +133,10 @@ const EmpresaListar = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-      })
+        handleShowSuccessAlert()
+      }).catch(
+        handleShowErrorAlert()
+      )
 
   };
   return (

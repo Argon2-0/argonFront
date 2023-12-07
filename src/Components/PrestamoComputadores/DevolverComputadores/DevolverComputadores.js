@@ -9,6 +9,8 @@ import { HerramientaParticipante } from '../../../Data/HerramientaParticipante';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -23,12 +25,31 @@ class DevolverComputadores extends React.Component {
             herramienta: "",
             herramientaParticipante: "",
             Observacion: "",
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 CodigoDeBarras: "",
             }
         };
     }
 
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
 
     handleChange = (event) => {
         console.log(event)
@@ -191,10 +212,16 @@ class DevolverComputadores extends React.Component {
                         .then((json) => {
                             console.log(json);
                             ReactSession.set("token", json[0]);
+                            this.handleOpen('success', 'El computador fue devuelto');
+                            this.setState({CodigoDeBarras: ""});
+                            this.setState({herramienta: ""});
+                            this.setState({herramientaParticipante: ""});
+                            this.setState({Observacion: ""});
                         })
                 });
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al devolver el computador')
         }
     };
 
@@ -301,6 +328,28 @@ class DevolverComputadores extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

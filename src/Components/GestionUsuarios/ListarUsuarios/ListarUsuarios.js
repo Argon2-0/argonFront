@@ -13,10 +13,11 @@ import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/mate
 import { UserCreate } from "../../../Data/User/UserCreate";
 import Protege from "../../../Auth/Protege";
 import { ReactSession } from 'react-client-session';
+import { useAlert } from '../../../AlertProvider';
 const ListarUsuarios = () => {
   const [rows, setRows] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
-
+  const { showAlert } = useAlert();
   useEffect(() => {
     fetch(
       ReactSession.get("basicUri") +
@@ -221,6 +222,15 @@ const ListarUsuarios = () => {
       }
     }).then(() => { setUsuarios(users) });
   };
+
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -240,7 +250,10 @@ const ListarUsuarios = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-      })
+        handleShowSuccessAlert()
+      }).catch(
+        handleShowErrorAlert()
+      )
 
   };
   return (

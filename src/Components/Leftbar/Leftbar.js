@@ -427,7 +427,7 @@ export default function Leftbar({ changeSection }) {
               <ListItemIcon>
                 <MiscellaneousServices className="sidebarIcon letrasDark" />{" "}
               </ListItemIcon>
-              <ListItemText className="letrasDark">Cursos</ListItemText>
+              <ListItemText className="letrasDark">Eventos</ListItemText>
               {openCursos ? <ExpandLess /> : <ExpandMore />}
 
             </ListItemButton>
@@ -442,7 +442,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon>
                     <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letrasDark">Crear nuevo curso</ListItemText>
+                  <ListItemText className="letrasDark">Crear nuevo evento</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -455,7 +455,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon>
                     <FormatListBulletedIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letrasDark">Listar cursos</ListItemText>
+                  <ListItemText className="letrasDark">Listar eventos</ListItemText>
                 </ListItemButton>
               </List>
             </Collapse>

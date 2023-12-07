@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -22,6 +24,9 @@ class CrearEquipos extends React.Component {
             Marca: "",
             Serial: "",
             CodigoBarras: "",
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 Referencia: "",
                 Descripcion: "",
@@ -31,7 +36,22 @@ class CrearEquipos extends React.Component {
             }
         };
     }
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
 
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
     handleChange = (event) => {
         console.log(event)
         event.preventDefault();
@@ -107,9 +127,18 @@ class CrearEquipos extends React.Component {
                 .then((json) => {
                     console.log(json);
                     ReactSession.set("token", json[0]);
+                    this.handleOpen('success', 'El equipo fue creado')
+                    this.setState({
+                        Referencia: "",
+                        Descripcion: "",
+                        Marca: "",
+                        Serial: "",
+                        CodigoBarras: "",
+                    })
                 })
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear el equipo')
         }
     };
 
@@ -297,6 +326,28 @@ class CrearEquipos extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

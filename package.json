@@ -42,6 +42,7 @@
     "react-select": "^5.7.2",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "source-map-loader": "^4.0.1",
+    "sweetalert2": "^11.10.1",
     "sweetalert2-react": "^0.8.3",
     "use-history": "^1.4.1",
     "web-vitals": "^2.1.4",

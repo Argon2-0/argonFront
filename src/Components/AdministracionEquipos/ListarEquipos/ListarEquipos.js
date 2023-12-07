@@ -15,10 +15,12 @@ import * as XLSX from "xlsx";
 import '../../../App.css'
 import { ReactSession } from 'react-client-session';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { useAlert } from '../../../AlertProvider';
+
 const ListarEquipos = () => {
   const [rows, setRows] = useState([]);
   const [computadores, setComputadores] = useState([]);
-
+  const { showAlert } = useAlert();
   useEffect(() => {
     fetch(
       ReactSession.get("basicUri") +
@@ -179,6 +181,14 @@ const ListarEquipos = () => {
       }
     });
   };
+
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -197,7 +207,10 @@ const ListarEquipos = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-      })
+        handleShowSuccessAlert()
+      }).catch(
+        handleShowErrorAlert()
+      )
 
   };
 

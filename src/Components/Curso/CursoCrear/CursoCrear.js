@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -21,13 +22,33 @@ class CrearCurso extends React.Component {
         this.state = {
             checkVisualiza: false,
             nombre: "",
-            codigo: 0,
+            codigo: "",
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 nombre: "",
                 codigo: ""
             }
         };
     }
+
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
 
     handleCheckchange = (event) => {
         if (event.target.checked) {
@@ -95,9 +116,13 @@ class CrearCurso extends React.Component {
                 .then((json) => {
                     console.log(json);
                     ReactSession.set("token", json[0]);
+                    this.setState({nombre: ""});
+                    this.setState({codigo: ""});
+                    this.handleOpen('success', 'El evento fue creado')
                 })
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear el evento')
         }
     };
 
@@ -112,7 +137,7 @@ class CrearCurso extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear curso
+                        Crear Evento
                     </Typography>
                     <TableContainer>
                         <Table>
@@ -121,7 +146,7 @@ class CrearCurso extends React.Component {
                                     <TableCell>
                                         <Box>
                                             <Typography variant="h5" align="center" component="h5" gutterBottom className="letras">
-                                                Información del curso
+                                                Información del evento
                                             </Typography>
                                         </Box>
                                     </TableCell>
@@ -161,7 +186,7 @@ class CrearCurso extends React.Component {
                                                                         <span className='error'>{errors.codigo}</span>}
                                                                 </Stack>
                                                                 <br />
-                                                                
+
                                                             </TableCell>
                                                         </TableRow>
 
@@ -193,7 +218,7 @@ class CrearCurso extends React.Component {
                                                                         <span className='error'>{errors.nombre}</span>}
                                                                 </Stack>
                                                                 <br />
-                                                                
+
                                                             </TableCell>
                                                         </TableRow>
                                                     </TableBody>
@@ -212,6 +237,28 @@ class CrearCurso extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

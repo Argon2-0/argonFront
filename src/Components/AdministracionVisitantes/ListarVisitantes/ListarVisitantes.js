@@ -14,12 +14,13 @@ import { Empresa } from "../../../Data/Empresa";
 import { RegistroCurso } from "../../../Data/RegistroCurso";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import { useAlert } from '../../../AlertProvider';
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
   const [visitantesArray, setVisitantesArray] = useState([]);
   const [zktUsersArray, setZktUsersArray] = useState([]);
   const [registroCursos, setRegistroCursos] = useState([]);
+  const { showAlert } = useAlert();
   useEffect(() => {
     fetch(
       ReactSession.get("basicUri") +
@@ -289,6 +290,14 @@ const ListarVisitantes = () => {
     }
   }
 
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'El masivo se cargo correctamente');
+  };
+
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Hubo un problema al cargar el archivo masivo');
+  };
+
   const handleSubmit = (e) => {
     console.log(visitantesArray)
     console.log("handlesubmit")
@@ -339,10 +348,12 @@ const ListarVisitantes = () => {
               .then((json) => {
                 console.log(json);
                 ReactSession.set("token", json[0]);
-              })
+                handleShowSuccessAlert()
+              }).catch(
+                handleShowErrorAlert()
+              )
           })
       })
-    //}
 
   };
   return (

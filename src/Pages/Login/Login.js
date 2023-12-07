@@ -14,8 +14,9 @@ import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/mate
 import Token from "../../Auth/Token";
 import Protege from "../../Auth/Protege";
 import { ReactSession } from 'react-client-session';
-
+import { useAlert } from '../../AlertProvider';
 const Login = () => {
+  const { showAlert } = useAlert();
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +30,13 @@ const Login = () => {
     const { value } = e.currentTarget;
     setEmail(value);
   };
+  const handleShowSuccessAlert = () => {
+    showAlert('success', 'Bienvenido');
+  };
 
+  const handleShowErrorAlert = () => {
+    showAlert('error', 'Usuario o contraseña incorrectos');
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     var token = new Token();
@@ -59,8 +66,11 @@ const Login = () => {
             token.generar();
           }).then(() => {
             ReactSession.set("currentTime", Date.now());
+            handleShowSuccessAlert()
             navigate("../Bio/public/home");
-          })
+          }).catch(
+            handleShowErrorAlert()
+          )
 
       })
 

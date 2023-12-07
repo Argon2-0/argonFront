@@ -8,7 +8,8 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -25,14 +26,32 @@ class CrearTipoServicio extends React.Component {
             items: [],
             descripcion: "",
             form: "No",
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 nombre: "",
-                descripcion: "",
                 form: "",
             }
         };
     }
 
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
@@ -58,12 +77,6 @@ class CrearTipoServicio extends React.Component {
                 errors.nombre =
                     value.length < 5
                         ? 'nombre must be at least 5 characters long!'
-                        : '';
-                break;
-            case 'descripcion':
-                errors.descripcion =
-                    value.length < 5
-                        ? 'descripcion must be at least 5 characters long!'
                         : '';
                 break;
             default:
@@ -102,9 +115,18 @@ class CrearTipoServicio extends React.Component {
                 .then((json) => {
                     console.log(json);
                     ReactSession.set("token", json[0]);
+                    this.handleOpen('success', 'El tipo de servicio fue creado')
+                    this.setState({
+                        checkVisualiza: false,
+                        nombre: "",
+                        items: [],
+                        descripcion: "",
+                        form: "No",
+                    });
                 })
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear el tipo de servicio')
         }
     };
 
@@ -186,11 +208,6 @@ class CrearTipoServicio extends React.Component {
                                                                         style={{ width: 300 }}
                                                                     />
                                                                 </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.descripcion.length > 0 &&
-                                                                        <span className='error'>{errors.descripcion}</span>}
-                                                                </Stack>
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
@@ -239,6 +256,28 @@ class CrearTipoServicio extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

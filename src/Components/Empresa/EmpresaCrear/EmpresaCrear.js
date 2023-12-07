@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -22,13 +23,31 @@ class CrearEmpresa extends React.Component {
             checkVisualiza: false,
             nombre: "",
             nit: 0,
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 nombre: "",
                 nit: ""
             }
         };
     }
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
 
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
@@ -95,9 +114,13 @@ class CrearEmpresa extends React.Component {
                 .then((json) => {
                     console.log(json);
                     ReactSession.set("token", json[0]);
+                    this.setState({nombre: ""});
+                    this.setState({nit: ""});
+                    this.handleOpen('success', 'La empresa fue creada')
                 })
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear la empresa')
         }
     };
 
@@ -212,6 +235,28 @@ class CrearEmpresa extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

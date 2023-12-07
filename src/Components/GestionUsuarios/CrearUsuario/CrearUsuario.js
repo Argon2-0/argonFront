@@ -11,6 +11,9 @@ import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import Protege from "../../../Auth/Protege";
 import { ReactSession } from 'react-client-session';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { configure } from "@testing-library/react";
 //eslint-disable-next-line
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = errors => {
@@ -28,6 +31,9 @@ class CrearUsuario extends React.Component {
             rol: "",
             password: "",
             confirmPassword: "",
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 nombres: "",
                 email: "",
@@ -37,7 +43,22 @@ class CrearUsuario extends React.Component {
             }
         };
     }
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
 
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
     handleChange = (event) => {
         event.preventDefault();
         const { name, value } = event.target;
@@ -119,10 +140,18 @@ class CrearUsuario extends React.Component {
                     .then((json) => {
                         console.log(json);
                         ReactSession.set("token", json[0]);
+                        this.setState({roles: [""]});
+                        this.setState({nombres: ""});
+                        this.setState({email: ""});
+                        this.setState({rol: ""});
+                        this.setState({password: ""});
+                        this.setState({confirmPassword: ""});
+                        this.handleOpen('success', 'El usuario fue creado')
                     })
             })
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear el usuario')
         }
     };
 
@@ -351,6 +380,28 @@ class CrearUsuario extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={6000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        {this.state.message}
+                    </MuiAlert>
+                </Snackbar>
             </div>
         );
     }

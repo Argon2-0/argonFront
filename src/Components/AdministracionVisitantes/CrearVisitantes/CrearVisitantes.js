@@ -16,6 +16,8 @@ import { Participante } from "../../../Data/Participante";
 import { Curso } from "../../../Data/Curso";
 import { Empresa } from "../../../Data/Empresa";
 import { ReactSession } from 'react-client-session';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
 );
@@ -46,6 +48,9 @@ class CrearVisitantes extends React.Component {
             fechaInicio: dayjs(new Date()),
             fechaFin: dayjs(new Date()),
             empresaId: 0,
+            severity: "success",
+            message: "",
+            open: false,
             errors: {
                 curso: "",
                 tipoDocumento: "",
@@ -62,7 +67,22 @@ class CrearVisitantes extends React.Component {
             }
         };
     }
+    handleOpen = (severity, message) => {
+        this.setState({
+            open: true,
+            severity,
+            message,
+        });
+    };
 
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            open: false,
+        });
+    };
     handleDateIniciochange = (event) => {
         this.setState({ "fechaInicio": event.$d })
     }
@@ -378,6 +398,25 @@ class CrearVisitantes extends React.Component {
                                         .then((json) => {
                                             console.log(json);
                                             ReactSession.set("token", json[0]);
+                                            this.handleOpen('success', 'El visitante fue creado')
+                                            this.setState({
+                                                checkTratDatos: false,
+                                                tiposservicios: [""],
+                                                cursos: [""],
+                                                empresas: [""],
+                                                curso: "",
+                                                tipoDocumento: "",
+                                                cedula: "",
+                                                nombres: "",
+                                                apellidos: "",
+                                                celular: "",
+                                                tiposervicio: "",
+                                                tratDatos: "NO",
+                                                tipoDocumentoZK: "",
+                                                fechaInicio: dayjs(new Date()),
+                                                fechaFin: dayjs(new Date()),
+                                                empresaId: 0,
+                                            })
                                         })
                                 })
                         })
@@ -385,6 +424,7 @@ class CrearVisitantes extends React.Component {
 
         } else {
             console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema al crear el visitante')
         }
     };
 
@@ -493,9 +533,9 @@ class CrearVisitantes extends React.Component {
 
                 <Box className="cardout">
                     <center>
-                    <Typography variant="h4" component="h4" gutterBottom>
-                        Crear Visitante
-                    </Typography>
+                        <Typography variant="h4" component="h4" gutterBottom>
+                            Crear Visitante
+                        </Typography>
                     </center>
                     <TableContainer>
                         <Table>
@@ -608,7 +648,7 @@ class CrearVisitantes extends React.Component {
                                                             </TableCell>
                                                         </TableRow>
                                                         <TableRow>
-                                                            
+
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -696,7 +736,7 @@ class CrearVisitantes extends React.Component {
                                                             </TableCell>
                                                         </TableRow>
                                                         <TableRow>
-                                                            
+
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
@@ -796,7 +836,7 @@ class CrearVisitantes extends React.Component {
                                                             </TableCell>
                                                         </TableRow>
                                                         <TableRow>
-                                                            
+
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -824,7 +864,7 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
-                                                            
+
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -873,6 +913,36 @@ class CrearVisitantes extends React.Component {
 
                     </Box>
                 </Box>
+                <Snackbar
+                    open={this.state.open}
+                    autoHideDuration={10000} // milliseconds
+                    onClose={this.handleClose}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                >
+                    <MuiAlert
+                        onClose={this.handleClose}
+                        severity={this.state.severity}
+                        elevation={6}
+                        variant="filled"
+                        sx={{
+                            width: '100%',
+                            fontSize: '1.2rem',
+                            '& .MuiAlert-icon': {
+                                fontSize: '2rem',
+                            },
+                        }}
+                    >
+                        <div>
+                            <img
+                                src="/images/poptorniqute.png"
+                                alt="Popup Image"
+                                style={{ width: '100%', height: 'auto' }}
+                            />
+                            {this.state.message}
+                        </div>
+
+                    </MuiAlert>
+                </Snackbar>
             </div >
         );
     }

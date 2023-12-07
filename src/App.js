@@ -4,13 +4,16 @@ import Registro from './Pages/Registro/Registro';
 import Login from './Pages/Login/Login';
 import Home from './Pages/Home/Home';
 import CrearUsuario from './Components/GestionUsuarios/CrearUsuario/CrearUsuario';
+import { AlertProvider } from './AlertProvider';
 function App() {
-  return (   
-    <Routes>
-      <Route exact path="/Bio/public/login" element={<Login />} />
-      <Route exact path="/Bio/public/home" element={<Home />} />
-      <Route exact path="/Bio/public/registro" element={<Registro />} />
-    </Routes>
+  return (
+    <AlertProvider>
+      <Routes>
+        <Route exact path="/Bio/public/login" element={<Login />} />
+        <Route exact path="/Bio/public/home" element={<Home />} />
+        <Route exact path="/Bio/public/registro" element={<Registro />} />
+      </Routes>
+    </AlertProvider>
   );
 }
 
