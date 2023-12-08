@@ -353,7 +353,7 @@ class AutoCrearVisitante extends React.Component {
     componentDidMount() {
         fetch(
             ReactSession.get("basicUri") +
-            "tiposervicio/getAll",
+            "tiposervicio/getAllByDisponible/si",
             {
                 mode: "cors",
                 method: "GET",

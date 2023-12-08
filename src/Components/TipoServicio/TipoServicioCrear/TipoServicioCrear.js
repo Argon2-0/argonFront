@@ -21,17 +21,18 @@ class CrearTipoServicio extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: "",
             checkVisualiza: false,
             nombre: "",
-            items: [],
             descripcion: "",
-            form: "No",
+            disponible: "NO",
             severity: "success",
             message: "",
             open: false,
+            existe: false,
             errors: {
                 nombre: "",
-                form: "",
+                disponible: "",
             }
         };
     }
@@ -55,10 +56,10 @@ class CrearTipoServicio extends React.Component {
     handleCheckchange = (event) => {
         if (event.target.checked) {
 
-            this.setState({ "form": "SI", "checkVisualiza": true })
+            this.setState({ "disponible": "SI", "checkVisualiza": true })
         }
         else {
-            this.setState({ "form": "NO", "checkVisualiza": false })
+            this.setState({ "disponible": "NO", "checkVisualiza": false })
         }
     }
 
@@ -95,42 +96,130 @@ class CrearTipoServicio extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(ReactSession.get("basicUri") + "tiposervicio/create", {
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    nombre: this.state.nombre,
-                    descripcion: this.state.descripcion,
-                    form: this.state.form,
-                    createdAt: Date.now()
+            if (!this.state.existe) {
+                fetch(ReactSession.get("basicUri") + "tiposervicio/create", {
+                    mode: "cors",
+                    method: "POST",
+                    body: JSON.stringify({
+                        nombre: this.state.nombre,
+                        descripcion: this.state.descripcion,
+                        disponible: this.state.disponible,
+                        createdAt: Date.now()
 
-                }),
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        this.handleOpen('success', 'El tipo de servicio fue creado')
+                        this.setState({
+                            checkVisualiza: false,
+                            nombre: "",
+                            descripcion: "",
+                            disponible: "NO",
+                            existe:false
+                        });
+                    })
+            } else{
+                fetch(ReactSession.get("basicUri") + "tiposervicio/update", {
+                    mode: "cors",
+                    method: "PUT",
+                    body: JSON.stringify({
+                        id: this.state.id,
+                        nombre: this.state.nombre,
+                        descripcion: this.state.descripcion,
+                        disponible: this.state.disponible,
+                        createdAt: this.state.createdAt,
+                        updatedAt: Date.now()
+
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        this.handleOpen('success', 'El tipo de servicio fue actualizado')
+                        this.setState({
+                            checkVisualiza: false,
+                            id:"",
+                            nombre: "",
+                            descripcion: "",
+                            disponible: "NO",
+                            existe:false
+                        });
+                    })
+            }
+        } else {
+            console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema en la petición')
+        }
+    };
+
+    existe = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        this.setState({
+            id: value
+        })
+        fetch(
+            ReactSession.get("basicUri") +
+            "tiposervicio/getById/" + value,
+            {
+                mode: "cors",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime")
                 },
-            }).then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
-                    ReactSession.set("token", json[0]);
-                    this.handleOpen('success', 'El tipo de servicio fue creado')
+            }
+        ).then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                ReactSession.set("token", json[0]);
+                var body = json[1];
+                console.log(body)
+                console.log(json);
+
+
+                body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
+                if (body['disponible'] === "SI") {
                     this.setState({
-                        checkVisualiza: false,
-                        nombre: "",
-                        items: [],
-                        descripcion: "",
-                        form: "No",
-                    });
-                })
-        } else {
-            console.error('Invalid Form')
-            this.handleOpen('error', 'Hubo un problema al crear el tipo de servicio')
-        }
-    };
+                        checkVisualiza: true
+                    })
+                }
+                else {
+                    this.setState({
+                        checkVisualiza: false
+                    })
+                }
+                return Promise.resolve(this.setState({
+                    id: body['id'],
+                    nombre: body['nombre'],
+                    descripcion: body['descripcion'],
+                    disponible: body['disponible'],
+                    createdAt: body['createdAt'],
+                    updatedAt: body['updatedAt'],
+                    existe: true
+                }));
 
-
+            }).catch(
+                this.setState({ existe: false, disponible:"NO", checkVisualiza:false, nombre:"", descripcion:"" })
+            )
+    }
 
     render() {
         const { errors } = this.state;
@@ -164,7 +253,26 @@ class CrearTipoServicio extends React.Component {
                                                 <Table>
                                                     <TableBody>
                                                         <TableRow>
+
                                                             <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Id
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="id"
+                                                                        name="id"
+                                                                        label="id"
+                                                                        variant="outlined"
+                                                                        value={this.state.id}
+                                                                        onChange={this.existe}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
                                                                 <Stack direction="row" spacing={2} >
 
                                                                     <Typography variant="h6" component="h6" spacing={2}>
@@ -228,14 +336,14 @@ class CrearTipoServicio extends React.Component {
 
                                                                             />
                                                                         }
-                                                                        label={this.state.form}
+                                                                        label={this.state.disponible}
                                                                     />
 
                                                                 </Stack>
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
-                                                                    {errors.form.length > 0 &&
-                                                                        <span className='error'>{errors.form}</span>}
+                                                                    {errors.disponible.length > 0 &&
+                                                                        <span className='error'>{errors.disponible}</span>}
                                                                 </Stack>
 
                                                             </TableCell>

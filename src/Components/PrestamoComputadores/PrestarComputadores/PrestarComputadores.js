@@ -424,41 +424,7 @@ class PrestarComputadores extends React.Component {
     };
 
 
-    componentDidMount() {
-        fetch(
-            ReactSession.get("basicUri") +
-            "tiposervicio/getAll",
-            {
-                mode: "cors",
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': ReactSession.get("token"),
-                    "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
-                },
-            }
-        ).then((response) => response.json())
-            .then((json) => {
-                console.log(json);
-                ReactSession.set("token", json[0]);
-                var body = json[1];
-                console.log(body)
-                let tiposServiciosJson = [];
-                for (let pos = 0; pos < json.length; pos++) {
-                    body[pos]['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['createdAt']));
-                    body[pos]['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body[pos]['updatedAt']));
-                    tiposServiciosJson.push(new TipoServicio(
-                        body[pos]['id'],
-                        body[pos]['nombre'],
-                        body[pos]['descripcion'],
-                        body[pos]['createdAt'],
-                        body[pos]['updatedAt'],
-                        body[pos]['form']));
-                }
-                this.setState({ "tiposservicios": tiposServiciosJson });
-            })
-    };
+    
     render() {
         const { errors } = this.state;
         return (

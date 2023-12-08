@@ -432,7 +432,7 @@ class CrearVisitantes extends React.Component {
     componentDidMount() {
         fetch(
             ReactSession.get("basicUri") +
-            "tiposervicio/getAll",
+            "tiposervicio/getAllByDisponible/si",
             {
                 mode: "cors",
                 method: "GET",
@@ -467,7 +467,7 @@ class CrearVisitantes extends React.Component {
             .then(() => {
                 fetch(
                     ReactSession.get("basicUri") +
-                    "curso/getAll",
+                    "curso/getAllByDisponible/si",
                     {
                         mode: "cors",
                         method: "GET",
@@ -495,7 +495,7 @@ class CrearVisitantes extends React.Component {
                         let empresas = [];
                         fetch(
                             ReactSession.get("basicUri") +
-                            "empresa/getAll",
+                            "empresa/getAllByDisponible/si",
                             {
                                 mode: "cors",
                                 method: "GET",

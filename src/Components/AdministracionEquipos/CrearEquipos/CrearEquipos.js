@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@mui/material/Typography';
 import SendIcon from '@mui/icons-material/Send';
-import { Box, Stack, TextField } from '@mui/material';
+import { Box, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import './CrearEquipos.css'
 import Button from '@mui/material/Button';
 import '../../../App.css'
@@ -27,6 +27,10 @@ class CrearEquipos extends React.Component {
             severity: "success",
             message: "",
             open: false,
+            disponible: "NO",
+            existe: false,
+            checkVisualiza: false,
+            id: "",
             errors: {
                 Referencia: "",
                 Descripcion: "",
@@ -57,6 +61,9 @@ class CrearEquipos extends React.Component {
         event.preventDefault();
         const { name, value } = event.target;
         this.validations(name, value);
+        if (name === "CodigoBarras") {
+            this.existe(event);
+        }
     }
 
     validations = (name, value) => {
@@ -72,12 +79,12 @@ class CrearEquipos extends React.Component {
                 break;
             case 'Marca':
                 errors.Marca =
-                    value.length < 5
+                    value.length < 2
                         ? 'Marca must be at least 5 characters long!'
                         : '';
             case 'Serial':
                 errors.Serial =
-                    value.length < 5
+                    value.length < 2
                         ? 'Serial must be at least 5 characters long!'
                         : '';
                 break;
@@ -95,6 +102,17 @@ class CrearEquipos extends React.Component {
 
     }
 
+    handleCheckchange = (event) => {
+        if (event.target.checked) {
+
+            this.setState({ "disponible": "SI", "checkVisualiza": true })
+        }
+        else {
+            this.setState({ "disponible": "NO", "checkVisualiza": false })
+        }
+    }
+
+
     handleSubmit = (e) => {
         console.log("handlesubmit")
         const fields = ["CodigoBarras", "Descripcion", "Referencia", "Marca", "Serial"];
@@ -104,43 +122,152 @@ class CrearEquipos extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(ReactSession.get("basicUri") + "herramienta/create", {
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    nombre: this.state.Referencia,
-                    descripcion: this.state.Descripcion,
-                    marca: this.state.Marca,
-                    serial: this.state.Serial,
-                    codigoBarras: this.state.CodigoBarras,
-                    estado: "Disponible",
-                    createdAt: Date.now()
+            if (this.existe) {
+                fetch(ReactSession.get("basicUri") + "herramienta/create", {
+                    mode: "cors",
+                    method: "POST",
+                    body: JSON.stringify({
+                        nombre: this.state.Referencia,
+                        descripcion: this.state.Descripcion,
+                        marca: this.state.Marca,
+                        serial: this.state.Serial,
+                        codigoBarras: this.state.CodigoBarras,
+                        estado: "Disponible",
+                        disponible: this.state.disponible,
+                        createdAt: Date.now()
 
-                }),
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        this.handleOpen('success', 'El equipo fue creado')
+                        this.setState({
+                            Referencia: "",
+                            Descripcion: "",
+                            Marca: "",
+                            Serial: "",
+                            CodigoBarras: "",
+                            existe: false,
+                            checkVisualiza: false,
+                            disponible: "NO",
+
+                        })
+                    })
+            } else {
+                fetch(ReactSession.get("basicUri") + "herramienta/update", {
+                    mode: "cors",
+                    method: "PUT",
+                    body: JSON.stringify({
+                        nombre: this.state.Referencia,
+                        descripcion: this.state.Descripcion,
+                        marca: this.state.Marca,
+                        serial: this.state.Serial,
+                        codigoBarras: this.state.CodigoBarras,
+                        estado: "Disponible",
+                        disponible: this.state.disponible,
+                        createdAt: this.state.createdAt,
+                        updatedAt: Date.now(),
+                        id: this.state.id
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        this.handleOpen('success', 'El equipo fue actualizado')
+                        this.setState({
+                            Referencia: "",
+                            Descripcion: "",
+                            Marca: "",
+                            Serial: "",
+                            id: "",
+                            CodigoBarras: "",
+                            existe: false,
+                            checkVisualiza: false,
+                            disponible: "NO",
+
+                        })
+                    })
+            }
+        } else {
+            console.error('Invalid Form')
+            this.handleOpen('error', 'Hubo un problema en la petición')
+        }
+    };
+
+    existe = (e) => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        this.setState({
+            codigoBarras: value
+        })
+        fetch(
+            ReactSession.get("basicUri") +
+            "herramienta/getByCodigoBarras/" + value,
+            {
+                mode: "cors",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime")
                 },
-            }).then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
-                    ReactSession.set("token", json[0]);
-                    this.handleOpen('success', 'El equipo fue creado')
+            }
+        ).then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                ReactSession.set("token", json[0]);
+                var body = json[1];
+                console.log(body)
+                console.log(json);
+                if (body['createdAt'] !== null) {
+                    body['createdAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['createdAt']));
+                }
+                if (body['updatedAt'] !== null) {
+                    body['updatedAt'] = new Date(new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(body['updatedAt']));
+                }
+
+                if (body['disponible'] === "SI") {
                     this.setState({
-                        Referencia: "",
-                        Descripcion: "",
-                        Marca: "",
-                        Serial: "",
-                        CodigoBarras: "",
+                        checkVisualiza: true
                     })
-                })
-        } else {
-            console.error('Invalid Form')
-            this.handleOpen('error', 'Hubo un problema al crear el equipo')
-        }
-    };
+                }
+                else {
+                    this.setState({
+                        checkVisualiza: false
+                    })
+                }
+                return Promise.resolve(this.setState({
+                    id: body['id'],
+                    CodigoBarras: body['codigoBarras'],
+                    Descripcion: body['descripcion'],
+                    Marca: body['marca'],
+                    Serial: body['serial'],
+                    Referencia: body['nombre'],
+                    existe: true,
+                    createdAt: body['createdAt'],
+                    updatedAt: body['updatedAt'],
+                    disponible: body['disponible'],
+                }));
+
+            }).catch(
+                this.setState({ existe: false, disponible: "NO", checkVisualiza: false, id: "", Descripcion: "", Marca: "", Serial: "", Referencia: "" })
+            )
+    }
+
 
     render() {
         const { errors } = this.state;
@@ -310,6 +437,33 @@ class CrearEquipos extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
+                                                            <TableCell>
+                                                                <br />
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <FormControlLabel
+                                                                        control={
+                                                                            <Switch
+                                                                                id="visualiza"
+                                                                                name="visualiza"
+                                                                                checked={this.state.checkVisualiza}
+                                                                                onChange={this.handleCheckchange}
+                                                                                style={{ width: 300 }}
+
+                                                                            />
+                                                                        }
+                                                                        label={this.state.disponible}
+                                                                    />
+
+                                                                </Stack>
+
+                                                            </TableCell>
                                                         </TableRow>
                                                     </TableBody>
                                                 </Table>
@@ -322,7 +476,7 @@ class CrearEquipos extends React.Component {
                         </Table>
                     </TableContainer>
                     <Box textAlign='center'>
-                        <Button type="submit" className="button" variant="contained" endIcon={<SendIcon />}>Guardar cambios</Button>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Guardar cambios</Button>
 
                     </Box>
                 </Box>

@@ -1,11 +1,11 @@
 export class TipoServicio{
-    constructor(id, nombre, descripcion, createdAt, updatedAt, form) {
+    constructor(id, nombre, descripcion, createdAt, updatedAt, disponible) {
       this.id = id;
       this.nombre = nombre;
       this.descripcion = descripcion;
       this.createdAt = createdAt;
       this.updatedAt = updatedAt;
-      this.form = form;
+      this.disponible = disponible;
     }
   };
   
