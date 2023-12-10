@@ -68,7 +68,7 @@ class CrearCurso extends React.Component {
         event.preventDefault();
         const { name, value } = event.target;
         this.validations(name, value);
-        if(name==="codigo"){
+        if (name === "codigo") {
             this.existe(event);
         }
     }
@@ -105,58 +105,64 @@ class CrearCurso extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            if (!this.state.existe) {
-                fetch(ReactSession.get("basicUri") + "curso/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        nombre: this.state.nombre,
-                        codigo: this.state.codigo,
-                        disponible: this.state.disponible
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.setState({ nombre: "" });
-                        this.setState({ codigo: "" });
-                        this.setState({ disponible: "NO" });
-                        this.setState({ checkVisualiza: false });
-                        this.setState({ existe: false });
-                        this.handleOpen('success', 'El evento fue creado')
-                    })
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                if (!this.state.existe) {
+                    fetch(ReactSession.get("basicUri") + "curso/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            nombre: this.state.nombre,
+                            codigo: this.state.codigo,
+                            disponible: this.state.disponible
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.setState({ nombre: "" });
+                            this.setState({ codigo: "" });
+                            this.setState({ disponible: "NO" });
+                            this.setState({ checkVisualiza: false });
+                            this.setState({ existe: false });
+                            this.handleOpen('success', 'El evento fue creado')
+                        })
+                } else {
+                    fetch(ReactSession.get("basicUri") + "curso/update", {
+                        mode: "cors",
+                        method: "PUT",
+                        body: JSON.stringify({
+                            nombre: this.state.nombre,
+                            codigo: this.state.codigo,
+                            disponible: this.state.disponible
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.setState({ nombre: "" });
+                            this.setState({ codigo: "" });
+                            this.setState({ disponible: "NO" });
+                            this.setState({ checkVisualiza: false });
+                            this.setState({ existe: false });
+                            this.handleOpen('success', 'El evento fue creado')
+                        })
+                }
             } else {
-                fetch(ReactSession.get("basicUri") + "curso/update", {
-                    mode: "cors",
-                    method: "PUT",
-                    body: JSON.stringify({
-                        nombre: this.state.nombre,
-                        codigo: this.state.codigo,
-                        disponible: this.state.disponible
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.setState({ nombre: "" });
-                        this.setState({ codigo: "" });
-                        this.setState({ disponible: "NO" });
-                        this.setState({ checkVisualiza: false });
-                        this.setState({ existe: false });
-                        this.handleOpen('success', 'El evento fue creado')
-                    })
+                this.handleOpen('warning', 'No tiene permisos para manipular el curso')
             }
         } else {
             console.error('Invalid Form')
@@ -182,7 +188,8 @@ class CrearCurso extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -210,7 +217,7 @@ class CrearCurso extends React.Component {
                 }));
 
             }).catch(
-                this.setState({ existe: false, disponible:"NO", checkVisualiza:false, nombre:"" })
+                this.setState({ existe: false, disponible: "NO", checkVisualiza: false, nombre: "" })
             )
     }
 

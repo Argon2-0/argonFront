@@ -73,7 +73,7 @@ class CrearEquipos extends React.Component {
             case 'Referencia':
                 console.log("Referencia");
                 errors.Referencia =
-                    value.length < 5
+                    value.length < 2
                         ? 'Referencia must be at least 5 characters long!'
                         : '';
                 break;
@@ -121,85 +121,95 @@ class CrearEquipos extends React.Component {
             this.validations(field, this.state[field]);
         });
         if (validateForm(this.state.errors)) {
-            console.info('Valid Form')
-            if (this.existe) {
-                fetch(ReactSession.get("basicUri") + "herramienta/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        nombre: this.state.Referencia,
-                        descripcion: this.state.Descripcion,
-                        marca: this.state.Marca,
-                        serial: this.state.Serial,
-                        codigoBarras: this.state.CodigoBarras,
-                        estado: "Disponible",
-                        disponible: this.state.disponible,
-                        createdAt: Date.now()
+            console.info(this.state.existe)
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                if (!this.state.existe) {
+                    fetch(ReactSession.get("basicUri") + "herramienta/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            nombre: this.state.Referencia,
+                            descripcion: this.state.Descripcion,
+                            marca: this.state.Marca,
+                            serial: this.state.Serial,
+                            codigoBarras: this.state.CodigoBarras,
+                            estado: "Disponible",
+                            disponible: this.state.disponible,
+                            createdAt: Date.now()
 
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.handleOpen('success', 'El equipo fue creado')
-                        this.setState({
-                            Referencia: "",
-                            Descripcion: "",
-                            Marca: "",
-                            Serial: "",
-                            CodigoBarras: "",
-                            existe: false,
-                            checkVisualiza: false,
-                            disponible: "NO",
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.handleOpen('success', 'El equipo fue creado')
+                            this.setState({
+                                Referencia: "",
+                                Descripcion: "",
+                                Marca: "",
+                                Serial: "",
+                                CodigoBarras: "",
+                                existe: false,
+                                checkVisualiza: false,
+                                disponible: "NO",
 
+                            })
                         })
-                    })
+                } else {
+                    if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2) {
+                        fetch(ReactSession.get("basicUri") + "herramienta/update", {
+                            mode: "cors",
+                            method: "PUT",
+                            body: JSON.stringify({
+                                nombre: this.state.Referencia,
+                                descripcion: this.state.Descripcion,
+                                marca: this.state.Marca,
+                                serial: this.state.Serial,
+                                codigoBarras: this.state.CodigoBarras,
+                                estado: "Disponible",
+                                disponible: this.state.disponible,
+                                createdAt: this.state.createdAt,
+                                updatedAt: Date.now(),
+                                id: this.state.id
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                console.log(json);
+                                ReactSession.set("token", json[0]);
+                                this.handleOpen('success', 'El equipo fue actualizado')
+                                this.setState({
+                                    Referencia: "",
+                                    Descripcion: "",
+                                    Marca: "",
+                                    Serial: "",
+                                    id: "",
+                                    CodigoBarras: "",
+                                    existe: false,
+                                    checkVisualiza: false,
+                                    disponible: "NO",
+
+                                })
+                            })
+                    } else {
+                        this.handleOpen('warning', 'No tiene permisos para actualizar el equipo')
+                    }
+                }
             } else {
-                fetch(ReactSession.get("basicUri") + "herramienta/update", {
-                    mode: "cors",
-                    method: "PUT",
-                    body: JSON.stringify({
-                        nombre: this.state.Referencia,
-                        descripcion: this.state.Descripcion,
-                        marca: this.state.Marca,
-                        serial: this.state.Serial,
-                        codigoBarras: this.state.CodigoBarras,
-                        estado: "Disponible",
-                        disponible: this.state.disponible,
-                        createdAt: this.state.createdAt,
-                        updatedAt: Date.now(),
-                        id: this.state.id
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.handleOpen('success', 'El equipo fue actualizado')
-                        this.setState({
-                            Referencia: "",
-                            Descripcion: "",
-                            Marca: "",
-                            Serial: "",
-                            id: "",
-                            CodigoBarras: "",
-                            existe: false,
-                            checkVisualiza: false,
-                            disponible: "NO",
-
-                        })
-                    })
+                this.handleOpen('warning', 'No tiene permisos para crear un equipo')
             }
         } else {
             console.error('Invalid Form')
@@ -223,7 +233,8 @@ class CrearEquipos extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -306,6 +317,33 @@ class CrearEquipos extends React.Component {
                                                                 <Stack direction="row" spacing={2} >
 
                                                                     <Typography variant="h6" component="h6" spacing={2}>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
+                                                                    </Typography>
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    <TextField
+                                                                        required
+                                                                        id="CodigoBarras"
+                                                                        name="CodigoBarras"
+                                                                        label="CodigoBarras"
+                                                                        variant="outlined"
+                                                                        value={this.state.CodigoBarras}
+                                                                        onChange={this.handleChange}
+                                                                        style={{ width: 300 }}
+                                                                    />
+                                                                </Stack>
+                                                                <Stack direction="row" spacing={8} >
+                                                                    <br />
+                                                                    {errors.CodigoBarras.length > 0 &&
+                                                                        <span className='error'>{errors.CodigoBarras}</span>}
+                                                                </Stack>
+
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Stack direction="row" spacing={2} >
+
+                                                                    <Typography variant="h6" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial
                                                                     </Typography>
                                                                 </Stack>
@@ -328,6 +366,8 @@ class CrearEquipos extends React.Component {
                                                                         <span className='error'>{errors.Serial}</span>}
                                                                 </Stack>
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -354,8 +394,6 @@ class CrearEquipos extends React.Component {
                                                                         <span className='error'>{errors.Marca}</span>}
                                                                 </Stack>
                                                             </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -382,6 +420,8 @@ class CrearEquipos extends React.Component {
                                                                         <span className='error'>{errors.Referencia}</span>}
                                                                 </Stack>
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
@@ -407,35 +447,6 @@ class CrearEquipos extends React.Component {
                                                                     {errors.Descripcion.length > 0 &&
                                                                         <span className='error'>{errors.Descripcion}</span>}
                                                                 </Stack>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
-
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <TextField
-                                                                        required
-                                                                        id="CodigoBarras"
-                                                                        name="CodigoBarras"
-                                                                        label="CodigoBarras"
-                                                                        variant="outlined"
-                                                                        value={this.state.CodigoBarras}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                    />
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    {errors.CodigoBarras.length > 0 &&
-                                                                        <span className='error'>{errors.CodigoBarras}</span>}
-                                                                </Stack>
-
                                                             </TableCell>
                                                             <TableCell>
                                                                 <br />

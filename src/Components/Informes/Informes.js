@@ -95,7 +95,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -162,7 +163,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -210,7 +212,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -270,7 +273,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -334,7 +338,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -394,7 +399,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -431,7 +437,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -455,7 +462,8 @@ const Informes = () => {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())

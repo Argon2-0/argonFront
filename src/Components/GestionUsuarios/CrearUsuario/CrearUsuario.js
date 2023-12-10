@@ -115,40 +115,44 @@ class CrearUsuario extends React.Component {
             this.validations(field, this.state[field]);
         });
         if (validateForm(this.state.errors)) {
-            console.info('Valid Form')
-            Protege(this.state.password).then(response => {
-                fetch(ReactSession.get("basicUri") + "user/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        name: this.state.nombres,
-                        email: this.state.email,
-                        password: response.toString(),
-                        role: {
-                            id: this.state.rol,
-                        },
-                        createdAt: Date.now()
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                console.info('Valid Form')
+                Protege(this.state.password).then(response => {
+                    fetch(ReactSession.get("basicUri") + "user/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            name: this.state.nombres,
+                            email: this.state.email,
+                            password: response.toString(),
+                            role: {
+                                id: this.state.rol,
+                            },
+                            createdAt: Date.now()
 
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.setState({roles: [""]});
-                        this.setState({nombres: ""});
-                        this.setState({email: ""});
-                        this.setState({rol: ""});
-                        this.setState({password: ""});
-                        this.setState({confirmPassword: ""});
-                        this.handleOpen('success', 'El usuario fue creado')
-                    })
-            })
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.setState({ nombres: "" });
+                            this.setState({ email: "" });
+                            this.setState({ rol: "" });
+                            this.setState({ password: "" });
+                            this.setState({ confirmPassword: "" });
+                            this.handleOpen('success', 'El usuario fue creado')
+                        })
+                })
+            } else {
+                this.handleOpen('warning', 'No tiene permisos para manipular usuarios')
+            }
         } else {
             console.error('Invalid Form')
             this.handleOpen('error', 'Hubo un problema al crear el usuario')
@@ -167,7 +171,8 @@ class CrearUsuario extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())

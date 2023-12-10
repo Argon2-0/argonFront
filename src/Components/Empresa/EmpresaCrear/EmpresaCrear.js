@@ -29,6 +29,7 @@ class CrearEmpresa extends React.Component {
             disponible: "NO",
             existe: false,
             checkVisualiza: false,
+            cambia: false,
             errors: {
                 nombre: "",
                 nit: ""
@@ -52,6 +53,7 @@ class CrearEmpresa extends React.Component {
         });
     };
     handleCheckchange = (event) => {
+        this.setState({ cambia: !this.state.cambia });
         if (event.target.checked) {
 
             this.setState({ "disponible": "SI", "checkVisualiza": true })
@@ -103,58 +105,68 @@ class CrearEmpresa extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            if (!this.state.existe) {
-                fetch(ReactSession.get("basicUri") + "empresa/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        nombre: this.state.nombre,
-                        nit: this.state.nit,
-                        disponible: this.state.disponible
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.setState({ nombre: "" });
-                        this.setState({ nit: "" });
-                        this.setState({ disponible: "NO" });
-                        this.setState({ checkVisualiza: false });
-                        this.setState({ existe: false });
-                        this.handleOpen('success', 'La empresa fue creada')
-                    })
-            }else{
-                fetch(ReactSession.get("basicUri") + "empresa/update", {
-                    mode: "cors",
-                    method: "PUT",
-                    body: JSON.stringify({
-                        nombre: this.state.nombre,
-                        nit: this.state.nit,
-                        disponible: this.state.disponible
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.setState({ nombre: "" });
-                        this.setState({ nit: "" });
-                        this.setState({ disponible: "NO" });
-                        this.setState({ checkVisualiza: false });
-                        this.setState({ existe: false });
-                        this.handleOpen('success', 'La empresa fue actualizada')
-                    })
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                if (!this.state.existe) {
+                    fetch(ReactSession.get("basicUri") + "empresa/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            nombre: this.state.nombre,
+                            nit: this.state.nit,
+                            disponible: this.state.disponible
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.setState({ nombre: "" });
+                            this.setState({ nit: "" });
+                            this.setState({ disponible: "NO" });
+                            this.setState({ checkVisualiza: false });
+                            this.setState({ existe: false });
+                            this.handleOpen('success', 'La empresa fue creada')
+                        })
+                } else {
+                    if ((ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2) || ( ReactSession.get("idRol") === 3 && !this.state.cambia)) {
+                        fetch(ReactSession.get("basicUri") + "empresa/update", {
+                            mode: "cors",
+                            method: "PUT",
+                            body: JSON.stringify({
+                                nombre: this.state.nombre,
+                                nit: this.state.nit,
+                                disponible: this.state.disponible
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                console.log(json);
+                                ReactSession.set("token", json[0]);
+                                this.setState({ nombre: "" });
+                                this.setState({ nit: "" });
+                                this.setState({ disponible: "NO" });
+                                this.setState({ checkVisualiza: false });
+                                this.setState({ existe: false });
+                                this.handleOpen('success', 'La empresa fue actualizada')
+                            })
+                    } else {
+                        this.handleOpen('warning', 'No tiene permisos para actualizar el equipo')
+                    }
+                }
+            } else {
+                this.handleOpen('warning', 'No tiene permisos para manipular una empresa')
             }
         } else {
             console.error('Invalid Form')
@@ -178,7 +190,8 @@ class CrearEmpresa extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -206,7 +219,7 @@ class CrearEmpresa extends React.Component {
                 }));
 
             }).catch(
-                this.setState({ existe: false, disponible:"NO", checkVisualiza:false, nombre: "" })
+                this.setState({ existe: false, disponible: "NO", checkVisualiza: false, nombre: "" })
             )
     }
 

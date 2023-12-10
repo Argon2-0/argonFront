@@ -35,7 +35,8 @@ const TipoServicioListar = () => {
           "Content-Type": "application/json",
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
-          "CurrentTime": ReactSession.get("currentTime")
+          "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
         },
       }
     )
@@ -165,7 +166,8 @@ const TipoServicioListar = () => {
         "Content-Type": "application/json",
         'Authorization': ReactSession.get("token"),
         "LastTime": ReactSession.get("lastTime"),
-        "CurrentTime": ReactSession.get("currentTime")
+        "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
       },
     }).then((response) => response.json())
       .then((json) => {

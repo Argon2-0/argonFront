@@ -118,7 +118,8 @@ class PrestarComputadores extends React.Component {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime")
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                         },
                     }
                 )
@@ -168,7 +169,8 @@ class PrestarComputadores extends React.Component {
                                         "Content-Type": "application/json",
                                         'Authorization': ReactSession.get("token"),
                                         "LastTime": ReactSession.get("lastTime"),
-                                        "CurrentTime": ReactSession.get("currentTime")
+                                        "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                                     },
                                 }
                             )
@@ -224,7 +226,8 @@ class PrestarComputadores extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -264,7 +267,8 @@ class PrestarComputadores extends React.Component {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime")
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                         },
                     }
                 ).then((response) => response.json())
@@ -366,57 +370,63 @@ class PrestarComputadores extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
-            fetch(ReactSession.get("basicUri") + "herramientaparticipante/create", {
-                mode: "cors",
-                method: "POST",
-                body: JSON.stringify({
-                    participante: this.state.participante,
-                    herramienta: this.state.herramienta,
-                    observacionSalida: this.state.Observacion,
-                    estado: 'Préstado',
-                    createdAt: Date.now()
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                fetch(ReactSession.get("basicUri") + "herramientaparticipante/create", {
+                    mode: "cors",
+                    method: "POST",
+                    body: JSON.stringify({
+                        participante: this.state.participante,
+                        herramienta: this.state.herramienta,
+                        observacionSalida: this.state.Observacion,
+                        estado: 'Préstado',
+                        createdAt: Date.now()
 
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': ReactSession.get("token"),
-                    "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
-                },
-            }).then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
-                    ReactSession.set("token", json[0]);
-                    fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula, {
-                        mode: "cors",
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': ReactSession.get("token"),
-                            "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime")
-                        },
-                    }).then((response) => response.json())
-                        .then((json) => {
-                            console.log(json);
-                            ReactSession.set("token", json[0]);
-                            this.handleOpen('success', 'El computador fue prestado')
-                            this.setState({
-                                id: "",
-                                actual: "",
-                                stopStream: false,
-                                participante: "",
-                                tipoDocumento: "",
-                                cedula: "",
-                                nombres: "",
-                                apellidos: "",
-                                celular: "",
-                                CodigoDeBarras: "",
-                                herramienta: "",
-                                Observacion: "",
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula, {
+                            mode: "cors",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                console.log(json);
+                                ReactSession.set("token", json[0]);
+                                this.handleOpen('success', 'El computador fue prestado')
+                                this.setState({
+                                    id: "",
+                                    actual: "",
+                                    stopStream: false,
+                                    participante: "",
+                                    tipoDocumento: "",
+                                    cedula: "",
+                                    nombres: "",
+                                    apellidos: "",
+                                    celular: "",
+                                    CodigoDeBarras: "",
+                                    herramienta: "",
+                                    Observacion: "",
+                                })
                             })
-                        })
-                });
+                    });
+            } else {
+                this.handleOpen('warning', 'No tiene permisos para prestar equipos')
+            }
         } else {
             console.error('Invalid Form')
             this.handleOpen('error', 'Hubo un problema al prestar el computador')
@@ -424,7 +434,7 @@ class PrestarComputadores extends React.Component {
     };
 
 
-    
+
     render() {
         const { errors } = this.state;
         return (

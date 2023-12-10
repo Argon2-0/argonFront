@@ -65,15 +65,17 @@ const Login = () => {
           }).then(() => {
             token.generar();
           }).then(() => {
+            console.log("sssssss")
             ReactSession.set("currentTime", Date.now());
             handleShowSuccessAlert()
             navigate("../Bio/public/home");
+    
           }).catch(
+            console.log("falla"),
             handleShowErrorAlert()
           )
-
+    
       })
-
     }
 
   };

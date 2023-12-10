@@ -95,70 +95,76 @@ class CrearTipoServicio extends React.Component {
             this.validations(field, this.state[field]);
         });
         if (validateForm(this.state.errors)) {
-            console.info('Valid Form')
-            if (!this.state.existe) {
-                fetch(ReactSession.get("basicUri") + "tiposervicio/create", {
-                    mode: "cors",
-                    method: "POST",
-                    body: JSON.stringify({
-                        nombre: this.state.nombre,
-                        descripcion: this.state.descripcion,
-                        disponible: this.state.disponible,
-                        createdAt: Date.now()
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                console.info('Valid Form')
+                if (!this.state.existe) {
+                    fetch(ReactSession.get("basicUri") + "tiposervicio/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            nombre: this.state.nombre,
+                            descripcion: this.state.descripcion,
+                            disponible: this.state.disponible,
+                            createdAt: Date.now()
 
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.handleOpen('success', 'El tipo de servicio fue creado')
-                        this.setState({
-                            checkVisualiza: false,
-                            nombre: "",
-                            descripcion: "",
-                            disponible: "NO",
-                            existe:false
-                        });
-                    })
-            } else{
-                fetch(ReactSession.get("basicUri") + "tiposervicio/update", {
-                    mode: "cors",
-                    method: "PUT",
-                    body: JSON.stringify({
-                        id: this.state.id,
-                        nombre: this.state.nombre,
-                        descripcion: this.state.descripcion,
-                        disponible: this.state.disponible,
-                        createdAt: this.state.createdAt,
-                        updatedAt: Date.now()
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.handleOpen('success', 'El tipo de servicio fue creado')
+                            this.setState({
+                                checkVisualiza: false,
+                                nombre: "",
+                                descripcion: "",
+                                disponible: "NO",
+                                existe: false
+                            });
+                        })
+                } else {
+                    fetch(ReactSession.get("basicUri") + "tiposervicio/update", {
+                        mode: "cors",
+                        method: "PUT",
+                        body: JSON.stringify({
+                            id: this.state.id,
+                            nombre: this.state.nombre,
+                            descripcion: this.state.descripcion,
+                            disponible: this.state.disponible,
+                            createdAt: this.state.createdAt,
+                            updatedAt: Date.now()
 
-                    }),
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': ReactSession.get("token"),
-                        "LastTime": ReactSession.get("lastTime"),
-                        "CurrentTime": ReactSession.get("currentTime")
-                    },
-                }).then((response) => response.json())
-                    .then((json) => {
-                        console.log(json);
-                        ReactSession.set("token", json[0]);
-                        this.handleOpen('success', 'El tipo de servicio fue actualizado')
-                        this.setState({
-                            checkVisualiza: false,
-                            id:"",
-                            nombre: "",
-                            descripcion: "",
-                            disponible: "NO",
-                            existe:false
-                        });
-                    })
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            console.log(json);
+                            ReactSession.set("token", json[0]);
+                            this.handleOpen('success', 'El tipo de servicio fue actualizado')
+                            this.setState({
+                                checkVisualiza: false,
+                                id: "",
+                                nombre: "",
+                                descripcion: "",
+                                disponible: "NO",
+                                existe: false
+                            });
+                        })
+                }
+            } else {
+                this.handleOpen('warning', 'No tiene permisos para manipular tipos de servicios')
             }
         } else {
             console.error('Invalid Form')
@@ -182,7 +188,8 @@ class CrearTipoServicio extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -217,7 +224,7 @@ class CrearTipoServicio extends React.Component {
                 }));
 
             }).catch(
-                this.setState({ existe: false, disponible:"NO", checkVisualiza:false, nombre:"", descripcion:"" })
+                this.setState({ existe: false, disponible: "NO", checkVisualiza: false, nombre: "", descripcion: "" })
             )
     }
 

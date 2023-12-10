@@ -75,7 +75,8 @@ class DevolverComputadores extends React.Component {
                     "Content-Type": "application/json",
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -115,7 +116,8 @@ class DevolverComputadores extends React.Component {
                             "Content-Type": "application/json",
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime")
+                            "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
                         },
                     }
                 ).then((response) => response.json())
@@ -171,54 +173,60 @@ class DevolverComputadores extends React.Component {
         e.preventDefault();
         console.log(this.state.herramientaParticipante);
         if (validateForm(this.state.errors)) {
-            console.info('Valid Form')
-            fetch(ReactSession.get("basicUri") + "herramientaparticipante/update", {
-                mode: "cors",
-                method: "PUT",
-                body: JSON.stringify({
-                    id: this.state.herramientaParticipante.id,
-                    observacionEntrada: this.state.Observacion,
-                    updatedAt: Date.now(),
-                    createdAt: this.state.herramientaParticipante.createdAt,
-                    participante: {
-                        id: this.state.herramientaParticipante.participante_id,
-                    },
-                    herramienta: {
-                        id: this.state.herramientaParticipante.herrmienta_id,
-                    }
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': ReactSession.get("token"),
-                    "LastTime": ReactSession.get("lastTime"),
-                    "CurrentTime": ReactSession.get("currentTime")
-                },
-            }).then((response) => response.json())
-                .then((json) => {
-                    console.log(json);
-                    ReactSession.set("token", json[0]);
-                    console.log(this.state.herramientaParticipante);
-                    console.log(this.state.herramientaParticipante.participante_cedula);
-                    fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
-                        mode: "cors",
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': ReactSession.get("token"),
-                            "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime")
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                console.info('Valid Form')
+                fetch(ReactSession.get("basicUri") + "herramientaparticipante/update", {
+                    mode: "cors",
+                    method: "PUT",
+                    body: JSON.stringify({
+                        id: this.state.herramientaParticipante.id,
+                        observacionEntrada: this.state.Observacion,
+                        updatedAt: Date.now(),
+                        createdAt: this.state.herramientaParticipante.createdAt,
+                        participante: {
+                            id: this.state.herramientaParticipante.participante_id,
                         },
-                    }).then((response) => response.json())
-                        .then((json) => {
-                            console.log(json);
-                            ReactSession.set("token", json[0]);
-                            this.handleOpen('success', 'El computador fue devuelto');
-                            this.setState({CodigoDeBarras: ""});
-                            this.setState({herramienta: ""});
-                            this.setState({herramientaParticipante: ""});
-                            this.setState({Observacion: ""});
-                        })
-                });
+                        herramienta: {
+                            id: this.state.herramientaParticipante.herrmienta_id,
+                        }
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': ReactSession.get("token"),
+                        "LastTime": ReactSession.get("lastTime"),
+                        "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                    },
+                }).then((response) => response.json())
+                    .then((json) => {
+                        console.log(json);
+                        ReactSession.set("token", json[0]);
+                        console.log(this.state.herramientaParticipante);
+                        console.log(this.state.herramientaParticipante.participante_cedula);
+                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
+                            mode: "cors",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                console.log(json);
+                                ReactSession.set("token", json[0]);
+                                this.handleOpen('success', 'El computador fue devuelto');
+                                this.setState({ CodigoDeBarras: "" });
+                                this.setState({ herramienta: "" });
+                                this.setState({ herramientaParticipante: "" });
+                                this.setState({ Observacion: "" });
+                            })
+                    });
+            } else {
+                this.handleOpen('warning', 'No tiene permisos para devolver un computador')
+            }
         } else {
             console.error('Invalid Form')
             this.handleOpen('error', 'Hubo un problema al devolver el computador')
