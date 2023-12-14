@@ -63,7 +63,7 @@ class CrearVisitantes extends React.Component {
                 tipoDocumentoZK: "",
                 fechaInicio: "",
                 fechaFin: "",
-                empresaId: ""
+                empresa: ""
             }
         };
     }
@@ -131,7 +131,7 @@ class CrearVisitantes extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }
                 )
@@ -267,10 +267,11 @@ class CrearVisitantes extends React.Component {
                         : 'Numero de celular no valido';
                 break;
             case 'tiposervicio':
-                errors.tiposervicio =
-                    value === ""
-                        ? 'Tipo servicio select a document type!'
-                        : '';
+                if (this.state.curso === "" && value === "") {
+                    errors.tiposervicio ='Debe escoger un curso o servicio';
+                } else if(this.state.curso !== "" && value !== ""){
+                    errors.tiposervicio ='Debe escoger un curso o servicio pero no ambos';
+                }
                 break;
             case 'fechaInicio':
                 errors.fechaInicio =
@@ -285,11 +286,12 @@ class CrearVisitantes extends React.Component {
                         : '';
                 break;
 
-            case 'empresaId':
-                errors.empresaId =
-                    value === ""
-                        ? 'Should have a long of 9!'
-                        : '';
+            case 'curso':
+                if (this.state.tiposervicio === "" && value === "") {
+                    errors.curso ='Debe escoger un curso o servicio';
+                } else if(this.state.tiposervicio !== "" && value !== ""){
+                    errors.curso ='Debe escoger un curso o servicio pero no ambos';
+                }
                 break;
             default:
                 break;
@@ -303,7 +305,7 @@ class CrearVisitantes extends React.Component {
         console.log(this.state.tipoDocumentoZK)
         console.log("handleSubmit")
         console.log(this.state.empresaId)
-        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "celular", "tiposervicio", "tratDatos"];
+        const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "celular", "tiposervicio", "tratDatos", "curso"];
         fields.forEach(field => {
             this.validations(field, this.state[field]);
         });
@@ -362,7 +364,7 @@ class CrearVisitantes extends React.Component {
                                 'Authorization': ReactSession.get("token"),
                                 "LastTime": ReactSession.get("lastTime"),
                                 "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                "id": ReactSession.get("idRol")
                             },
                         }).then((response) => response.json())
                             .then((json) => {
@@ -376,7 +378,7 @@ class CrearVisitantes extends React.Component {
                                         'Authorization': ReactSession.get("token"),
                                         "LastTime": ReactSession.get("lastTime"),
                                         "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                        "id": ReactSession.get("idRol")
                                     },
                                 }).then((responserequest) => responserequest.json())
                                     .then((jsonrequest) => {
@@ -398,7 +400,7 @@ class CrearVisitantes extends React.Component {
                                                 'Authorization': ReactSession.get("token"),
                                                 "LastTime": ReactSession.get("lastTime"),
                                                 "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                                "id": ReactSession.get("idRol")
                                             },
                                         }).then((response) => response.json())
                                             .then((json) => {
@@ -450,7 +452,7 @@ class CrearVisitantes extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -486,7 +488,7 @@ class CrearVisitantes extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }
                 ).then((response) => response.json())
@@ -515,7 +517,7 @@ class CrearVisitantes extends React.Component {
                                     'Authorization': ReactSession.get("token"),
                                     "LastTime": ReactSession.get("lastTime"),
                                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                    "id": ReactSession.get("idRol")
                                 },
                             }
                         )
@@ -814,8 +816,8 @@ class CrearVisitantes extends React.Component {
                                                                 <Stack direction="row" spacing={8} >
                                                                     <br />
 
-                                                                    {errors.tiposervicio.length > 0 &&
-                                                                        <span className='error'>{errors.tiposervicio}</span>}
+                                                                    {errors.empresa.length > 0 &&
+                                                                        <span className='error'>{errors.empresa}</span>}
                                                                 </Stack>
                                                             </TableCell>
 
