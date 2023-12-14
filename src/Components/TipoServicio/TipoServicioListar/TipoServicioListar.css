@@ -13,26 +13,7 @@
     margin-right: 15px;
   }
   
-  .button{
-      border-radius: 50px;
-      background: #7f8d8e ;
-      border-style: outset;
-      border-color: Teal;
-      white-space: nowrap;
-      padding: 10px 22px;
-      color: #010606;
-      font-size: 16px;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      text-decoration: none;
-      font-weight:bold;
-  }
   
-  .button:hover{
-     background: #fff;
-     color: #000000 ;
-  }
   
   
   

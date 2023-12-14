@@ -21,7 +21,7 @@ const theme = createTheme(
 );
 const root = ReactDOM.createRoot(document.getElementById('root'));
 ReactSession.setStoreType("localStorage");
-ReactSession.set("basicUri", "http://localhost:8080/accessbiosecurity/")
+ReactSession.set("basicUri", "http://20.122.71.45:8990/accessbiosecurity/")
 root.render(
   <ThemeProvider theme={theme}>
 
