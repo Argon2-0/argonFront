@@ -21,7 +21,7 @@ const theme = createTheme(
 );
 const root = ReactDOM.createRoot(document.getElementById('root'));
 ReactSession.setStoreType("localStorage");
-ReactSession.set("basicUri", "http://20.122.71.45:8990/accessbiosecurity/")
+ReactSession.set("basicUri", "https://reg-cedet.vision2cloud.com:8990/accessbiosecurity/")
 root.render(
   <ThemeProvider theme={theme}>
 
