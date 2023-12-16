@@ -135,3 +135,21 @@
   display: flex;
   flex-direction: column;
 }
+.button{
+  border-radius: 5px;
+  background: #4295f5 ;
+  border-style: outset;
+  white-space: nowrap;
+  padding: 10px 22px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.button:hover{
+ background: #3e84d3;
+ color: #000000 ;
+}
