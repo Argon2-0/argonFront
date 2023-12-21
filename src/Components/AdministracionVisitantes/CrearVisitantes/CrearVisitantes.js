@@ -345,66 +345,132 @@ class CrearVisitantes extends React.Component {
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
             if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
-                if (this.state.tiposervicio === "") {
-                    fetch(ReactSession.get("basicUri") + "participante/create", {
-                        mode: "cors",
-                        method: "POST",
-                        body: JSON.stringify({
-                            tipoDocumento: this.state.tipoDocumento,
-                            cedula: this.state.cedula,
-                            nombres: this.state.nombres,
-                            apellidos: this.state.apellidos,
-                            tratDatos: this.state.tratDatos,
-                            celular: this.state.celular,
-                            tiposervicio: null,
-                            createdAt: Date.now(),
-                            empresa: {
-                                nit: this.state.empresaId,
-                            },
+                if (this.state.id === "") {
+                    if (this.state.tiposervicio === "") {
+                        fetch(ReactSession.get("basicUri") + "participante/create", {
+                            mode: "cors",
+                            method: "POST",
+                            body: JSON.stringify({
+                                tipoDocumento: this.state.tipoDocumento,
+                                cedula: this.state.cedula,
+                                nombres: this.state.nombres,
+                                apellidos: this.state.apellidos,
+                                tratDatos: this.state.tratDatos,
+                                celular: this.state.celular,
+                                tiposervicio: null,
+                                createdAt: Date.now(),
+                                empresa: {
+                                    nit: this.state.empresaId,
+                                },
 
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': ReactSession.get("token"),
-                            "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime"),
-                            "id": ReactSession.get("idRol"),
-                        },
-                    }).then((response) => response.json())
-                        .then((json) => {
-                            this.zktEventoRegistro(json);
-                        })
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                                "id": ReactSession.get("idRol"),
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                this.zktEventoRegistro(json);
+                            })
+                    } else {
+                        fetch(ReactSession.get("basicUri") + "participante/create", {
+                            mode: "cors",
+                            method: "POST",
+                            body: JSON.stringify({
+                                tipoDocumento: this.state.tipoDocumento,
+                                cedula: this.state.cedula,
+                                nombres: this.state.nombres,
+                                apellidos: this.state.apellidos,
+                                tratDatos: this.state.tratDatos,
+                                celular: this.state.celular,
+                                tiposervicio: {
+                                    id: this.state.tiposervicio,
+                                },
+                                createdAt: Date.now(),
+                                empresa: {
+                                    nit: this.state.empresaId,
+                                },
+
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                                "id": ReactSession.get("idRol"),
+                            },
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                this.zktEventoRegistro(json);
+                            })
+                    }
                 } else {
-                    fetch(ReactSession.get("basicUri") + "participante/create", {
-                        mode: "cors",
-                        method: "POST",
-                        body: JSON.stringify({
-                            tipoDocumento: this.state.tipoDocumento,
-                            cedula: this.state.cedula,
-                            nombres: this.state.nombres,
-                            apellidos: this.state.apellidos,
-                            tratDatos: this.state.tratDatos,
-                            celular: this.state.celular,
-                            tiposervicio: {
-                                id: this.state.tiposervicio,
+                    if (this.state.tiposervicio === "") {
+                        fetch(ReactSession.get("basicUri") + "participante/update", {
+                            mode: "cors",
+                            method: "POST",
+                            body: JSON.stringify({
+                                id: this.state.id,
+                                tipoDocumento: this.state.tipoDocumento,
+                                cedula: this.state.cedula,
+                                nombres: this.state.nombres,
+                                apellidos: this.state.apellidos,
+                                tratDatos: this.state.tratDatos,
+                                celular: this.state.celular,
+                                tiposervicio: null,
+                                createdAt: Date.now(),
+                                empresa: {
+                                    nit: this.state.empresaId,
+                                },
+    
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                                "id": ReactSession.get("idRol"),
                             },
-                            createdAt: Date.now(),
-                            empresa: {
-                                nit: this.state.empresaId,
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                this.zktEventoRegistro(json);
+                            })
+                    } else {
+                        fetch(ReactSession.get("basicUri") + "participante/update", {
+                            mode: "cors",
+                            method: "POST",
+                            body: JSON.stringify({
+                                id: this.state.id,
+                                tipoDocumento: this.state.tipoDocumento,
+                                cedula: this.state.cedula,
+                                nombres: this.state.nombres,
+                                apellidos: this.state.apellidos,
+                                tratDatos: this.state.tratDatos,
+                                celular: this.state.celular,
+                                tiposervicio: {
+                                    id: this.state.tiposervicio,
+                                },
+                                createdAt: Date.now(),
+                                empresa: {
+                                    nit: this.state.empresaId,
+                                },
+    
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': ReactSession.get("token"),
+                                "LastTime": ReactSession.get("lastTime"),
+                                "CurrentTime": ReactSession.get("currentTime"),
+                                "id": ReactSession.get("idRol"),
                             },
-
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': ReactSession.get("token"),
-                            "LastTime": ReactSession.get("lastTime"),
-                            "CurrentTime": ReactSession.get("currentTime"),
-                            "id": ReactSession.get("idRol"),
-                        },
-                    }).then((response) => response.json())
-                        .then((json) => {
-                            this.zktEventoRegistro(json);
-                        })
+                        }).then((response) => response.json())
+                            .then((json) => {
+                                this.zktEventoRegistro(json);
+                            })
+                    }
                 }
             } else {
                 this.handleOpen('warning', 'No tiene permisos para crear un visitante')
@@ -449,7 +515,7 @@ class CrearVisitantes extends React.Component {
                 if (this.state.curso !== "") {
                     console.log(json);
                     ReactSession.set("token", json[0]);
-                    fetch(ReactSession.get("basicUri") + "participante/getByCedula/"+ this.state.cedula, {
+                    fetch(ReactSession.get("basicUri") + "participante/getByCedula/" + this.state.cedula, {
                         mode: "cors",
                         method: "GET",
                         headers: {

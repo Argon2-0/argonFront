@@ -158,7 +158,7 @@ const TipoServicioListar = () => {
     e.preventDefault();
 
     console.info('Valid Form')
-    fetch(ReactSession.get("basicUri") + "/tiposervicio/createMasive", {
+    fetch(ReactSession.get("basicUri") + "tiposervicio/createMasive", {
       mode: "cors",
       method: "POST",
       body: JSON.stringify(tiposServicios),
@@ -209,7 +209,7 @@ const TipoServicioListar = () => {
                   </Typography>
                 </TableCell>
                 <TableCell >
-                  <Button className="button" variant="contained" endIcon={<SendIcon />} onSubmit={handleSubmit}>Guardar cambios</Button>
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar Masivo</Button>
                 </TableCell>
               </TableRow>
             </TableBody>

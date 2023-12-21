@@ -296,7 +296,7 @@ const ListarUsuarios = () => {
                   </Typography>
                 </TableCell>
                 <TableCell >
-                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar cambios</Button>
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar Masivo</Button>
                 </TableCell>
               </TableRow>
             </TableBody>

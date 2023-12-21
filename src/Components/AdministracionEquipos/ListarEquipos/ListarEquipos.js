@@ -247,7 +247,7 @@ const ListarEquipos = () => {
                   </Typography>
                 </TableCell>
                 <TableCell > 
-                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar masivo</Button>
+                  <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar Masivo</Button>
                 </TableCell>
               </TableRow>
             </TableBody>
