@@ -154,7 +154,7 @@ const CursoListar = () => {
             <TableBody>
               <TableRow>
                 <TableCell >
-                  <Button className="button" variant="contained" href="/Empresas.xlsx" download="Empresas.xlsx">
+                  <Button className="button" variant="contained" href="/Eventos.xlsx" download="Eventos.xlsx">
                     Descargar plantilla
                   </Button>
                 </TableCell>
