@@ -6,7 +6,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { TipoServicio } from "../../../Data/TipoServico";
 import dayjs from "dayjs";
 import { Participante } from "../../../Data/Participante";
 import { Herramienta } from "../../../Data/Herramienta";

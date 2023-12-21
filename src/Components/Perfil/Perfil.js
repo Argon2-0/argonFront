@@ -6,11 +6,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import '../../App.css'
-import Swal from "sweetalert2";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, FormControl, OutlinedInput, InputLabel } from '@mui/material';
-import { UserInfo } from '../../Data/User/UserInfo';
 import { ReactSession } from 'react-client-session';
-import Token from '../../Auth/Token';
 import Protege from '../../Auth/Protege';
 const validateForm = errors => {
     let valid = true;
@@ -41,7 +38,7 @@ class Perfil extends React.Component {
     }
 
     handleEmail = (e) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         let errors = this.state.errors;
         fetch(
             ReactSession.get("basicUri") +
@@ -99,10 +96,8 @@ class Perfil extends React.Component {
     }
 
     validaContraseña = (e) => {
-        var token = new Token();
-        const { name, value } = e.target;
+        const { value } = e.target;
         let errors = this.state.errors;
-        let act = ""
         Protege(value).then(response => {
             fetch(ReactSession.get("basicUri") + "userLogin/Login", {
                 mode: "cors",
@@ -117,7 +112,6 @@ class Perfil extends React.Component {
             })
                 .then((response) => (response.json())
                 ).then((body) => {
-                    act = body;
                     errors.password = ""
                     if (value === this.state.newpassword) {
                         errors.newpassword = 'La contraseña debe ser diferente a la actual'

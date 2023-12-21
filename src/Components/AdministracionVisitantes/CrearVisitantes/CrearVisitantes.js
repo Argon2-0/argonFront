@@ -1021,7 +1021,6 @@ class CrearVisitantes extends React.Component {
                         <div>
                             <img
                                 src="/images/poptorniqute.png"
-                                alt="Popup Image"
                                 style={{ width: '100%', height: 'auto' }}
                             />
                             {this.state.message}

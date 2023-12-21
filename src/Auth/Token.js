@@ -1,7 +1,6 @@
 import { ReactSession } from 'react-client-session';
 
 class Token {
-    constructor() { }
 
     generar() {
         fetch(ReactSession.get("basicUri") + "auth/generate", {

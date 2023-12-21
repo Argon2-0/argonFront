@@ -82,6 +82,7 @@ class CrearEquipos extends React.Component {
                     value.length < 2
                         ? 'Marca must be at least 5 characters long!'
                         : '';
+                break;
             case 'Serial':
                 errors.Serial =
                     value.length < 2
@@ -219,7 +220,7 @@ class CrearEquipos extends React.Component {
 
     existe = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { value } = e.target;
         this.setState({
             codigoBarras: value
         })

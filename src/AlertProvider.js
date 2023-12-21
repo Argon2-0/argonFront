@@ -1,5 +1,5 @@
 // AlertProvider.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 

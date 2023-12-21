@@ -174,7 +174,7 @@ class CrearTipoServicio extends React.Component {
 
     existe = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { value } = e.target;
         this.setState({
             id: value
         })

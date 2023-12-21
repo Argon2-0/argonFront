@@ -12,7 +12,7 @@ import { zktPerson } from "../../../Data/zkt/zktPersona";
 import dayjs from "dayjs";
 import { Empresa } from "../../../Data/Empresa";
 import { RegistroCurso } from "../../../Data/RegistroCurso";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
 const ListarVisitantes = () => {
@@ -265,15 +265,6 @@ const ListarVisitantes = () => {
 
 
 
-    }
-  }
-
-  const genero = (value) => {
-    switch (value) {
-      case 'Masculino':
-        return "M";
-      case 'Femenino':
-        return "F";
     }
   }
 

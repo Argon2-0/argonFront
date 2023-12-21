@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Registro from './Pages/Registro/Registro';
 import Login from './Pages/Login/Login';
 import Home from './Pages/Home/Home';
-import CrearUsuario from './Components/GestionUsuarios/CrearUsuario/CrearUsuario';
 import { AlertProvider } from './AlertProvider';
 function App() {
   return (

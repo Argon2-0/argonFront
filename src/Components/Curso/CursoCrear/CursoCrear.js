@@ -28,7 +28,6 @@ class CrearCurso extends React.Component {
             open: false,
             disponible: "NO",
             existe: false,
-            checkVisualiza: false,
             errors: {
                 nombre: "",
                 codigo: ""
@@ -174,7 +173,7 @@ class CrearCurso extends React.Component {
 
     existe = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { value } = e.target;
         this.setState({
             codigo: value
         })
