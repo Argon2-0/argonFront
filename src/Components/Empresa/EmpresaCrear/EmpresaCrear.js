@@ -232,7 +232,7 @@ class CrearEmpresa extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear empresa
+                        Administrar Empresa
                     </Typography>
                     <TableContainer>
                         <Table>

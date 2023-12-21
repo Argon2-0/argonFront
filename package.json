@@ -20,7 +20,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
-    "chart.js": "^4.3.0",
+    "chart.js": "^4.4.1",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
     "export-from-json": "^1.7.2",

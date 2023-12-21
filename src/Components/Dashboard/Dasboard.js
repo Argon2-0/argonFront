@@ -71,7 +71,7 @@ const Dasboard = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -99,7 +99,7 @@ const Dasboard = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -123,7 +123,7 @@ const Dasboard = () => {
     setVista("COMPUTADORES");
     setData();
   }
- 
+
 
   const getvisits = () => {
     fetch(
@@ -137,7 +137,7 @@ const Dasboard = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -162,7 +162,7 @@ const Dasboard = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -190,7 +190,7 @@ const Dasboard = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -232,6 +232,7 @@ const Dasboard = () => {
   ]
 
   const visitsByService = {
+
     labels: labelsVisitsByService,
     datasets: [
       {
@@ -245,6 +246,7 @@ const Dasboard = () => {
   };
 
   const visitsByCurso = {
+
     labels: labelsVisitsByCurso,
     datasets: [
       {
@@ -257,9 +259,10 @@ const Dasboard = () => {
     ],
   };
 
- 
+
 
   const computersStates = {
+
     labels: labelsComputadores,
     datasets: [
       {
@@ -272,6 +275,39 @@ const Dasboard = () => {
     ],
   };
 
+  const chartStyle = {
+    height: "500px",
+    width: "500px",
+  };
+
+  const chartOptions = {
+    maintainAspectRatio: false,
+    plugins: {
+      title: {
+        display: true,
+        font: {
+          size: 20
+        }
+      },
+      legend: {
+        labels: {
+          // This more specific font property overrides the global property
+          font: {
+            size: 20
+          }
+        },
+
+      },
+      tooltip: {
+        titleFont: {
+          size: 20,
+        },
+        bodyFont: {
+          size: 20,
+        },
+      },
+    }
+  };
 
   return (
     <div>
@@ -350,18 +386,24 @@ const Dasboard = () => {
                             <TableRow>
                               <TableCell>
                                 <Box className="cardin sizer">
+                                  <Typography align='center' variant="h4" component="h4" spacing={2}>
+                                    Visitantes por servicio
+                                  </Typography>
                                   <Stack direction="row" spacing={8} >
                                     <br />
-                                    <Pie data={visitsByService} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
+                                    <Pie data={visitsByService} options={chartOptions} style={chartStyle} />
 
                                   </Stack>
                                 </Box>
                               </TableCell>
                               <TableCell>
                                 <Box className="cardin sizer">
+                                  <Typography align='center' variant="h4" component="h4" spacing={2}>
+                                    Visitantes por evento
+                                  </Typography>
                                   <Stack direction="row" spacing={8} >
                                     <br />
-                                    <Pie data={visitsByCurso} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
+                                    <Pie data={visitsByCurso} options={chartOptions} style={chartStyle} />
 
                                   </Stack>
                                 </Box>
@@ -372,7 +414,7 @@ const Dasboard = () => {
                       </TableContainer>
                     </TableCell>
                   </TableRow>
-                  
+
                 </TableBody>
               </Table>
             </TableContainer>
@@ -382,6 +424,9 @@ const Dasboard = () => {
         {(vista === "COMPUTADORES")
           ? (<>
             <Box className="cardin">
+              <Typography align='center' variant="h4" component="h4" spacing={2}>
+                Estado de equipos
+              </Typography>
               <Stack direction="row" spacing={8} >
                 <Typography variant="h6" component="h6" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total préstamos {prestamos}
@@ -401,7 +446,7 @@ const Dasboard = () => {
                         <Box className="cardin sizer">
                           <Stack direction="row" spacing={8} >
                             <br />
-                            <Pie data={computersStates} style={{height:"auto", width: "500px" }} options={{ maintainAspectRatio: false }} />
+                            <Pie data={computersStates} options={chartOptions} style={chartStyle} />
 
                           </Stack>
                         </Box>

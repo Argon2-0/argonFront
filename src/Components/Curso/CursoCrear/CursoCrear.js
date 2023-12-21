@@ -230,7 +230,7 @@ class CrearCurso extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear Evento
+                        Administrar Evento
                     </Typography>
                     <TableContainer>
                         <Table>

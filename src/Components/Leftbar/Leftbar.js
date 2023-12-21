@@ -15,7 +15,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Collapse from "@mui/material/Collapse";
 import ReplyIcon from '@mui/icons-material/Reply';
 import SendIcon from '@mui/icons-material/Send';
-import { ReactSession }  from 'react-client-session';
+import { ReactSession } from 'react-client-session';
 
 export default function Leftbar({ changeSection }) {
   const { collapseSidebar } = useProSidebar();
@@ -27,65 +27,65 @@ export default function Leftbar({ changeSection }) {
   const [openEmpresas, setOpenEmpresa] = useState(false);
   const [openCursos, setOpenCursos] = useState(false);
 
-  const handleClickGestionUsuarios = () =>{
-    if(openGestionUsuarios){
+  const handleClickGestionUsuarios = () => {
+    if (openGestionUsuarios) {
       setOpenGestionUsuarios(false);
     }
-    else{
+    else {
       setOpenGestionUsuarios(true);
     }
   }
 
-  const handleClickOpenAdministracionVisitantes = () =>{
-    if(openAdministracionVisitantes){
+  const handleClickOpenAdministracionVisitantes = () => {
+    if (openAdministracionVisitantes) {
       setOpenAdministracionVisitantes(false);
     }
-    else{
+    else {
       setOpenAdministracionVisitantes(true);
     }
   }
 
-  const handleClickAdministracionEquipos = () =>{
-    if(openAdministracionEquipos){
+  const handleClickAdministracionEquipos = () => {
+    if (openAdministracionEquipos) {
       setOpenAdministracionEquipos(false);
     }
-    else{
+    else {
       setOpenAdministracionEquipos(true);
     }
   }
 
-  const handleClickTipoServicio = () =>{
-    if(openTipoServicio){
+  const handleClickTipoServicio = () => {
+    if (openTipoServicio) {
       setOpenTipoServicio(false);
     }
-    else{
+    else {
       setOpenTipoServicio(true);
     }
   }
 
-  const handleClickPrestamoComputadores = () =>{
-    if(openPrestamoComputadores){
+  const handleClickPrestamoComputadores = () => {
+    if (openPrestamoComputadores) {
       setOpenPrestamoComputadores(false);
     }
-    else{
+    else {
       setOpenPrestamoComputadores(true);
     }
   }
 
-  const handleClickEmpresas = () =>{
-    if(openEmpresas){
+  const handleClickEmpresas = () => {
+    if (openEmpresas) {
       setOpenEmpresa(false);
     }
-    else{
+    else {
       setOpenEmpresa(true);
     }
   }
 
-  const handleClickCurso = () =>{
-    if(openCursos){
+  const handleClickCurso = () => {
+    if (openCursos) {
       setOpenCursos(false);
     }
-    else{
+    else {
       setOpenCursos(true);
     }
   }
@@ -243,19 +243,21 @@ export default function Leftbar({ changeSection }) {
 
             </ListItemButton>
             <Collapse in={openAdministracionEquipos} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                <ListItemButton
-                  name="AdministracionEquiposCrear"
-                  className="AdministracionEquiposCrear"
-                  onClick={changeSection("AdministracionEquiposCrear")}
-                  sx={{ pl: 4 }}
-                >
-                  <ListItemIcon>
-                    <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
-                  </ListItemIcon>
-                  <ListItemText className="letrasDark">Crear nuevo equipo</ListItemText>
-                </ListItemButton>
-              </List>
+              {ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 ? (
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    name="AdministracionEquiposCrear"
+                    className="AdministracionEquiposCrear"
+                    onClick={changeSection("AdministracionEquiposCrear")}
+                    sx={{ pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
+                    </ListItemIcon>
+                    <ListItemText className="letrasDark">Administrar equipo</ListItemText>
+                  </ListItemButton>
+                </List>
+              ) : null}
               <List component="div" disablePadding>
                 <ListItemButton
                   name="AdministracionEquiposListar"
@@ -359,7 +361,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon>
                     <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letrasDark">Crear nuevo tipo de servicio</ListItemText>
+                  <ListItemText className="letrasDark">Administrar tipo de servicio</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -400,7 +402,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon>
                     <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letrasDark">Crear nueva empresa</ListItemText>
+                  <ListItemText className="letrasDark">Administrar empresa</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>
@@ -442,7 +444,7 @@ export default function Leftbar({ changeSection }) {
                   <ListItemIcon>
                     <AddCircleOutlineIcon className="sidebarIcon letrasDark" />{" "}
                   </ListItemIcon>
-                  <ListItemText className="letrasDark">Crear nuevo evento</ListItemText>
+                  <ListItemText className="letrasDark">Administrar evento</ListItemText>
                 </ListItemButton>
               </List>
               <List component="div" disablePadding>

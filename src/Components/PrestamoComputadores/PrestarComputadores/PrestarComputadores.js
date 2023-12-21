@@ -110,7 +110,7 @@ class PrestarComputadores extends React.Component {
 
                 fetch(
                     ReactSession.get("basicUri") +
-                    "participante/getByTipoDocumentoAndCedula/" + this.state.tipoDocumento + "/" + this.state.cedula,
+                    "participante/getByCedula/" + this.state.cedula,
                     {
                         mode: "cors",
                         method: "GET",
@@ -119,7 +119,7 @@ class PrestarComputadores extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }
                 )
@@ -154,7 +154,7 @@ class PrestarComputadores extends React.Component {
                             body['updatedAt'],
                             body['tiposervicio']
                         );
-                        return Promise.resolve(this.setState({ "participante": participante, "id": body['id'], "nombres": body['nombres'], "apellidos": body['apellidos'], "celular": body['celular'] }));
+                        return Promise.resolve(this.setState({ "participante": participante, "tipoDocumento": body['tipoDocumento'], "id": body['id'], "nombres": body['nombres'], "apellidos": body['apellidos'], "celular": body['celular'] }));
 
                     }).then((response) => {
                         if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
@@ -170,7 +170,7 @@ class PrestarComputadores extends React.Component {
                                         'Authorization': ReactSession.get("token"),
                                         "LastTime": ReactSession.get("lastTime"),
                                         "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                        "id": ReactSession.get("idRol")
                                     },
                                 }
                             )
@@ -227,7 +227,7 @@ class PrestarComputadores extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -268,7 +268,7 @@ class PrestarComputadores extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }
                 ).then((response) => response.json())
@@ -401,7 +401,7 @@ class PrestarComputadores extends React.Component {
                                 'Authorization': ReactSession.get("token"),
                                 "LastTime": ReactSession.get("lastTime"),
                                 "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                "id": ReactSession.get("idRol")
                             },
                         }).then((response) => response.json())
                             .then((json) => {

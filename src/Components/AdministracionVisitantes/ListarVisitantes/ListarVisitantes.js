@@ -101,7 +101,7 @@ const ListarVisitantes = () => {
     },
     {
       field: 'cedula',
-      headerName: 'Cedula',
+      headerName: 'Documento',
       flex: 0.1
     },
     {
@@ -115,11 +115,6 @@ const ListarVisitantes = () => {
       flex: 0.1
     },
     {
-      field: 'fechaNacimiento',
-      headerName: 'Fecha de nacimiento',
-      flex: 0.1
-    },
-    {
       field: 'celular',
       headerName: 'Celular',
       flex: 0.1
@@ -130,13 +125,8 @@ const ListarVisitantes = () => {
       flex: 0.1
     },
     {
-      field: 'sexo',
-      headerName: 'Sexo',
-      flex: 0.1
-    },
-    {
       field: 'curso',
-      headerName: 'Curso',
+      headerName: 'Evento',
       flex: 0.1
     },
     {
@@ -205,13 +195,11 @@ const ListarVisitantes = () => {
         participantes.push(
           new ParticipanteMasivo(
             (d[i])['tipoDocumento'],
-            (d[i])['cedula'],
+            (d[i])['documento'],
             (d[i])['nombres'],
             (d[i])['apellidos'],
             (d[i])['celular'],
-            (d[i])['sexo'],
             (d[i])['tratDatos'],
-            new Date(new dayjs((d[i])['fechaNacimiento']).toISOString()).getTime(),
             Date.now(),
             new TipoServicio((d[i])['tiposervicioId']),
             new Empresa((d[i])['empresaNit'])
@@ -220,16 +208,14 @@ const ListarVisitantes = () => {
 
         zktUsers.push(
           new zktPerson(
-            (d[i])['fechaNacimiento'],
-            (d[i])['cedula'],
-            (d[i])['cedula'],
-            (d[i])['cedula'],
+            (d[i])['documento'],
+            (d[i])['documento'],
+            (d[i])['documento'],
             documentosZK((d[i])['tipoDocumento']),
-            genero((d[i])['sexo']),
             (d[i])['apellidos'],
             (d[i])['celular'],
             (d[i])['nombres'],
-            (d[i])['cedula'],
+            (d[i])['documento'],
             new Date(new dayjs((d[i])['fechaInicio']).toISOString()).getTime(),
             new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime()
           )
@@ -237,9 +223,9 @@ const ListarVisitantes = () => {
 
         registrosCursos.push(
           new RegistroCurso(
-            (d[i])['cursoId'],
+            (d[i])['eventoId'],
             (d[i])['tipoDocumento'],
-            (d[i])['cedula'],
+            (d[i])['documento'],
             new Date(new dayjs((d[i])['fechaInicio']).toISOString()).getTime(),
             new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime()
           )

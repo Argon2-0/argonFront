@@ -70,7 +70,7 @@ const TipoServicioListar = () => {
             body[pos]['descripcion'],
             body[pos]['createdAt'],
             body[pos]['updatedAt'],
-            body[pos]['form']));
+            body[pos]['disponible']));
         }
         setRows(tiposServicios);
       }).then(() => {
@@ -90,8 +90,8 @@ const TipoServicioListar = () => {
       flex: 0.1
     },
     {
-      field: 'form',
-      headerName: 'Form',
+      field: 'disponible',
+      headerName: 'Disponible',
       type: 'text',
       flex: 0.1
     },

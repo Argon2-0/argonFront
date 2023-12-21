@@ -122,7 +122,7 @@ class CrearEquipos extends React.Component {
         });
         if (validateForm(this.state.errors)) {
             console.info(this.state.existe)
-            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+            if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2) {
                 if (!this.state.existe) {
                     fetch(ReactSession.get("basicUri") + "herramienta/create", {
                         mode: "cors",
@@ -289,7 +289,7 @@ class CrearEquipos extends React.Component {
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Crear Equipo
+                        Administrar Equipo
                     </Typography>
                     <TableContainer>
                         <Table>

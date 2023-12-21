@@ -1,11 +1,9 @@
 export class zktPerson{
-    constructor(birthday, carPlate, cardNo, certNumber, certType, gender, lastName, mobilePhone, name, pin,accStartTime,accEndTime) {
-        this.birthday = birthday;
+    constructor(carPlate, cardNo, certNumber, certType, lastName, mobilePhone, name, pin,accStartTime,accEndTime) {
         this.carPlate = carPlate;
         this.cardNo = cardNo;
         this.certNumber = certNumber;
         this.certType = certType;
-        this.gender = gender;
         this.lastName = lastName;
         this.mobilePhone = mobilePhone;
         this.name = name;

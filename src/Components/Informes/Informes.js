@@ -19,6 +19,7 @@ import { Curso } from '../../Data/Curso';
 import { CursoInforme } from '../../Data/CursoInforme';
 import { ReactSession } from 'react-client-session';
 import { Transaction } from '../../Data/zkt/Transaction';
+import { Empresa } from '../../Data/Empresa';
 const Informes = () => {
 
     const handleChange = e => {
@@ -151,6 +152,39 @@ const Informes = () => {
             });
     }
 
+    const empresas = () =>{
+        let empresas = [];
+        fetch(
+            ReactSession.get("basicUri") +
+            "participante/getEmpresasByParticipanteBetween/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+            {
+                mode: "cors",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': ReactSession.get("token"),
+                    "LastTime": ReactSession.get("lastTime"),
+                    "CurrentTime": ReactSession.get("currentTime"),
+                        "id": ReactSession.get("idRol")
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json);
+                ReactSession.set("token", json[0]);
+                var body = json[1];
+                console.log(body)
+                for (let pos = 0; pos < body.length; pos++) {
+                    empresas.push(new Empresa(
+                        body[pos]['nit'],
+                        body[pos]['nombre'],
+                    ));
+                }
+            }).then(() => {
+                download(empresas, "Informe empresas");
+            });
+    }
     const informeTransacciones = () => {
         let transacciones = [];
         fetch(
@@ -379,6 +413,9 @@ const Informes = () => {
         else if(tipoInforme ==="Transacciones"){
             informeTransacciones();
         }
+        else if(tipoInforme ==="Empresas"){
+            empresas();
+        }
     }
 
     const download = (data, name) => {
@@ -526,9 +563,10 @@ const Informes = () => {
                             style={{ width: 300 }}
                         >
                             <MenuItem key="1" value="InformePrestamosComputador" width="300">Cantidad de prestamos por computador</MenuItem>
-                            <MenuItem key="2" value="Cursos" width="300">Registro de personas por curso</MenuItem>
+                            <MenuItem key="2" value="Cursos" width="300">Registro de personas por evento</MenuItem>
                             <MenuItem key="3" value="TipoServicio" width="300">Tipo servicio</MenuItem>
-                            <MenuItem key="4" value="Transacciones" width="300">Transacciones</MenuItem>
+                            <MenuItem key="4" value="Transacciones" width="300">Entradas y salidas</MenuItem>
+                            <MenuItem key="4" value="Empresas" width="300">Registro de empresas</MenuItem>
                         </Select>
 
                     </Stack>
@@ -612,7 +650,7 @@ const Informes = () => {
                             <Stack direction="row" spacing={2} >
 
                                 <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Curso
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evento
                                 </Typography>
                             </Stack>
                             <Stack direction="row" spacing={8}>
