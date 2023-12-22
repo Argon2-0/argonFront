@@ -16,6 +16,7 @@ import '../../../App.css'
 import { ReactSession } from 'react-client-session';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from '../../../Spinner';
 
 const ListarEquipos = () => {
   const [rows, setRows] = useState([]);
@@ -34,7 +35,7 @@ const ListarEquipos = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -80,7 +81,10 @@ const ListarEquipos = () => {
           ));
         }
         setRows(herramientas);
-      });
+      }).finally(() => {
+        console.log("flase");
+        setLoading(false);
+      });;
   }, []);
 
   const columns = [
@@ -192,7 +196,7 @@ const ListarEquipos = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     console.info('Valid Form')
     fetch(ReactSession.get("basicUri") + "herramienta/createMasive", {
       mode: "cors",
@@ -203,23 +207,26 @@ const ListarEquipos = () => {
         'Authorization': ReactSession.get("token"),
         "LastTime": ReactSession.get("lastTime"),
         "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+        "id": ReactSession.get("idRol")
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
         handleShowSuccessAlert()
-      }).catch(
+      }).catch((error) => {
         handleShowErrorAlert()
-      )
+      }).finally(() => {
+        console.log("flase");
+        setLoading(false);
+      });
 
   };
-
+  const [loading, setLoading] = useState(true);
   return (
 
     <div className="RegisterComponent">
-
+      <Spinner open={loading} />
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
           Listar Equipos
@@ -246,14 +253,14 @@ const ListarEquipos = () => {
                     />
                   </Typography>
                 </TableCell>
-                <TableCell > 
+                <TableCell >
                   <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>Guardar Masivo</Button>
                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <br/>
+        <br />
         <Box sx={{ height: 520 }} className="cardin">
 
           <DataGrid
@@ -265,6 +272,7 @@ const ListarEquipos = () => {
             }
             slots={{ toolbar: GridToolbar }}
             apiRef={apiRef}
+            style={{ fontSize: 'x-large' }}
           />
         </Box>
       </Box>

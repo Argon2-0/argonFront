@@ -6,12 +6,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SendIcon from '@mui/icons-material/Send';
 import '../../App.css'
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import Token from '../../Auth/Token';
 import { ReactSession } from 'react-client-session';
+import Spinner from '../../Spinner';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -31,7 +32,7 @@ const Dasboard = () => {
   const [prestamos, setPrestamos] = useState(0);
   const [usuariosPrestados, setUsuariosPrestados] = useState(0);
   const [horasPrestamo, setHorasPrestamo] = useState(0);
-
+  const [loading, setLoading] = useState(true);
   const handleDateIniciochange = (event) => {
     var token = new Token();
     token.validar();
@@ -45,19 +46,41 @@ const Dasboard = () => {
   }
 
   const setData = () => {
-    if (vista === "VISITANTES") {
-      getvisitsByService();
-      getvisitsByCurso();
-      getvisits();
-    }
-    else if (vista === "COMPUTADORES") {
-      getComputadores();
-      getComputadoresEstados();
-    }
-  }
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      if (vista === "VISITANTES") {
+        getvisitsByService()
+          .then(() => getvisitsByCurso())
+          .then(() => getvisits())
+          .then(() => resolve())
+          .catch((error) => reject(error))
+          .finally(() =>{
+            console.log("flase");
+            setLoading(false);
+          });
+      } else if (vista === "COMPUTADORES") {
+        getComputadores()
+          .then(() => getComputadoresEstados())
+          .then(() => resolve())
+          .catch((error) => reject(error))
+          .finally(() =>{
+            console.log("flase");
+            setLoading(false);
+          });
+      } else {
+        resolve(); // Si no es "VISITANTES" ni "COMPUTADORES", resolvemos inmediatamente
+      }
+    }).finally(() =>{
+      console.log("flase");
+      setLoading(false);
+    });
+  };
 
 
 
+  useEffect(() => {
+    setData();
+  }, []);
 
   const getvisitsByService = () => {
     fetch(
@@ -311,6 +334,7 @@ const Dasboard = () => {
 
   return (
     <div>
+      <Spinner open={loading} />
       <Box className="cardout">
         <Box className="cardin">
           <br />
@@ -328,7 +352,7 @@ const Dasboard = () => {
                     <br />
                     <Stack direction="row" spacing={8} >
                       <br />
-                      <Typography variant="h6" component="h6" spacing={2}>
+                      <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                       </Typography>
                       <DatePicker
@@ -341,7 +365,7 @@ const Dasboard = () => {
                         style={{ width: 300 }}
                         noValidate
                       />
-                      <Typography variant="h6" component="h6" spacing={2}>
+                      <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                       </Typography>
 
@@ -368,7 +392,7 @@ const Dasboard = () => {
           ? (<>
             <Box className="cardin">
               <Stack direction="row" spacing={8} >
-                <Typography variant="h6" component="h6" spacing={2}>
+                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total visitas {visitas}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total visitantes {visitantes}
                 </Typography>
@@ -428,7 +452,7 @@ const Dasboard = () => {
                 Estado de equipos
               </Typography>
               <Stack direction="row" spacing={8} >
-                <Typography variant="h6" component="h6" spacing={2}>
+                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total préstamos {prestamos}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total usuarios {usuariosPrestados}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total de horas de préstamo {horasPrestamo}

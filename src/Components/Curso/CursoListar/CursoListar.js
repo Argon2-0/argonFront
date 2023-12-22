@@ -17,6 +17,7 @@ import { Curso } from '../../../Data/Curso';
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from '../../../Spinner';
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
@@ -57,13 +58,16 @@ const CursoListar = () => {
             body[pos]['nombre']));
         }
         setRows(cursos);
-      }).then(() => {
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
       });
   }, []);
 
 
   const columns = [
-    { field: 'codigo', headerName: 'Codigo' },
+    { field: 'codigo', headerName: 'Codigo' ,
+    flex: 0.015},
     {
       field: 'nombre',
       headerName: 'Nombre',
@@ -119,7 +123,7 @@ const CursoListar = () => {
   const handleSubmit = (e) => {
     console.log("handlesubmit")
     e.preventDefault();
-
+    setLoading(true);
     console.info('Valid Form')
     fetch(ReactSession.get("basicUri") + "curso/createMasive", {
       mode: "cors",
@@ -137,13 +141,18 @@ const CursoListar = () => {
         console.log(json);
         ReactSession.set("token", json[0]);
         handleShowSuccessAlert()
-      }).catch(
+      }).catch((error) =>{
         handleShowErrorAlert()
-      )
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
+      });
   };
+  const [loading, setLoading] = useState(true);
   return (
 
     <div>
+      <Spinner open={loading} /> 
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
           Eventos
@@ -192,7 +201,7 @@ const CursoListar = () => {
               setColumnVisibilityModel(newModel)
             }
             apiRef={apiRef}
-
+            style={{ fontSize: 'x-large' }} 
           />
         </Box>
       </Box>

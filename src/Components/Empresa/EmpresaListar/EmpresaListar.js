@@ -16,6 +16,7 @@ import { Box, Input } from '@mui/material';
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from '../../../Spinner';
 const useStyles = makeStyles(() => ({
   esES,
 }));
@@ -57,12 +58,19 @@ const EmpresaListar = () => {
         }
         setRows(empresas);
       }).then(() => {
-      });
+        console.log(false);
+        setLoading(false);
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
+      }
+      );
   }, []);
 
 
   const columns = [
-    { field: 'nit', headerName: 'NIT' },
+    { field: 'nit', headerName: 'NIT',
+    flex: 0.015 },
     {
       field: 'nombre',
       headerName: 'Nombre',
@@ -116,6 +124,7 @@ const EmpresaListar = () => {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     console.log("handlesubmit")
     e.preventDefault();
 
@@ -136,14 +145,19 @@ const EmpresaListar = () => {
         console.log(json);
         ReactSession.set("token", json[0]);
         handleShowSuccessAlert()
-      }).catch(
+      }).catch((error) =>{
         handleShowErrorAlert()
-      )
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
+      })
 
   };
+  const [loading, setLoading] = useState(true);
   return (
 
     <div>
+      <Spinner open={loading} /> 
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
           Empresas
@@ -192,7 +206,7 @@ const EmpresaListar = () => {
               setColumnVisibilityModel(newModel)
             }
             apiRef={apiRef}
-
+            style={{ fontSize: 'x-large' }} 
           />
         </Box>
       </Box>

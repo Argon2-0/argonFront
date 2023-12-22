@@ -20,6 +20,7 @@ import { CursoInforme } from '../../Data/CursoInforme';
 import { ReactSession } from 'react-client-session';
 import { Transaction } from '../../Data/zkt/Transaction';
 import { Empresa } from '../../Data/Empresa';
+import Spinner from '../../Spinner';
 const Informes = () => {
 
     const handleChange = e => {
@@ -97,7 +98,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -149,10 +150,14 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(participantes, "Registro participantes");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
     }
 
-    const empresas = () =>{
+    const empresas = () => {
         let empresas = [];
         fetch(
             ReactSession.get("basicUri") +
@@ -165,7 +170,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -183,6 +188,10 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(empresas, "Informe empresas");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
     }
     const informeTransacciones = () => {
@@ -198,7 +207,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -230,6 +239,10 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(transacciones, "Informe transacciones");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
     }
 
@@ -247,7 +260,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -288,6 +301,10 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(marcas, "Informe marcas");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
 
     }
@@ -308,7 +325,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -355,6 +372,10 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(informeTipoServicio, "Informe tipo servicio");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
 
     }
@@ -373,7 +394,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -392,11 +413,16 @@ const Informes = () => {
                 }
             }).then(() => {
                 download(cursos, "Informe registro cursos");
+            }).then(() => {
+                setLoading(false);
+            }).catch((error) =>{
+                setLoading(false)
             });
 
     }
 
     const traer = () => {
+        setLoading(true);
         console.log(tipoInforme)
         if (tipoInforme === "InformeRegistro") {
             informeRegistro();
@@ -407,13 +433,13 @@ const Informes = () => {
         else if (tipoInforme === "TipoServicio") {
             informeTipoServicio();
         }
-        else if(tipoInforme === "Cursos"){
+        else if (tipoInforme === "Cursos") {
             informeCursos();
         }
-        else if(tipoInforme ==="Transacciones"){
+        else if (tipoInforme === "Transacciones") {
             informeTransacciones();
         }
-        else if(tipoInforme ==="Empresas"){
+        else if (tipoInforme === "Empresas") {
             empresas();
         }
     }
@@ -422,7 +448,7 @@ const Informes = () => {
         let binaryParticipantes = XLSX.utils.json_to_sheet(data);
         var book = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(book, binaryParticipantes, 'Binary values')
-        XLSX.writeFile(book, name+'.xlsx');
+        XLSX.writeFile(book, name + '.xlsx');
     }
 
     const GetTipoServicios = (data) => {
@@ -437,7 +463,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -475,7 +501,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -500,7 +526,7 @@ const Informes = () => {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -533,10 +559,10 @@ const Informes = () => {
             }
         });
     });
-
+    const [loading, setLoading] = useState(false);
     return (
         <div className="RegisterComponent">
-
+            <Spinner open={loading} />
             <Box component="form" sx={{ mt: 1 }} className="cardout">
 
                 <Typography variant="h4" align="Left" component="h4" gutterBottom>
@@ -548,7 +574,7 @@ const Informes = () => {
 
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo informe
                         </Typography>
                     </Stack>
@@ -577,7 +603,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" component="h6" spacing={2}>
+                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Número documento
                                 </Typography>
                             </Stack>
@@ -594,7 +620,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca equipo
                                 </Typography>
                             </Stack>
@@ -622,7 +648,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de servicio
                                 </Typography>
                             </Stack>
@@ -649,7 +675,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evento
                                 </Typography>
                             </Stack>
@@ -674,7 +700,7 @@ const Informes = () => {
                             </Stack><br /></>) : ""}
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                         </Typography>
                     </Stack>
@@ -694,7 +720,7 @@ const Informes = () => {
                     <br />
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                         </Typography>
                     </Stack>

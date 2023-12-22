@@ -5,6 +5,7 @@ import './ListarPrestamos.css';
 import { HerramientaParticipante } from "../../../Data/HerramientaParticipante";
 import '../../../App.css'
 import { ReactSession } from 'react-client-session';
+import Spinner from "../../../Spinner";
 const ListarPrestamos = () => {
   const [rows, setRows] = useState([]);
   useEffect(() => {
@@ -19,7 +20,7 @@ const ListarPrestamos = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -63,6 +64,9 @@ const ListarPrestamos = () => {
           ));
         }
         setRows(participantes);
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
       });
   }, []);
 
@@ -117,11 +121,11 @@ const ListarPrestamos = () => {
 
   const apiRef = useGridApiRef();
 
-
+  const [loading, setLoading] = useState(true);
   return (
 
     <div className="RegisterComponent">
-
+      <Spinner open={loading} />
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
           Historial de Computadores Prestados
@@ -137,6 +141,7 @@ const ListarPrestamos = () => {
             }
             slots={{ toolbar: GridToolbar }}
             apiRef={apiRef}
+            style={{ fontSize: 'x-large' }}
           />
         </Box>
       </Box>

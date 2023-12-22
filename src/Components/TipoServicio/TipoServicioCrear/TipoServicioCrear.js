@@ -10,6 +10,7 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Spinner from '../../../Spinner';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -30,6 +31,7 @@ class CrearTipoServicio extends React.Component {
             message: "",
             open: false,
             existe: false,
+            loading: false,
             errors: {
                 nombre: "",
                 disponible: "",
@@ -88,6 +90,7 @@ class CrearTipoServicio extends React.Component {
     }
 
     handleSubmit = (e) => {
+        this.setState({loading: true})
         console.log("handlesubmit")
         const fields = ["nombre", "descripcion", "Referencia", "Marca", "Serial"];
         e.preventDefault();
@@ -113,7 +116,7 @@ class CrearTipoServicio extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
@@ -127,6 +130,8 @@ class CrearTipoServicio extends React.Component {
                                 disponible: "NO",
                                 existe: false
                             });
+                        }).finally(()=>{
+                            this.setState({loading: false})
                         })
                 } else {
                     fetch(ReactSession.get("basicUri") + "tiposervicio/update", {
@@ -146,7 +151,7 @@ class CrearTipoServicio extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
@@ -161,6 +166,8 @@ class CrearTipoServicio extends React.Component {
                                 disponible: "NO",
                                 existe: false
                             });
+                        }).finally(()=>{
+                            this.setState({loading: false})
                         })
                 }
             } else {
@@ -189,7 +196,7 @@ class CrearTipoServicio extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -223,18 +230,18 @@ class CrearTipoServicio extends React.Component {
                     existe: true
                 }));
 
-            }).catch(
+            }).catch((error) =>{
                 this.setState({ existe: false, disponible: "NO", checkVisualiza: false, nombre: "", descripcion: "" })
-            )
+            })
     }
-
+    
     render() {
         const { errors } = this.state;
 
         return (
 
             <div className="sizer">
-
+                <Spinner open={this.state.loading} />
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Administrar Tipo de Servicio
@@ -263,7 +270,7 @@ class CrearTipoServicio extends React.Component {
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Id
                                                                     </Typography>
                                                                 </Stack>
@@ -280,9 +287,10 @@ class CrearTipoServicio extends React.Component {
                                                                         style={{ width: 300 }}
                                                                     />
                                                                 </Stack>
+                                                                <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre
                                                                     </Typography>
                                                                 </Stack>
@@ -306,7 +314,7 @@ class CrearTipoServicio extends React.Component {
                                                                 </Stack>
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
                                                                     </Typography>
                                                                 </Stack>
@@ -326,7 +334,7 @@ class CrearTipoServicio extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
                                                                     </Typography>
                                                                 </Stack>

@@ -70,10 +70,10 @@ const Login = () => {
             handleShowSuccessAlert()
             navigate("../Bio/public/home");
     
-          }).catch(
-            console.log("falla"),
-            handleShowErrorAlert()
-          )
+          }).catch((error) =>{
+            console.log("falla");
+            handleShowErrorAlert();
+          })
     
       })
     }

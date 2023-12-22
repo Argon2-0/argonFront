@@ -9,6 +9,7 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Spinner from '../../../Spinner';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -31,6 +32,7 @@ class CrearEquipos extends React.Component {
             existe: false,
             checkVisualiza: false,
             id: "",
+            loading: false,
             errors: {
                 Referencia: "",
                 Descripcion: "",
@@ -115,6 +117,7 @@ class CrearEquipos extends React.Component {
 
 
     handleSubmit = (e) => {
+        this.setState({ loading: true })
         console.log("handlesubmit")
         const fields = ["CodigoBarras", "Descripcion", "Referencia", "Marca", "Serial"];
         e.preventDefault();
@@ -144,7 +147,7 @@ class CrearEquipos extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
@@ -162,6 +165,8 @@ class CrearEquipos extends React.Component {
                                 disponible: "NO",
 
                             })
+                        }).finally(() => {
+                            this.setState({ loading: false })
                         })
                 } else {
                     if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2) {
@@ -185,7 +190,7 @@ class CrearEquipos extends React.Component {
                                 'Authorization': ReactSession.get("token"),
                                 "LastTime": ReactSession.get("lastTime"),
                                 "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                                "id": ReactSession.get("idRol")
                             },
                         }).then((response) => response.json())
                             .then((json) => {
@@ -204,6 +209,8 @@ class CrearEquipos extends React.Component {
                                     disponible: "NO",
 
                                 })
+                            }).finally(() => {
+                                this.setState({ loading: false })
                             })
                     } else {
                         this.handleOpen('warning', 'No tiene permisos para actualizar el equipo')
@@ -235,7 +242,7 @@ class CrearEquipos extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -275,9 +282,9 @@ class CrearEquipos extends React.Component {
                     disponible: body['disponible'],
                 }));
 
-            }).catch(
+            }).catch((error) => {
                 this.setState({ existe: false, disponible: "NO", checkVisualiza: false, id: "", Descripcion: "", Marca: "", Serial: "", Referencia: "" })
-            )
+            })
     }
 
 
@@ -287,7 +294,7 @@ class CrearEquipos extends React.Component {
         return (
 
             <div className="sizer">
-
+                <Spinner open={this.state.loading} />
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Administrar Equipo
@@ -317,7 +324,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
                                                                     </Typography>
                                                                 </Stack>
@@ -344,7 +351,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial
                                                                     </Typography>
                                                                 </Stack>
@@ -372,7 +379,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca
                                                                     </Typography>
                                                                 </Stack>
@@ -398,7 +405,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia
                                                                     </Typography>
                                                                 </Stack>
@@ -426,7 +433,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
                                                                     </Typography>
                                                                 </Stack>
@@ -453,7 +460,7 @@ class CrearEquipos extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
                                                                     </Typography>
                                                                 </Stack>

@@ -14,6 +14,7 @@ import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { configure } from "@testing-library/react";
+import Spinner from "../../../Spinner";
 //eslint-disable-next-line
 const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
 const validateForm = errors => {
@@ -34,6 +35,7 @@ class CrearUsuario extends React.Component {
             severity: "success",
             message: "",
             open: false,
+            loading:true,
             errors: {
                 nombres: "",
                 email: "",
@@ -109,6 +111,7 @@ class CrearUsuario extends React.Component {
     }
 
     handleSubmit = (e) => {
+        this.setState({loading: true})
         const fields = ["nombres", "email", "rol", "password", "confirmPassword"];
         e.preventDefault();
         fields.forEach(field => {
@@ -136,11 +139,12 @@ class CrearUsuario extends React.Component {
                             'Authorization': ReactSession.get("token"),
                             "LastTime": ReactSession.get("lastTime"),
                             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                            "id": ReactSession.get("idRol")
                         },
                     }).then((response) => response.json())
                         .then((json) => {
                             console.log(json);
+                            this.setState({loading: false})
                             ReactSession.set("token", json[0]);
                             this.setState({ nombres: "" });
                             this.setState({ email: "" });
@@ -148,7 +152,11 @@ class CrearUsuario extends React.Component {
                             this.setState({ password: "" });
                             this.setState({ confirmPassword: "" });
                             this.handleOpen('success', 'El usuario fue creado')
+                        }).finally(()=>{
+                            this.setState({loading: false})
                         })
+                }).finally(()=>{
+                    this.setState({loading: false})
                 })
             } else {
                 this.handleOpen('warning', 'No tiene permisos para manipular usuarios')
@@ -172,7 +180,7 @@ class CrearUsuario extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         ).then((response) => response.json())
@@ -193,13 +201,16 @@ class CrearUsuario extends React.Component {
                         body[pos]['updatedAt']));
                 }
                 this.setState({ "roles": rolesJson });
+            }).finally(()=>{
+                this.setState({loading: false})
             })
+            
     };
     render() {
         const { errors } = this.state;
         return (
             <div className="sizer">
-
+                <Spinner open={this.state.loading} />
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
                         Crear Usuario
@@ -229,7 +240,7 @@ class CrearUsuario extends React.Component {
 
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                                     </Typography>
                                                                 </Stack>
@@ -254,7 +265,7 @@ class CrearUsuario extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
                                                                     </Typography>
                                                                 </Stack>
@@ -282,7 +293,7 @@ class CrearUsuario extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rol
                                                                     </Typography>
                                                                 </Stack>
@@ -316,7 +327,7 @@ class CrearUsuario extends React.Component {
 
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña
                                                                     </Typography>
                                                                 </Stack>
@@ -344,7 +355,7 @@ class CrearUsuario extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar contraseña
                                                                     </Typography>
                                                                 </Stack>

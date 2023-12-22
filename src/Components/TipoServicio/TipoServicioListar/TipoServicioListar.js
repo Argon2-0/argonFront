@@ -15,6 +15,7 @@ import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/mate
 import { Box, Typography, Input } from "@mui/material";
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from '../../../Spinner';
 const useStyles = makeStyles((theme) => ({
   esES,
 }));
@@ -25,6 +26,7 @@ const TipoServicioListar = () => {
   const [rows, setRows] = useState([]);
   const [tiposServicios, setTiposServico] = useState([]);
   useEffect(() => {
+    setLoading(true);
     fetch(
       ReactSession.get("basicUri") +
       "tiposervicio/getAll",
@@ -73,7 +75,9 @@ const TipoServicioListar = () => {
             body[pos]['disponible']));
         }
         setRows(tiposServicios);
-      }).then(() => {
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
       });
   }, []);
 
@@ -154,6 +158,7 @@ const TipoServicioListar = () => {
     showAlert('error', 'Hubo un problema al cargar el archivo masivo');
   };
   const handleSubmit = (e) => {
+    setLoading(true);
     console.log("handlesubmit")
     e.preventDefault();
 
@@ -174,14 +179,19 @@ const TipoServicioListar = () => {
         console.log(json);
         ReactSession.set("token", json[0]);
         handleShowSuccessAlert()
-      }).catch(
+      }).catch((error) =>{
         handleShowErrorAlert()
-      )
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
+      });
 
   };
+  const [loading, setLoading] = useState(true);
   return (
 
     <div>
+      <Spinner open={loading} /> 
       <Box component="form" className="cardout" >
         <Typography variant="h4" component="h4" gutterBottom>
           Tipos de Servicios
@@ -227,7 +237,7 @@ const TipoServicioListar = () => {
               setColumnVisibilityModel(newModel)
             }
             apiRef={apiRef}
-
+            style={{ fontSize: 'x-large' }} 
           />
         </Box>
       </Box>

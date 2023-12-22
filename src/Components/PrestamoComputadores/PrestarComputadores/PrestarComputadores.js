@@ -15,6 +15,7 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Spinner from "../../../Spinner";
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -41,6 +42,7 @@ class PrestarComputadores extends React.Component {
             severity: "success",
             message: "",
             open: false,
+            loading: false,
             errors: {
                 tipoDocumento: "",
                 cedula: "",
@@ -189,7 +191,7 @@ class PrestarComputadores extends React.Component {
                                     this.setState({ errors });
                                 })
                         }
-                    }).then().catch((reason) => {
+                    }).catch((reason) => {
                         console.log(reason);
                         errors.cedula = 'El documento no existe';
                         this.setState({ "participante": '' });
@@ -362,6 +364,7 @@ class PrestarComputadores extends React.Component {
     }
 
     handleSubmit = (e) => {
+        this.setState({ loading: true })
         const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "fechaNacimiento", "celular", "tiposervicio", "tratDatos"];
         e.preventDefault();
         fields.forEach(field => {
@@ -406,6 +409,7 @@ class PrestarComputadores extends React.Component {
                             .then((json) => {
                                 console.log(json);
                                 ReactSession.set("token", json[0]);
+                                this.setState({ loading: false })
                                 this.handleOpen('success', 'El computador fue prestado')
                                 this.setState({
                                     id: "",
@@ -421,8 +425,12 @@ class PrestarComputadores extends React.Component {
                                     herramienta: "",
                                     Observacion: "",
                                 })
+                            }).finally(()=>{
+                                this.setState({loading: false})
                             })
-                    });
+                    }).finally(()=>{
+                        this.setState({loading: false})
+                    })
             } else {
                 this.handleOpen('warning', 'No tiene permisos para prestar equipos')
             }
@@ -438,6 +446,7 @@ class PrestarComputadores extends React.Component {
         const { errors } = this.state;
         return (
             <div className="sizer">
+                <Spinner open={this.state.loading} />
 
                 <Box className="cardout">
                     <Typography variant="h4" component="h4" gutterBottom>
@@ -485,7 +494,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
                                                 </Typography>
                                             </Stack>
@@ -500,6 +509,7 @@ class PrestarComputadores extends React.Component {
                                                     onChange={this.handleChangeDocument}
                                                     style={{ width: 300 }}
                                                     variant="filled"
+                                                    disabled
 
                                                 >
                                                     <MenuItem key="C.C" value="C.C" width="300">Cédula de ciudadania</MenuItem>
@@ -524,7 +534,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
                                                 </Typography>
                                             </Stack>
@@ -551,7 +561,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
                                                 </Typography>
                                             </Stack>
@@ -579,7 +589,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                 </Typography>
                                             </Stack>
@@ -607,7 +617,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
                                                 </Typography>
                                             </Stack>
@@ -635,7 +645,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
                                                 </Typography>
                                             </Stack>
@@ -660,7 +670,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
                                                 </Typography>
                                             </Stack>
@@ -690,13 +700,14 @@ class PrestarComputadores extends React.Component {
                             </Table>
                         </TableContainer>
                     </Box>
+                    <br/>
+                    <Box textAlign='center'>
+                        <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Préstamo</Button>
 
+                    </Box>
 
                 </Box>
-                <Box textAlign='center'>
-                    <Button className="button" variant="contained" endIcon={<SendIcon />} onClick={this.handleSubmit}>Confirmar Préstamo</Button>
 
-                </Box>
                 <Snackbar
                     open={this.state.open}
                     autoHideDuration={6000} // milliseconds

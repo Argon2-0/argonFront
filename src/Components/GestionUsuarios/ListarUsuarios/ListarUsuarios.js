@@ -14,6 +14,7 @@ import { UserCreate } from "../../../Data/User/UserCreate";
 import Protege from "../../../Auth/Protege";
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from "../../../Spinner";
 const ListarUsuarios = () => {
   const [rows, setRows] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
@@ -30,7 +31,7 @@ const ListarUsuarios = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -78,6 +79,9 @@ const ListarUsuarios = () => {
           ));
         }
         setRows(participantes);
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
       });
   }, []);
 
@@ -135,7 +139,7 @@ const ListarUsuarios = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -172,6 +176,9 @@ const ListarUsuarios = () => {
         }
       }).then(() => {
         download(roles);
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
       });
 
   }
@@ -235,7 +242,7 @@ const ListarUsuarios = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true);
     console.info('Valid Form')
     console.log(usuarios);
     fetch(ReactSession.get("basicUri") + "user/createMasive", {
@@ -247,22 +254,26 @@ const ListarUsuarios = () => {
         'Authorization': ReactSession.get("token"),
         "LastTime": ReactSession.get("lastTime"),
         "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+        "id": ReactSession.get("idRol")
       },
     }).then((response) => response.json())
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
         handleShowSuccessAlert()
-      }).catch(
+      }).catch((error) =>{
         handleShowErrorAlert()
-      )
+      }).finally(() =>{
+        console.log("flase");
+        setLoading(false);
+      });
 
   };
+  const [loading, setLoading] = useState(true);
   return (
 
     <div className="RegisterComponent">
-
+      <Spinner open={loading} />
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
           Gestión de Usuarios
@@ -313,6 +324,7 @@ const ListarUsuarios = () => {
             }
             slots={{ toolbar: GridToolbar }}
             apiRef={apiRef}
+            style={{ fontSize: 'x-large' }}
           />
         </Box>
       </Box>

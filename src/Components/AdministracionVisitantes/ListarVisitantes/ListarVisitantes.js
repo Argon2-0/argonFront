@@ -15,6 +15,7 @@ import { RegistroCurso } from "../../../Data/RegistroCurso";
 import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/material';
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
+import Spinner from "../../../Spinner";
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
   const [visitantesArray, setVisitantesArray] = useState([]);
@@ -33,7 +34,7 @@ const ListarVisitantes = () => {
           'Authorization': ReactSession.get("token"),
           "LastTime": ReactSession.get("lastTime"),
           "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+          "id": ReactSession.get("idRol")
         },
       }
     )
@@ -85,7 +86,10 @@ const ListarVisitantes = () => {
           ));
         }
         setRows(participantes);
-      });
+      }).finally(() => {
+        console.log("flase");
+        setLoading(false);
+      });;
   }, []);
 
   const columns = [
@@ -277,15 +281,8 @@ const ListarVisitantes = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log(visitantesArray)
-    console.log("handlesubmit")
     e.preventDefault();
-
-    console.info('Valid Form')
-    console.log(visitantesArray)
-    console.log(visitantesArray[0])
-    //for (var i in visitantesArray) {
-    //  console.log(i)      ;
+    setLoading(true);
     fetch(ReactSession.get("basicUri") + "participante/createMasive", {
       mode: "cors",
       method: "POST",
@@ -295,7 +292,7 @@ const ListarVisitantes = () => {
         'Authorization': ReactSession.get("token"),
         "LastTime": ReactSession.get("lastTime"),
         "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+        "id": ReactSession.get("idRol")
       },
     }).then((response) => response.json())
       .then((json) => {
@@ -310,7 +307,7 @@ const ListarVisitantes = () => {
             'Authorization': ReactSession.get("token"),
             "LastTime": ReactSession.get("lastTime"),
             "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+            "id": ReactSession.get("idRol")
           },
         }).then((responserequest) => responserequest.json())
           .then((jsonrequest) => {
@@ -323,24 +320,34 @@ const ListarVisitantes = () => {
                 'Authorization': ReactSession.get("token"),
                 "LastTime": ReactSession.get("lastTime"),
                 "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                "id": ReactSession.get("idRol")
               },
             }).then((response) => response.json())
               .then((json) => {
                 console.log(json);
                 ReactSession.set("token", json[0]);
                 handleShowSuccessAlert()
-              }).catch(
+              }).catch((error) => {
                 handleShowErrorAlert()
-              )
-          })
-      })
+              }).finally(() => {
+                console.log("flase");
+                setLoading(false);
+              });
+          }).finally(() => {
+            console.log("flase");
+            setLoading(false);
+          });
+      }).finally(() => {
+        console.log("flase");
+        setLoading(false);
+      });
 
   };
+  const [loading, setLoading] = useState(true);
   return (
 
     <div className="RegisterComponent">
-
+      <Spinner open={loading} />
       <Box className="cardout">
         <Typography variant="h4" component="h4" gutterBottom>
           Administracion de visitantes
@@ -384,6 +391,7 @@ const ListarVisitantes = () => {
             }
             slots={{ toolbar: GridToolbar }}
             apiRef={apiRef}
+            style={{ fontSize: 'x-large' }}
           />
         </Box>
       </Box>

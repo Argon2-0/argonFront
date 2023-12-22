@@ -14,10 +14,10 @@ import '../../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import { Participante } from "../../../Data/Participante";
 import { Curso } from "../../../Data/Curso";
-import { Empresa } from "../../../Data/Empresa";
 import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Spinner from "../../../Spinner";
 const validPhoneRegex = RegExp(
     /((300|301|302|303|304|305|310|311|312|313|314|315|316|317|318|319|320|321|322|323|350|351)+([0-9]{7}))\b/i
 );
@@ -48,10 +48,11 @@ class CrearVisitantes extends React.Component {
             tipoDocumentoZK: "",
             fechaInicio: dayjs(new Date()),
             fechaFin: dayjs(new Date()),
-            empresaId: 0,
+            empresaId: "",
             severity: "success",
             message: "",
             open: false,
+            loading:false,
             errors: {
                 curso: "",
                 tipoDocumento: "",
@@ -335,9 +336,7 @@ class CrearVisitantes extends React.Component {
     }
 
     handleSubmit = (e) => {
-        console.log(this.state.tipoDocumentoZK)
-        console.log("handleSubmit")
-        console.log(this.state.empresaId)
+        this.setState({ loading: true })
         const fields = ["tipoDocumento", "cedula", "nombres", "apellidos", "celular", "tiposervicio", "tratDatos", "curso"];
         fields.forEach(field => {
             this.validations(field, this.state[field]);
@@ -345,8 +344,11 @@ class CrearVisitantes extends React.Component {
         if (validateForm(this.state.errors)) {
             console.info('Valid Form')
             if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
+                console.log(this.state.id);
                 if (this.state.id === "") {
+                    console.log("a")
                     if (this.state.tiposervicio === "") {
+                        console.log("ab")
                         fetch(ReactSession.get("basicUri") + "participante/create", {
                             mode: "cors",
                             method: "POST",
@@ -359,9 +361,6 @@ class CrearVisitantes extends React.Component {
                                 celular: this.state.celular,
                                 tiposervicio: null,
                                 createdAt: Date.now(),
-                                empresa: {
-                                    nit: this.state.empresaId,
-                                },
 
                             }),
                             headers: {
@@ -374,8 +373,11 @@ class CrearVisitantes extends React.Component {
                         }).then((response) => response.json())
                             .then((json) => {
                                 this.zktEventoRegistro(json);
+                            }).finally(() => {
+                                this.setState({ loading: false })
                             })
                     } else {
+                        console.log("ba")
                         fetch(ReactSession.get("basicUri") + "participante/create", {
                             mode: "cors",
                             method: "POST",
@@ -390,9 +392,6 @@ class CrearVisitantes extends React.Component {
                                     id: this.state.tiposervicio,
                                 },
                                 createdAt: Date.now(),
-                                empresa: {
-                                    nit: this.state.empresaId,
-                                },
 
                             }),
                             headers: {
@@ -405,10 +404,14 @@ class CrearVisitantes extends React.Component {
                         }).then((response) => response.json())
                             .then((json) => {
                                 this.zktEventoRegistro(json);
+                            }).finally(() => {
+                                this.setState({ loading: false })
                             })
                     }
                 } else {
+                    console.log("b")
                     if (this.state.tiposervicio === "") {
+                        console.log("ba")
                         fetch(ReactSession.get("basicUri") + "participante/update", {
                             mode: "cors",
                             method: "POST",
@@ -422,10 +425,7 @@ class CrearVisitantes extends React.Component {
                                 celular: this.state.celular,
                                 tiposervicio: null,
                                 createdAt: Date.now(),
-                                empresa: {
-                                    nit: this.state.empresaId,
-                                },
-    
+
                             }),
                             headers: {
                                 "Content-Type": "application/json",
@@ -437,8 +437,11 @@ class CrearVisitantes extends React.Component {
                         }).then((response) => response.json())
                             .then((json) => {
                                 this.zktEventoRegistro(json);
+                            }).finally(() => {
+                                this.setState({ loading: false })
                             })
                     } else {
+                        console.log("bb")
                         fetch(ReactSession.get("basicUri") + "participante/update", {
                             mode: "cors",
                             method: "POST",
@@ -454,10 +457,6 @@ class CrearVisitantes extends React.Component {
                                     id: this.state.tiposervicio,
                                 },
                                 createdAt: Date.now(),
-                                empresa: {
-                                    nit: this.state.empresaId,
-                                },
-    
                             }),
                             headers: {
                                 "Content-Type": "application/json",
@@ -469,6 +468,8 @@ class CrearVisitantes extends React.Component {
                         }).then((response) => response.json())
                             .then((json) => {
                                 this.zktEventoRegistro(json);
+                            }).finally(() => {
+                                this.setState({ loading: false })
                             })
                     }
                 }
@@ -568,11 +569,17 @@ class CrearVisitantes extends React.Component {
                                         tipoDocumentoZK: "",
                                         fechaInicio: dayjs(new Date()),
                                         fechaFin: dayjs(new Date()),
-                                        empresaId: 0,
+                                        empresaId: "",
                                     })
-                                })
+                                }).finally(()=>{
+                            this.setState({loading: false})
+                        })
+                        }).finally(()=>{
+                            this.setState({loading: false})
                         })
                 }
+            }).finally(()=>{
+                this.setState({loading: false})
             })
     }
 
@@ -640,39 +647,6 @@ class CrearVisitantes extends React.Component {
                                 body[pos]['nombre'],));
                         }
                         this.setState({ "cursos": cursosJson });
-                    }).then(() => {
-                        let empresas = [];
-                        fetch(
-                            ReactSession.get("basicUri") +
-                            "empresa/getAllByDisponible/si",
-                            {
-                                mode: "cors",
-                                method: "GET",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    'Authorization': ReactSession.get("token"),
-                                    "LastTime": ReactSession.get("lastTime"),
-                                    "CurrentTime": ReactSession.get("currentTime"),
-                                    "id": ReactSession.get("idRol")
-                                },
-                            }
-                        )
-                            .then((response) => response.json())
-                            .then((json) => {
-                                console.log(json);
-                                ReactSession.set("token", json[0]);
-                                var body = json[1];
-                                console.log(body)
-
-                                console.log(json);
-                                console.log(empresas);
-                                for (let pos = 0; pos < body.length; pos++) {
-                                    empresas.push(new Empresa(
-                                        body[pos]['nit'],
-                                        body[pos]['nombre']));
-                                }
-                                this.setState({ "empresas": empresas });
-                            })
                     })
             })
     };
@@ -680,7 +654,7 @@ class CrearVisitantes extends React.Component {
         const { errors } = this.state;
         return (
             <div className="sizer">
-
+                <Spinner open={this.state.loading} />
                 <Box className="cardout">
                     <center>
                         <Typography variant="h4" component="h4" gutterBottom>
@@ -712,7 +686,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
                                                                     </Typography>
                                                                 </Stack>
@@ -748,7 +722,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
                                                                     </Typography>
                                                                 </Stack>
@@ -774,7 +748,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                                     </Typography>
                                                                 </Stack>
@@ -802,7 +776,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
                                                                     </Typography>
                                                                 </Stack>
@@ -827,7 +801,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
                                                                     </Typography>
                                                                 </Stack>
@@ -854,7 +828,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de servicio
                                                                     </Typography>
                                                                 </Stack>
@@ -892,7 +866,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evento
                                                                     </Typography>
                                                                 </Stack>
@@ -923,46 +897,12 @@ class CrearVisitantes extends React.Component {
                                                                         <span className='error'>{errors.curso}</span>}
                                                                 </Stack>
                                                             </TableCell>
-                                                            <TableCell>
-                                                                <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empresa
-                                                                    </Typography>
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-                                                                    <Select
-                                                                        required
-                                                                        id="empresaId"
-                                                                        name="empresaId"
-                                                                        value={this.state.empresaId}
-                                                                        onChange={this.handleChange}
-                                                                        style={{ width: 300 }}
-                                                                    >
-                                                                        <MenuItem key="0" value="0" width="300">Ninguna</MenuItem>
-                                                                        if(this.state.empresas !== [""]){
-                                                                            this.state.empresas?.map((element) => {
-                                                                                return (
-                                                                                    <MenuItem key={element?.nit} value={element?.nit} width="300">{element?.nombre}</MenuItem>
-
-                                                                                );
-                                                                            })}
-                                                                    </Select>
-
-                                                                </Stack>
-                                                                <Stack direction="row" spacing={8} >
-                                                                    <br />
-
-                                                                    {errors.empresa.length > 0 &&
-                                                                        <span className='error'>{errors.empresa}</span>}
-                                                                </Stack>
-                                                            </TableCell>
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                                                                     </Typography>
                                                                 </Stack>
@@ -986,13 +926,10 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
-                                                        </TableRow>
-                                                        <TableRow>
-
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                                                                     </Typography>
                                                                 </Stack>
@@ -1016,11 +953,14 @@ class CrearVisitantes extends React.Component {
                                                                 </Stack>
 
                                                             </TableCell>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableCell></TableCell>
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Autoriza tratamiento de datos
                                                                     </Typography>
                                                                 </Stack>

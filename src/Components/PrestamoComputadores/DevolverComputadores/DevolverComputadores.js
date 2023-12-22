@@ -11,6 +11,7 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import { ReactSession } from 'react-client-session';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Spinner from '../../../Spinner';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -28,6 +29,7 @@ class DevolverComputadores extends React.Component {
             severity: "success",
             message: "",
             open: false,
+            loading: false,
             errors: {
                 CodigoDeBarras: "",
             }
@@ -170,6 +172,7 @@ class DevolverComputadores extends React.Component {
     }
 
     handleSubmit = (e) => {
+        this.setState({loading: true})
         e.preventDefault();
         console.log(this.state.herramientaParticipante);
         if (validateForm(this.state.errors)) {
@@ -217,13 +220,18 @@ class DevolverComputadores extends React.Component {
                             .then((json) => {
                                 console.log(json);
                                 ReactSession.set("token", json[0]);
+                                this.setState({loading: false})
                                 this.handleOpen('success', 'El computador fue devuelto');
                                 this.setState({ CodigoDeBarras: "" });
                                 this.setState({ herramienta: "" });
                                 this.setState({ herramientaParticipante: "" });
                                 this.setState({ Observacion: "" });
+                            }).finally(()=>{
+                                this.setState({loading: false})
                             })
-                    });
+                    }).finally(()=>{
+                        this.setState({loading: false})
+                    })
             } else {
                 this.handleOpen('warning', 'No tiene permisos para devolver un computador')
             }
@@ -237,6 +245,7 @@ class DevolverComputadores extends React.Component {
     componentDidMount() { };
 
     render() {
+        <Spinner open={this.state.loading} /> 
         const { errors } = this.state;
         return (
             <div className="sizer">
@@ -271,7 +280,7 @@ class DevolverComputadores extends React.Component {
 
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
                                                                     </Typography>
                                                                 </Stack>
@@ -301,7 +310,7 @@ class DevolverComputadores extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" component="h6" spacing={2}>
+                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
                                                                     </Typography>
                                                                 </Stack>

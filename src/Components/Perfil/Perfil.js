@@ -9,6 +9,7 @@ import '../../App.css'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, FormControl, OutlinedInput, InputLabel } from '@mui/material';
 import { ReactSession } from 'react-client-session';
 import Protege from '../../Auth/Protege';
+import Spinner from '../../Spinner';
 const validateForm = errors => {
     let valid = true;
     Object.values(errors).forEach(val => val.length > 0 && (valid = false));
@@ -28,6 +29,7 @@ class Perfil extends React.Component {
             message: "",
             id: "",
             open: false,
+            loading: false,
             errors: {
                 correo: "",
                 password: "",
@@ -54,7 +56,7 @@ class Perfil extends React.Component {
                     'Authorization': ReactSession.get("token"),
                     "LastTime": ReactSession.get("lastTime"),
                     "CurrentTime": ReactSession.get("currentTime"),
-                        "id": ReactSession.get("idRol")
+                    "id": ReactSession.get("idRol")
                 },
             }
         )
@@ -70,11 +72,11 @@ class Perfil extends React.Component {
 
             }).then(() => {
                 errors.correo = ""
-            }).catch(
-                this.setState({ name: "" }),
-                errors.correo = "Correo no existe"
+            }).catch((error) =>{
+                this.setState({ name: "" });
+                errors.correo = "Correo no existe";
 
-            )
+            })
         this.setState({ errors, correo: value })
     }
 
@@ -85,7 +87,7 @@ class Perfil extends React.Component {
         console.log(value)
         console.log(name)
 
-        if (name === "correo" && ReactSession.get("idRol")===1) {
+        if (name === "correo" && ReactSession.get("idRol") === 1) {
             console.log("correo")
             this.handleEmail(event)
         } else if (name === "password") {
@@ -118,11 +120,11 @@ class Perfil extends React.Component {
                     } else {
                         errors.newpassword = ""
                     }
-                }).catch(
-                    console.log("hhhggg"),
-                    errors.password = "La contraseña no coincide",
+                }).catch((error) =>{
+                    console.log("hhhggg");
+                    errors.password = "La contraseña no coincide";
                     this.setState({ errors, password: value })
-                ).then(() => {
+                }).then(() => {
                     this.setState({ errors, password: value })
                 })
 
@@ -158,11 +160,12 @@ class Perfil extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({correo: ReactSession.get("email"), name: ReactSession.get("name"), id: ReactSession.get("id")})
-        
+        this.setState({ correo: ReactSession.get("email"), name: ReactSession.get("name"), id: ReactSession.get("id") })
+
     };
 
     handleSubmit = (e) => {
+        this.setState({loading: true})
         if (validateForm(this.state.errors)) {
             Protege(this.state.newpassword).then(response => {
                 console.log(response)
@@ -187,6 +190,7 @@ class Perfil extends React.Component {
                 }).then((response) => response.json())
                     .then((json) => {
                         console.log(json);
+                        this.setState({loading: false})
                         ReactSession.set("token", json[0]);
                         this.setState({ name: "" });
                         this.setState({ correo: "" });
@@ -194,7 +198,11 @@ class Perfil extends React.Component {
                         this.setState({ newpassword: "" });
                         this.setState({ confirmPassword: "" });
                         //this.handleOpen('success', 'El usuario fue actualizado')
+                    }).finally(()=>{
+                        this.setState({loading: false})
                     })
+            }).finally(()=>{
+                this.setState({loading: false})
             })
         } else {
             console.error('Invalid Form')
@@ -205,7 +213,7 @@ class Perfil extends React.Component {
         const { errors } = this.state;
         return (
             <div className="RegisterComponent" >
-
+                <Spinner open={this.state.loading} />
                 <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }} className="cardout">
 
                     <Typography variant="h4" align="Left" component="h4" gutterBottom className="letras">
@@ -237,7 +245,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
                                                 </Typography>
                                             </Stack>
@@ -251,7 +259,7 @@ class Perfil extends React.Component {
                                                     variant="outlined"
                                                     value={this.state.correo}
                                                     onChange={this.handleChange}
-                                                    disabled={ReactSession.get("idRol")!==1}
+                                                    disabled={ReactSession.get("idRol") !== 1}
                                                 />
                                             </Stack>
                                             <Stack direction="row" spacing={8} >
@@ -264,7 +272,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña Actual
                                                 </Typography>
                                             </Stack>
@@ -287,8 +295,8 @@ class Perfil extends React.Component {
                                                         name="password"
                                                         autoComplete="off"
                                                         value={this.state.password}
-                                                        onChange={this.handleChange} 
-                                                        disabled={ReactSession.get("email")!==this.state.correo}/>
+                                                        onChange={this.handleChange}
+                                                        disabled={ReactSession.get("email") !== this.state.correo} />
                                                 </FormControl>
                                             </Stack>
                                             <Stack direction="row" spacing={8} >
@@ -302,7 +310,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                 </Typography>
                                             </Stack>
@@ -323,7 +331,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva Contraseña
                                                 </Typography>
                                             </Stack>
@@ -361,7 +369,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" component="h6" spacing={2}>
+                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar Nueva Contraseña
                                                 </Typography>
                                             </Stack>
