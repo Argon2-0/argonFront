@@ -267,7 +267,7 @@ class CrearEmpresa extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIT
                                                                     </Typography>
                                                                 </Stack>
@@ -299,7 +299,7 @@ class CrearEmpresa extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre
                                                                     </Typography>
                                                                 </Stack>
@@ -330,7 +330,7 @@ class CrearEmpresa extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
                                                                     </Typography>
                                                                 </Stack>

@@ -52,7 +52,7 @@ class CrearVisitantes extends React.Component {
             severity: "success",
             message: "",
             open: false,
-            loading:false,
+            loading: false,
             errors: {
                 curso: "",
                 tipoDocumento: "",
@@ -119,7 +119,7 @@ class CrearVisitantes extends React.Component {
                 console.log(this.state.tipoDocumento);
                 console.log(this.state.cedula);
             }
-            if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
+            if (validateForm(this.state.errors) && this.state.cedula !== "") {
                 let participante = "";
 
                 fetch(
@@ -202,6 +202,7 @@ class CrearVisitantes extends React.Component {
 
                     }).catch((reason) => {
                         console.log(reason);
+                        this.setState({ "id": '' });
                         this.setState({ "participante": '' });
                         this.setState({ "nombres": '' });
                         this.setState({ "apellidos": '' });
@@ -474,10 +475,12 @@ class CrearVisitantes extends React.Component {
                     }
                 }
             } else {
+                this.setState({ loading: false })
                 this.handleOpen('warning', 'No tiene permisos para crear un visitante')
             }
 
         } else {
+            this.setState({ loading: false })
             console.error('Invalid Form')
             this.handleOpen('error', 'Hubo un problema al crear el visitante')
         }
@@ -571,15 +574,41 @@ class CrearVisitantes extends React.Component {
                                         fechaFin: dayjs(new Date()),
                                         empresaId: "",
                                     })
-                                }).finally(()=>{
-                            this.setState({loading: false})
+                                }).finally(() => {
+                                    this.setState({ loading: false })
+                                })
+                        }).finally(() => {
+                            this.setState({ loading: false })
                         })
-                        }).finally(()=>{
-                            this.setState({loading: false})
-                        })
+                } else {
+                    this.setState({ loading: false })
+                    console.log(json);
+                    ReactSession.set("token", json[0]);
+                    this.handleOpen('success', 'El visitante fue creado')
+                    this.setState({
+                        checkTratDatos: false,
+                        tiposservicios: [""],
+                        cursos: [""],
+                        empresas: [""],
+                        curso: "",
+                        tipoDocumento: "",
+                        cedula: "",
+                        nombres: "",
+                        apellidos: "",
+                        celular: "",
+                        tiposervicio: "",
+                        tratDatos: "NO",
+                        tipoDocumentoZK: "",
+                        fechaInicio: dayjs(new Date()),
+                        fechaFin: dayjs(new Date()),
+                        empresaId: "",
+                    })
                 }
-            }).finally(()=>{
-                this.setState({loading: false})
+            }).catch((reason) => {
+                this.setState({ loading: false })
+                this.handleOpen('error', 'Hubo un problema al crear el visitante')
+            }).finally(() => {
+                this.setState({ loading: false })
             })
     }
 
@@ -686,7 +715,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
                                                                     </Typography>
                                                                 </Stack>
@@ -722,7 +751,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
                                                                     </Typography>
                                                                 </Stack>
@@ -748,7 +777,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                                     </Typography>
                                                                 </Stack>
@@ -776,7 +805,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
                                                                     </Typography>
                                                                 </Stack>
@@ -801,7 +830,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
                                                                     </Typography>
                                                                 </Stack>
@@ -828,7 +857,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de servicio
                                                                     </Typography>
                                                                 </Stack>
@@ -866,7 +895,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evento
                                                                     </Typography>
                                                                 </Stack>
@@ -902,7 +931,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                                                                     </Typography>
                                                                 </Stack>
@@ -929,7 +958,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                                                                     </Typography>
                                                                 </Stack>
@@ -960,7 +989,7 @@ class CrearVisitantes extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Autoriza tratamiento de datos
                                                                     </Typography>
                                                                 </Stack>

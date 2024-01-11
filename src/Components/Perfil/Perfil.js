@@ -245,7 +245,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email
                                                 </Typography>
                                             </Stack>
@@ -272,7 +272,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contraseña Actual
                                                 </Typography>
                                             </Stack>
@@ -310,7 +310,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                 </Typography>
                                             </Stack>
@@ -331,7 +331,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nueva Contraseña
                                                 </Typography>
                                             </Stack>
@@ -369,7 +369,7 @@ class Perfil extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Confirmar Nueva Contraseña
                                                 </Typography>
                                             </Stack>

@@ -574,7 +574,7 @@ const Informes = () => {
 
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo informe
                         </Typography>
                     </Stack>
@@ -603,7 +603,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Número documento
                                 </Typography>
                             </Stack>
@@ -620,7 +620,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca equipo
                                 </Typography>
                             </Stack>
@@ -648,7 +648,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de servicio
                                 </Typography>
                             </Stack>
@@ -675,7 +675,7 @@ const Informes = () => {
                         ? (<>
                             <Stack direction="row" spacing={2} >
 
-                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evento
                                 </Typography>
                             </Stack>
@@ -700,7 +700,7 @@ const Informes = () => {
                             </Stack><br /></>) : ""}
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                         </Typography>
                     </Stack>
@@ -720,7 +720,7 @@ const Informes = () => {
                     <br />
                     <Stack direction="row" spacing={2} >
 
-                        <Typography variant="h6" className="letrasInt" component="h6" spacing={2} className="letrasBlack">
+                        <Typography variant="h5" className="letrasInt" component="h5" spacing={2} className="letrasBlack">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                         </Typography>
                     </Stack>

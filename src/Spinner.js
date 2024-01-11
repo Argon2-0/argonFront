@@ -22,7 +22,7 @@ const Spinner = ({ open }) => {
       }}
     >
       <CircularProgress color="inherit" style={{ color: '#ffcf00' }} />
-      <Typography variant="h6" style={{ marginTop: '10px', animation: 'reveal 1s infinite' }}>
+      <Typography variant="h5" style={{ marginTop: '10px', animation: 'reveal 1s infinite' }}>
         Cargando
       </Typography>
       <style>

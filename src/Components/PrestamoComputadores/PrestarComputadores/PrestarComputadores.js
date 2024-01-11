@@ -106,7 +106,7 @@ class PrestarComputadores extends React.Component {
                 console.log(this.state.tipoDocumento);
                 console.log(this.state.cedula);
             }
-            if (validateForm(this.state.errors) && this.state.tipoDocumento !== "" && this.state.cedula !== "") {
+            if (validateForm(this.state.errors) && this.state.cedula !== "") {
                 let participante = "";
 
                 fetch(
@@ -494,7 +494,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipo de documento
                                                 </Typography>
                                             </Stack>
@@ -534,19 +534,20 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Numero de documento
                                                 </Typography>
                                             </Stack>
                                             <Stack direction="row" spacing={8} >
                                                 <br />
                                                 <TextField
+                                                
                                                     required
                                                     id="Cedula"
                                                     name="cedula"
                                                     value={this.state.cedula}
                                                     onChange={this.handleChangeDocument}
-                                                    style={{ width: 300 }}
+                                                    style={{ width: 300}}
                                                     noValidate
                                                     onClick={this.setClickOnDocumento}
                                                 />
@@ -561,7 +562,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
                                                 </Typography>
                                             </Stack>
@@ -589,7 +590,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombres
                                                 </Typography>
                                             </Stack>
@@ -617,7 +618,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apellidos
                                                 </Typography>
                                             </Stack>
@@ -645,7 +646,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
                                                 </Typography>
                                             </Stack>
@@ -670,7 +671,7 @@ class PrestarComputadores extends React.Component {
                                         <TableCell>
                                             <Stack direction="row" spacing={2} >
 
-                                                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Celular
                                                 </Typography>
                                             </Stack>

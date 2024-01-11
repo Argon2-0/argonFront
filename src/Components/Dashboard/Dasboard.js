@@ -352,7 +352,7 @@ const Dasboard = () => {
                     <br />
                     <Stack direction="row" spacing={8} >
                       <br />
-                      <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                      <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de inicio
                       </Typography>
                       <DatePicker
@@ -365,7 +365,7 @@ const Dasboard = () => {
                         style={{ width: 300 }}
                         noValidate
                       />
-                      <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                      <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha de fin
                       </Typography>
 
@@ -392,7 +392,7 @@ const Dasboard = () => {
           ? (<>
             <Box className="cardin">
               <Stack direction="row" spacing={8} >
-                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total visitas {visitas}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total visitantes {visitantes}
                 </Typography>
@@ -452,7 +452,7 @@ const Dasboard = () => {
                 Estado de equipos
               </Typography>
               <Stack direction="row" spacing={8} >
-                <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total préstamos {prestamos}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total usuarios {usuariosPrestados}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total de horas de préstamo {horasPrestamo}

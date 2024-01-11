@@ -147,7 +147,6 @@ const ListarEquipos = () => {
 
   const [columnVisibilityModel, setColumnVisibilityModel] = React.useState({
     id: false,
-    codigoBarras: false,
     participante: false,
     updatedAt: false
   });

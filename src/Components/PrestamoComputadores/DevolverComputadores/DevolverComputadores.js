@@ -280,7 +280,7 @@ class DevolverComputadores extends React.Component {
 
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de barras
                                                                     </Typography>
                                                                 </Stack>
@@ -310,7 +310,7 @@ class DevolverComputadores extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observación
                                                                     </Typography>
                                                                 </Stack>

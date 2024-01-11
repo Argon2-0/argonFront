@@ -324,7 +324,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Código de Barras
                                                                     </Typography>
                                                                 </Stack>
@@ -351,7 +351,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial
                                                                     </Typography>
                                                                 </Stack>
@@ -379,7 +379,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marca
                                                                     </Typography>
                                                                 </Stack>
@@ -405,7 +405,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Referencia
                                                                     </Typography>
                                                                 </Stack>
@@ -433,7 +433,7 @@ class CrearEquipos extends React.Component {
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
                                                                     </Typography>
                                                                 </Stack>
@@ -460,7 +460,7 @@ class CrearEquipos extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
                                                                     </Typography>
                                                                 </Stack>

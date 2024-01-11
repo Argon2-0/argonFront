@@ -270,7 +270,7 @@ class CrearTipoServicio extends React.Component {
 
                                                             <TableCell>
                                                                 <Stack direction="row" spacing={2} >
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Id
                                                                     </Typography>
                                                                 </Stack>
@@ -290,7 +290,7 @@ class CrearTipoServicio extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre
                                                                     </Typography>
                                                                 </Stack>
@@ -314,7 +314,7 @@ class CrearTipoServicio extends React.Component {
                                                                 </Stack>
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción
                                                                     </Typography>
                                                                 </Stack>
@@ -334,7 +334,7 @@ class CrearTipoServicio extends React.Component {
                                                                 <br />
                                                                 <Stack direction="row" spacing={2} >
 
-                                                                    <Typography variant="h6" className="letrasInt" component="h6" spacing={2}>
+                                                                    <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visualizar en el formulario
                                                                     </Typography>
                                                                 </Stack>
