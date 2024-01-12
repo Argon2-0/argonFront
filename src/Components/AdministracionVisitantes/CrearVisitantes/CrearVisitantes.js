@@ -38,7 +38,7 @@ class CrearVisitantes extends React.Component {
             cursos: [""],
             empresas: [""],
             curso: "",
-            tipoDocumento: "",
+            tipoDocumento: "C.C",
             cedula: "",
             nombres: "",
             apellidos: "",
@@ -409,7 +409,7 @@ class CrearVisitantes extends React.Component {
                         console.log("ba")
                         fetch(ReactSession.get("basicUri") + "participante/update", {
                             mode: "cors",
-                            method: "POST",
+                            method: "PUT",
                             body: JSON.stringify({
                                 id: this.state.id,
                                 tipoDocumento: this.state.tipoDocumento,
@@ -419,7 +419,7 @@ class CrearVisitantes extends React.Component {
                                 tratDatos: this.state.tratDatos,
                                 celular: this.state.celular,
                                 tiposervicio: null,
-                                createdAt: Date.now(),
+                                updatedAt: Date.now(),
 
                             }),
                             headers: {
@@ -439,7 +439,7 @@ class CrearVisitantes extends React.Component {
                         console.log("bb")
                         fetch(ReactSession.get("basicUri") + "participante/update", {
                             mode: "cors",
-                            method: "POST",
+                            method: "PUT",
                             body: JSON.stringify({
                                 id: this.state.id,
                                 tipoDocumento: this.state.tipoDocumento,
@@ -451,7 +451,7 @@ class CrearVisitantes extends React.Component {
                                 tiposervicio: {
                                     id: this.state.tiposervicio,
                                 },
-                                createdAt: Date.now(),
+                                updatedAt: Date.now(),
                             }),
                             headers: {
                                 "Content-Type": "application/json",
@@ -551,12 +551,10 @@ class CrearVisitantes extends React.Component {
                                     ReactSession.set("token", json[0]);
                                     this.handleOpen('success', 'El visitante fue creado')
                                     this.setState({
+                                        id: "",
                                         checkTratDatos: false,
-                                        tiposservicios: [""],
-                                        cursos: [""],
-                                        empresas: [""],
                                         curso: "",
-                                        tipoDocumento: "",
+                                        tipoDocumento: "C.C",
                                         cedula: "",
                                         nombres: "",
                                         apellidos: "",
@@ -580,12 +578,10 @@ class CrearVisitantes extends React.Component {
                     ReactSession.set("token", json[0]);
                     this.handleOpen('success', 'El visitante fue creado')
                     this.setState({
+                        id: "",
                         checkTratDatos: false,
-                        tiposservicios: [""],
-                        cursos: [""],
-                        empresas: [""],
                         curso: "",
-                        tipoDocumento: "",
+                        tipoDocumento: "C.C",
                         cedula: "",
                         nombres: "",
                         apellidos: "",
