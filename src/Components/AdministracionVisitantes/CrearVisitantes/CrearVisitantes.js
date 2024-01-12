@@ -203,12 +203,6 @@ class CrearVisitantes extends React.Component {
                     }).catch((reason) => {
                         console.log(reason);
                         this.setState({ "id": '' });
-                        this.setState({ "participante": '' });
-                        this.setState({ "nombres": '' });
-                        this.setState({ "apellidos": '' });
-                        this.setState({ "celular": '' });
-                        this.setState({ "tratDatos": '' });
-                        this.setState({ "tiposervicio": '' });
 
                     }).then(() => {
                         console.log(errors);
