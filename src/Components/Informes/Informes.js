@@ -21,6 +21,7 @@ import { ReactSession } from 'react-client-session';
 import { Transaction } from '../../Data/zkt/Transaction';
 import { Empresa } from '../../Data/Empresa';
 import Spinner from '../../Spinner';
+import { EmpresaReporte } from '../../Data/EmpresaReporte';
 const Informes = () => {
 
     const handleChange = e => {
@@ -136,11 +137,8 @@ const Informes = () => {
                         body[pos]['cedula'],
                         body[pos]['nombres'],
                         body[pos]['apellidos'],
-                        body[pos]['fechaNacimiento'],
                         body[pos]['celular'],
-                        body[pos]['sexo'],
                         body[pos]['email'],
-                        body[pos]['curso'],
                         body[pos]['tratDatos'],
                         body[pos]['estado'],
                         body[pos]['createdAt'],
@@ -181,9 +179,10 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    empresas.push(new Empresa(
+                    empresas.push(new EmpresaReporte(
                         body[pos]['nit'],
                         body[pos]['nombre'],
+                        body[pos]['numeroAsociados'],
                     ));
                 }
             }).then(() => {
@@ -358,11 +357,8 @@ const Informes = () => {
                         body[pos]['cedula'],
                         body[pos]['nombres'],
                         body[pos]['apellidos'],
-                        body[pos]['fechaNacimiento'],
                         body[pos]['celular'],
-                        body[pos]['sexo'],
                         body[pos]['email'],
-                        body[pos]['curso'],
                         body[pos]['tratDatos'],
                         body[pos]['estado'],
                         body[pos]['createdAt'],
@@ -407,12 +403,14 @@ const Informes = () => {
                 for (let pos = 0; pos < body.length; pos++) {
                     cursos.push(new CursoInforme(
                         body[pos]['codigo'],
-                        body[pos]['nombre'],
-                        body[pos]['visitante'],
+                        body[pos]['nombreEvento'],
+                        body[pos]['tipoDocumentovisitante'],
+                        body[pos]['documentoVisitante'],
+                        body[pos]['nombreVisitante'],
                     ));
                 }
             }).then(() => {
-                download(cursos, "Informe registro cursos");
+                download(cursos, "Informe registro por eventos");
             }).then(() => {
                 setLoading(false);
             }).catch((error) =>{

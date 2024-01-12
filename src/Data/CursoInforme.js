@@ -1,7 +1,9 @@
 export class CursoInforme {
-    constructor(codigo, nombre, visitante) {
+    constructor(codigo, nombreEvento, tipoDocumentovisitante, documentoVisitante, nombreVisitante) {
       this.codigo = codigo;
-      this.nombre = nombre;
-      this.visitante = visitante;
+      this.nombreEvento = nombreEvento;
+      this.tipoDocumentovisitante = tipoDocumentovisitante;
+      this.documentoVisitante = documentoVisitante;
+      this.nombreVisitante = nombreVisitante;
     }
 }

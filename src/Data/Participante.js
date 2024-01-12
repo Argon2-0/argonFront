@@ -16,17 +16,11 @@ export class Participante {
       this.tiposervicio_id = tiposervicio['id'];
       this.tiposervicio_nombre = tiposervicio['nombre'];
       this.tiposervicio_descripcion = tiposervicio['descripcion'];
-      this.tiposervicio_createdAt = tiposervicio['createdAt'];
-      this.tiposervicio_updatedAt = tiposervicio['updatedAt'];
-      this.tiposervicio_form = tiposervicio['form'];
     }
     else {
       this.tiposervicio_id = null;
       this.tiposervicio_nombre = null;
       this.tiposervicio_descripcion = null;
-      this.tiposervicio_createdAt = null;
-      this.tiposervicio_updatedAt = null;
-      this.tiposervicio_form = null;
     }
   }
 };

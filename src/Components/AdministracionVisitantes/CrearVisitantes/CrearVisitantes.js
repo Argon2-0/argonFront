@@ -1053,11 +1053,16 @@ class CrearVisitantes extends React.Component {
                             },
                         }}
                     >
+
                         <div>
-                            <img
-                                src="/images/poptorniqute.png"
-                                style={{ width: '100%', height: 'auto' }}
-                            />
+                            {this.state.severity === "success" && (
+                                <img
+                                    src="/images/poptorniqute.png"
+                                    style={{ width: '100%', height: 'auto' }}
+                                    alt="Success Image"
+                                />
+                            )}
+
                             {this.state.message}
                         </div>
 
