@@ -33,50 +33,40 @@ const Dasboard = () => {
   const [usuariosPrestados, setUsuariosPrestados] = useState(0);
   const [horasPrestamo, setHorasPrestamo] = useState(0);
   const [loading, setLoading] = useState(true);
-  const handleDateIniciochange = (event) => {
+
+  useEffect(() => {
     var token = new Token();
     token.validar();
-    setFechaInicio(event.$d);
     setData();
+  }, [fechaInicio]);
+
+  useEffect(() => {
+    setData();
+  }, [fechaFin]);
+
+  const handleDateIniciochange = (event) => {
+    setFechaInicio(event.$d);
   }
 
   const handleDateFinchange = (event) => {
     setFechaFin(event.$d);
-    setData();
   }
 
   const setData = () => {
-    return new Promise((resolve, reject) => {
-      setLoading(true);
-      if (vista === "VISITANTES") {
-        getvisitsByService()
-          .then(() => getvisitsByCurso())
-          .then(() => getvisits())
-          .then(() => resolve())
-          .catch((error) => reject(error))
-          .finally(() =>{
-            console.log("flase");
-            setLoading(false);
-          });
-      } else if (vista === "COMPUTADORES") {
-        getComputadores()
-          .then(() => getComputadoresEstados())
-          .then(() => resolve())
-          .catch((error) => reject(error))
-          .finally(() =>{
-            console.log("flase");
-            setLoading(false);
-          });
-      } else {
-        resolve(); // Si no es "VISITANTES" ni "COMPUTADORES", resolvemos inmediatamente
-      }
-    }).finally(() =>{
-      console.log("flase");
+    setLoading(true);
+    if (vista === "VISITANTES") {
+      getvisitsByService()
+      getvisitsByCurso()
+      getvisits()
       setLoading(false);
-    });
-  };
-
-
+    } else if (vista === "COMPUTADORES") {
+      getComputadores()
+      getComputadoresEstados()
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     setData();
@@ -111,6 +101,10 @@ const Dasboard = () => {
   }
 
   const getvisitsByCurso = () => {
+    console.log(fechaInicio.toISOString())
+    console.log(fechaFin.toISOString())
+    console.log(new Date(fechaInicio.toISOString()).getTime())
+    console.log(new Date(fechaFin.toISOString()).getTime())
     fetch(
       ReactSession.get("basicUri") +
       "visitantecurso/getByTimeAndCursoForDash/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
@@ -137,6 +131,10 @@ const Dasboard = () => {
         setDataVisitsByCurso((json[1])[1]);
       });
   }
+
+  useEffect(() => {
+    setData();
+  }, [vista]);
 
   const changeToVisitantes = () => {
     setVista("VISITANTES");
@@ -174,6 +172,10 @@ const Dasboard = () => {
   }
 
   const getComputadores = () => {
+    console.log(fechaInicio.toISOString())
+    console.log(fechaFin.toISOString())
+    console.log(new Date(fechaInicio.toISOString()).getTime())
+    console.log(new Date(fechaFin.toISOString()).getTime())
     fetch(
       ReactSession.get("basicUri") +
       "herramientaparticipante/getDataForDashboard/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),

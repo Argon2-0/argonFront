@@ -144,11 +144,8 @@ class PrestarComputadores extends React.Component {
                             body['cedula'],
                             body['nombres'],
                             body['apellidos'],
-                            0,
                             body['celular'],
-                            body['sexo'],
                             body['email'],
-                            body['curso'],
                             body['tratDatos'],
                             body['estado'],
                             body['createdAt'],
@@ -277,7 +274,9 @@ class PrestarComputadores extends React.Component {
                         console.log(json);
                         ReactSession.set("token", json[0]);
                         console.log(json);
-                        errors.CodigoDeBarras = 'El equipo se encuentra préstado';
+                        if(json[1]!==null){
+                            errors.CodigoDeBarras = 'El equipo se encuentra préstado';
+                        }
                         this.validations(name, value);
                         this.setState({ errors });
                     }).catch((reason) => {
@@ -371,7 +370,10 @@ class PrestarComputadores extends React.Component {
             this.validations(field, this.state[field]);
         });
         if (validateForm(this.state.errors)) {
-            console.info('Valid Form')
+            console.log(this.state.participante)
+            console.log(this.state.herramienta)
+            console.log(this.state.Observacion)
+            console.log(Date.now())
             if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
                 fetch(ReactSession.get("basicUri") + "herramientaparticipante/create", {
                     mode: "cors",
@@ -395,7 +397,7 @@ class PrestarComputadores extends React.Component {
                     .then((json) => {
                         console.log(json);
                         ReactSession.set("token", json[0]);
-                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula, {
+                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula+"/Préstado", {
                             mode: "cors",
                             method: "POST",
                             headers: {

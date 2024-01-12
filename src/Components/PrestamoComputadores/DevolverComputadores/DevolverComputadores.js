@@ -30,6 +30,9 @@ class DevolverComputadores extends React.Component {
             message: "",
             open: false,
             loading: false,
+            participante: "",
+            herramienta: "",
+            cedula:"",
             errors: {
                 CodigoDeBarras: "",
             }
@@ -140,6 +143,9 @@ class DevolverComputadores extends React.Component {
                             body['participante'],
                             body['herramienta'],
                         );
+                        this.setState({"participante": body['participante']})
+                        this.setState({"herramienta": body['herramienta']})
+                        this.setState({"cedula": (body['participante'])["cedula"]})
                         console.log(json);
                         errors.CodigoDeBarras = '';
 
@@ -175,6 +181,8 @@ class DevolverComputadores extends React.Component {
         this.setState({loading: true})
         e.preventDefault();
         console.log(this.state.herramientaParticipante);
+        console.log(this.state.participante)
+        console.log(this.state.cedula)
         if (validateForm(this.state.errors)) {
             if (ReactSession.get("idRol") === 1 || ReactSession.get("idRol") === 2 || ReactSession.get("idRol") === 3) {
                 console.info('Valid Form')
@@ -186,12 +194,8 @@ class DevolverComputadores extends React.Component {
                         observacionEntrada: this.state.Observacion,
                         updatedAt: Date.now(),
                         createdAt: this.state.herramientaParticipante.createdAt,
-                        participante: {
-                            id: this.state.herramientaParticipante.participante_id,
-                        },
-                        herramienta: {
-                            id: this.state.herramientaParticipante.herrmienta_id,
-                        }
+                        participante: this.state.participante,
+                        herramienta: this.state.herramienta
                     }),
                     headers: {
                         "Content-Type": "application/json",
@@ -206,7 +210,7 @@ class DevolverComputadores extends React.Component {
                         ReactSession.set("token", json[0]);
                         console.log(this.state.herramientaParticipante);
                         console.log(this.state.herramientaParticipante.participante_cedula);
-                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.herramientaParticipante.participante_cedula, {
+                        fetch(ReactSession.get("basicUri") + "zkt/persona/updatePrestamo/" + this.state.cedula +"/Devuelto", {
                             mode: "cors",
                             method: "POST",
                             headers: {
