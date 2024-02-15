@@ -199,7 +199,6 @@ const Dasboard = () => {
         console.log(json[1])
         setUsuariosPrestados((json[1])[0]);
         setPrestamos((json[1])[1]);
-        setHorasPrestamo((json[1])[2]);
       });
   }
 
@@ -457,7 +456,6 @@ const Dasboard = () => {
                 <Typography variant="h5" className="letrasInt" component="h5" spacing={2}>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total préstamos {prestamos}
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total usuarios {usuariosPrestados}
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total de horas de préstamo {horasPrestamo}
                 </Typography>
               </Stack>
             </Box>
