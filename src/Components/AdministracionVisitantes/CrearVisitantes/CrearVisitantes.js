@@ -168,31 +168,6 @@ class CrearVisitantes extends React.Component {
                         this.setState({ "apellidos": body['apellidos'] });
                         this.setState({ "celular": body['celular'] });
                         this.setState({ "tratDatos": body['tratDatos'] });
-                        if (body['tiposervicio'] !== null) {
-                            this.setState({ "tiposervicio": (body['tiposervicio'])['id'] });
-                        } else {
-                            fetch(
-                                ReactSession.get("basicUri") +
-                                "visitantecurso/getByVisitante/" + this.state.id,
-                                {
-                                    mode: "cors",
-                                    method: "GET",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        'Authorization': ReactSession.get("token"),
-                                        "LastTime": ReactSession.get("lastTime"),
-                                        "CurrentTime": ReactSession.get("currentTime"),
-                                        "id": ReactSession.get("idRol")
-                                    },
-                                }
-                            )
-                                .then((response) => response.json())
-                                .then((jsonCurso) => {
-                                    ReactSession.set("token", json[0]);
-                                    var bodyCurso = jsonCurso[1];
-                                    this.setState({ "curso": bodyCurso['cursoCodigo'] });
-                                })
-                        }
                         if (body['tratDatos'] === "SI") {
                             this.setState({ "checkTratDatos": true });
                         }
@@ -290,14 +265,10 @@ class CrearVisitantes extends React.Component {
                         : 'Numero de celular no valido';
                 break;
             case 'tiposervicio':
-                if (this.state.curso === "" && value === "") {
-                    errors.tiposervicio = 'Debe escoger un curso o servicio';
-                } else if (this.state.curso !== "" && value !== "") {
-                    errors.tiposervicio = 'Debe escoger un curso o servicio pero no ambos';
-                } else {
-                    errors.tiposervicio = '';
-                    errors.curso = '';
-                }
+                errors.tiposervicio =
+                    value === ""
+                        ? 'Debe escoger un tipo de servicio'
+                        : '';
                 break;
             case 'fechaInicio':
                 errors.fechaInicio =
@@ -310,17 +281,6 @@ class CrearVisitantes extends React.Component {
                     value === ""
                         ? 'Should select a end date!'
                         : '';
-                break;
-
-            case 'curso':
-                if (this.state.tiposervicio === "" && value === "") {
-                    errors.curso = 'Debe escoger un curso o servicio';
-                } else if (this.state.tiposervicio !== "" && value !== "") {
-                    errors.curso = 'Debe escoger un curso o servicio pero no ambos';
-                } else {
-                    errors.curso = '';
-                    errors.tiposervicio = '';
-                }
                 break;
             default:
                 break;
@@ -342,131 +302,64 @@ class CrearVisitantes extends React.Component {
                 console.log(this.state.id);
                 if (this.state.id === "") {
                     console.log("a")
-                    if (this.state.tiposervicio === "") {
-                        console.log("ab")
-                        fetch(ReactSession.get("basicUri") + "participante/create", {
-                            mode: "cors",
-                            method: "POST",
-                            body: JSON.stringify({
-                                tipoDocumento: this.state.tipoDocumento,
-                                cedula: this.state.cedula,
-                                nombres: this.state.nombres,
-                                apellidos: this.state.apellidos,
-                                tratDatos: this.state.tratDatos,
-                                celular: this.state.celular,
-                                tiposervicio: null,
-                                createdAt: Date.now(),
+                    console.log("ab")
+                    fetch(ReactSession.get("basicUri") + "participante/create", {
+                        mode: "cors",
+                        method: "POST",
+                        body: JSON.stringify({
+                            tipoDocumento: this.state.tipoDocumento,
+                            cedula: this.state.cedula,
+                            nombres: this.state.nombres,
+                            apellidos: this.state.apellidos,
+                            tratDatos: this.state.tratDatos,
+                            celular: this.state.celular,
+                            createdAt: Date.now(),
 
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': ReactSession.get("token"),
-                                "LastTime": ReactSession.get("lastTime"),
-                                "CurrentTime": ReactSession.get("currentTime"),
-                                "id": ReactSession.get("idRol"),
-                            },
-                        }).then((response) => response.json())
-                            .then((json) => {
-                                this.zktEventoRegistro(json);
-                            }).finally(() => {
-                                this.setState({ loading: false })
-                            })
-                    } else {
-                        console.log("ba")
-                        fetch(ReactSession.get("basicUri") + "participante/create", {
-                            mode: "cors",
-                            method: "POST",
-                            body: JSON.stringify({
-                                tipoDocumento: this.state.tipoDocumento,
-                                cedula: this.state.cedula,
-                                nombres: this.state.nombres,
-                                apellidos: this.state.apellidos,
-                                tratDatos: this.state.tratDatos,
-                                celular: this.state.celular,
-                                tiposervicio: {
-                                    id: this.state.tiposervicio,
-                                },
-                                createdAt: Date.now(),
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                            "id": ReactSession.get("idRol"),
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            this.zktEventoRegistro(json);
+                        }).finally(() => {
+                            this.setState({ loading: false })
+                        })
 
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': ReactSession.get("token"),
-                                "LastTime": ReactSession.get("lastTime"),
-                                "CurrentTime": ReactSession.get("currentTime"),
-                                "id": ReactSession.get("idRol"),
-                            },
-                        }).then((response) => response.json())
-                            .then((json) => {
-                                this.zktEventoRegistro(json);
-                            }).finally(() => {
-                                this.setState({ loading: false })
-                            })
-                    }
                 } else {
                     console.log("b")
-                    if (this.state.tiposervicio === "") {
-                        console.log("ba")
-                        fetch(ReactSession.get("basicUri") + "participante/update", {
-                            mode: "cors",
-                            method: "PUT",
-                            body: JSON.stringify({
-                                id: this.state.id,
-                                tipoDocumento: this.state.tipoDocumento,
-                                cedula: this.state.cedula,
-                                nombres: this.state.nombres,
-                                apellidos: this.state.apellidos,
-                                tratDatos: this.state.tratDatos,
-                                celular: this.state.celular,
-                                tiposervicio: null,
-                                updatedAt: Date.now(),
+                    console.log("ba")
+                    fetch(ReactSession.get("basicUri") + "participante/update", {
+                        mode: "cors",
+                        method: "PUT",
+                        body: JSON.stringify({
+                            id: this.state.id,
+                            tipoDocumento: this.state.tipoDocumento,
+                            cedula: this.state.cedula,
+                            nombres: this.state.nombres,
+                            apellidos: this.state.apellidos,
+                            tratDatos: this.state.tratDatos,
+                            celular: this.state.celular,
+                            updatedAt: Date.now(),
 
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': ReactSession.get("token"),
-                                "LastTime": ReactSession.get("lastTime"),
-                                "CurrentTime": ReactSession.get("currentTime"),
-                                "id": ReactSession.get("idRol"),
-                            },
-                        }).then((response) => response.json())
-                            .then((json) => {
-                                this.zktEventoRegistro(json);
-                            }).finally(() => {
-                                this.setState({ loading: false })
-                            })
-                    } else {
-                        console.log("bb")
-                        fetch(ReactSession.get("basicUri") + "participante/update", {
-                            mode: "cors",
-                            method: "PUT",
-                            body: JSON.stringify({
-                                id: this.state.id,
-                                tipoDocumento: this.state.tipoDocumento,
-                                cedula: this.state.cedula,
-                                nombres: this.state.nombres,
-                                apellidos: this.state.apellidos,
-                                tratDatos: this.state.tratDatos,
-                                celular: this.state.celular,
-                                tiposervicio: {
-                                    id: this.state.tiposervicio,
-                                },
-                                updatedAt: Date.now(),
-                            }),
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': ReactSession.get("token"),
-                                "LastTime": ReactSession.get("lastTime"),
-                                "CurrentTime": ReactSession.get("currentTime"),
-                                "id": ReactSession.get("idRol"),
-                            },
-                        }).then((response) => response.json())
-                            .then((json) => {
-                                this.zktEventoRegistro(json);
-                            }).finally(() => {
-                                this.setState({ loading: false })
-                            })
-                    }
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': ReactSession.get("token"),
+                            "LastTime": ReactSession.get("lastTime"),
+                            "CurrentTime": ReactSession.get("currentTime"),
+                            "id": ReactSession.get("idRol"),
+                        },
+                    }).then((response) => response.json())
+                        .then((json) => {
+                            this.zktEventoRegistro(json);
+                        }).finally(() => {
+                            this.setState({ loading: false })
+                        })
                 }
             } else {
                 this.setState({ loading: false })
@@ -529,7 +422,7 @@ class CrearVisitantes extends React.Component {
                             console.log((jsonrequest[1])['id'])
                             console.log(this.state.fechaInicio)
                             console.log(this.state.fechaFin)
-                            fetch(ReactSession.get("basicUri") + "visitantecurso/create", {
+                            fetch(ReactSession.get("basicUri") + "visitavisitante/create", {
                                 mode: "cors",
                                 method: "POST",
                                 body: JSON.stringify({
@@ -537,6 +430,9 @@ class CrearVisitantes extends React.Component {
                                     cursoCodigo: this.state.curso,
                                     diaInicio: this.state.fechaInicio.toISOString().toString().split("T")[0],
                                     diaFin: this.state.fechaFin.toISOString().toString().split("T")[0],
+                                    tiposervicio: {
+                                        id: this.state.tiposervicio,
+                                    }
                                 }),
                                 headers: {
                                     "Content-Type": "application/json",

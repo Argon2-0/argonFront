@@ -16,6 +16,7 @@ import { TableContainer, Table, TableRow, TableCell, TableBody } from '@mui/mate
 import { ReactSession } from 'react-client-session';
 import { useAlert } from '../../../AlertProvider';
 import Spinner from "../../../Spinner";
+import { Curso } from "../../../Data/Curso";
 const ListarVisitantes = () => {
   const [rows, setRows] = useState([]);
   const [visitantesArray, setVisitantesArray] = useState([]);
@@ -78,8 +79,7 @@ const ListarVisitantes = () => {
             body[pos]['tratDatos'],
             body[pos]['estado'],
             body[pos]['createdAt'],
-            body[pos]['updatedAt'],
-            body[pos]['tiposervicio']
+            body[pos]['updatedAt']
           ));
         }
         setRows(participantes);
@@ -202,9 +202,6 @@ const ListarVisitantes = () => {
             (d[i])['celular'],
             (d[i])['tratDatos'],
             Date.now(),
-            new TipoServicio((d[i])['tiposervicioId']),
-            new Empresa((d[i])['empresaNit'])
-
           ))
 
         zktUsers.push(
@@ -224,11 +221,13 @@ const ListarVisitantes = () => {
 
         registrosCursos.push(
           new RegistroCurso(
-            (d[i])['eventoId'],
+            new Curso((d[i])['eventoId']),
             (d[i])['tipoDocumento'],
             (d[i])['documento'],
             new Date(new dayjs((d[i])['fechaInicio']).toISOString()).getTime(),
-            new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime()
+            new Date(new dayjs((d[i])['fechaFin']).toISOString()).getTime(),
+            new TipoServicio((d[i])['tiposervicioId']),
+            new Empresa((d[i])['empresaNit'])
           )
         )
       }
@@ -295,7 +294,7 @@ const ListarVisitantes = () => {
       .then((json) => {
         console.log(json);
         ReactSession.set("token", json[0]);
-        fetch(ReactSession.get("basicUri") + "visitantecurso/createMasive/", {
+        fetch(ReactSession.get("basicUri") + "visitavisitante/createMasive/", {
           mode: "cors",
           method: "POST",
           body: JSON.stringify(registroCursos),

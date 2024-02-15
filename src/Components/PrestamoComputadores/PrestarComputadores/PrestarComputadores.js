@@ -149,8 +149,7 @@ class PrestarComputadores extends React.Component {
                             body['tratDatos'],
                             body['estado'],
                             body['createdAt'],
-                            body['updatedAt'],
-                            body['tiposervicio']
+                            body['updatedAt']
                         );
                         return Promise.resolve(this.setState({ "participante": participante, "tipoDocumento": body['tipoDocumento'], "id": body['id'], "nombres": body['nombres'], "apellidos": body['apellidos'], "celular": body['celular'] }));
 

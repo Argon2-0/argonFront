@@ -142,8 +142,7 @@ const Informes = () => {
                         body[pos]['tratDatos'],
                         body[pos]['estado'],
                         body[pos]['createdAt'],
-                        body[pos]['updatedAt'],
-                        body[pos]['tiposervicio']
+                        body[pos]['updatedAt']
                     ));
                 }
             }).then(() => {
@@ -362,8 +361,7 @@ const Informes = () => {
                         body[pos]['tratDatos'],
                         body[pos]['estado'],
                         body[pos]['createdAt'],
-                        body[pos]['updatedAt'],
-                        body[pos]['tiposervicio'],
+                        body[pos]['updatedAt']
                     ));
                 }
             }).then(() => {
@@ -381,7 +379,7 @@ const Informes = () => {
         let cursos = [];
         fetch(
             ReactSession.get("basicUri") +
-            "visitantecurso/getByTimeAndCurso/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + curso,
+            "visitavisitante/getByTimeAndCurso/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + curso,
             {
                 mode: "cors",
                 method: "GET",

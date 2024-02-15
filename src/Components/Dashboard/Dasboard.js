@@ -75,7 +75,7 @@ const Dasboard = () => {
   const getvisitsByService = () => {
     fetch(
       ReactSession.get("basicUri") +
-      "participante/countByTiposervicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+      "visitavisitante/findBetweenServicios/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
         method: "GET",
@@ -107,7 +107,7 @@ const Dasboard = () => {
     console.log(new Date(fechaFin.toISOString()).getTime())
     fetch(
       ReactSession.get("basicUri") +
-      "visitantecurso/getByTimeAndCursoForDash/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+      "visitavisitante/findBetweenCursos/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
         method: "GET",
@@ -149,7 +149,7 @@ const Dasboard = () => {
   const getvisits = () => {
     fetch(
       ReactSession.get("basicUri") +
-      "participante/findVisitantes/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+      "visitavisitante/findDataBetween/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
       {
         mode: "cors",
         method: "GET",
