@@ -22,6 +22,10 @@ import { Transaction } from '../../Data/zkt/Transaction';
 import { Empresa } from '../../Data/Empresa';
 import Spinner from '../../Spinner';
 import { EmpresaReporte } from '../../Data/EmpresaReporte';
+import { ReportesInformes } from '../../Data/informes/ReportesInformes';
+import { TipoServicioInforme } from '../../Data/informes/TipoServicioInforme';
+import { EmpresaInforme } from '../../Data/informes/EmpresaInforme';
+import { PrestamosInforme } from '../../Data/informes/PrestamosInforme';
 const Informes = () => {
 
     const handleChange = e => {
@@ -158,7 +162,7 @@ const Informes = () => {
         let empresas = [];
         fetch(
             ReactSession.get("basicUri") +
-            "participante/getEmpresasByParticipanteBetween/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+            "visitavisitante/getByTimeAndEmpresa/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
             {
                 mode: "cors",
                 method: "GET",
@@ -178,10 +182,17 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    empresas.push(new EmpresaReporte(
-                        body[pos]['nit'],
-                        body[pos]['nombre'],
-                        body[pos]['numeroAsociados'],
+                    empresas.push(new EmpresaInforme(
+                        body[pos]['TipoDocumentovisitante'],
+                        body[pos]['Documentovisitante'],
+                        body[pos]['nombres'],
+                        body[pos]['apellidos'],
+                        body[pos]['celular'],
+                        body[pos]['email'],
+                        body[pos]['nitEmpresa'],
+                        body[pos]['nombreEmpresa'],
+                        body[pos]['fechaHora'],
+                        body[pos]['tratDatos']
                     ));
                 }
             }).then(() => {
@@ -196,7 +207,7 @@ const Informes = () => {
         let transacciones = [];
         fetch(
             ReactSession.get("basicUri") +
-            "zkt/transaction/get/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+            "visitavisitante/getByTime/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
             {
                 mode: "cors",
                 method: "GET",
@@ -216,23 +227,22 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    transacciones.push(new Transaction(
-                        body[pos]['id'],
-                        body[pos]['eventTime'],
-                        body[pos]['pin'],
-                        body[pos]['name'],
-                        body[pos]['lastName'],
-                        body[pos]['deptName'],
-                        body[pos]['areaName'],
-                        body[pos]['cardNo'],
-                        body[pos]['devSn'],
-                        body[pos]['verifyModeName'],
-                        body[pos]['eventName'],
-                        body[pos]['eventPointName'],
-                        body[pos]['readerName'],
-                        body[pos]['accZone'],
-                        body[pos]['devName'],
-                        body[pos]['logId']
+                    transacciones.push(new ReportesInformes(
+                        body[pos]['TipoDocumentovisitante'],
+                        body[pos]['Documentovisitante'],
+                        body[pos]['nombres'],
+                        body[pos]['apellidos'],
+                        body[pos]['celular'],
+                        body[pos]['email'],
+                        body[pos]['nitEmpresa'],
+                        body[pos]['nombreEmpresa'],
+                        body[pos]['codigo'],
+                        body[pos]['nombreEvento'],
+                        body[pos]['nombreTipoServicio'],
+                        body[pos]['descripcionTipoServicio'],
+                        body[pos]['fechaHora'],
+                        body[pos]['molinete'],
+                        body[pos]['String tratDatos']
                     ));
                 }
             }).then(() => {
@@ -249,7 +259,7 @@ const Informes = () => {
         let marcas = [];
         fetch(
             ReactSession.get("basicUri") +
-            "herramientaparticipante/getByTimeAndMarca/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + marca,
+            "visitavisitante/findByCreatedAtBetweenAndMarca/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + marca,
             {
                 mode: "cors",
                 method: "GET",
@@ -269,32 +279,21 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
-                        "es-CO",
-                        {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                        }
-                    );
-                    body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
-                        "es-CO",
-                        {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                        }
-                    );;
-                    marcas.push(new HerramientaParticipante(
-                        body[pos]['id'],
-                        body[pos]['observacionEntrada'],
-                        body[pos]['observacionSalida'],
+                    marcas.push(new PrestamosInforme(
+                        body[pos]['TipoDocumentovisitante'],
+                        body[pos]['Documentovisitante'],
+                        body[pos]['nombres'],
+                        body[pos]['apellidos'],
+                        body[pos]['celular'],
+                        body[pos]['email'],
+                        body[pos]['marca'],
+                        body[pos]['referencia'],
+                        body[pos]['codigoBarras'],
                         body[pos]['estado'],
-                        body[pos]['totHoras'],
-                        body[pos]['createdAt'],
-                        body[pos]['updatedAt'],
-                        body[pos]['participante'],
-                        body[pos]['herramienta'],
+                        body[pos]['observacionPrestamo'],
+                        body[pos]['observacionDevolucion'],
+                        body[pos]['fechaPrestamo'],
+                        body[pos]['fechaDevolucion']
                     ));
                 }
             }).then(() => {
@@ -314,7 +313,7 @@ const Informes = () => {
         let informeTipoServicio = [];
         fetch(
             ReactSession.get("basicUri") +
-            "participante/getByTimeAndTipoServicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + tiposervicio,
+            "visitavisitante/getByTimeAndTipoServicio/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/" + tiposervicio,
             {
                 mode: "cors",
                 method: "GET",
@@ -334,34 +333,17 @@ const Informes = () => {
                 var body = json[1];
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
-                    body[pos]['createdAt'] = new Date(body[pos]['createdAt']).toLocaleString(
-                        "es-CO",
-                        {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                        }
-                    );
-                    body[pos]['updatedAt'] = new Date(body[pos]['updatedAt']).toLocaleString(
-                        "es-CO",
-                        {
-                            month: "2-digit",
-                            day: "2-digit",
-                            year: "numeric",
-                        }
-                    );;
-                    informeTipoServicio.push(new Participante(
-                        body[pos]['id'],
-                        body[pos]['tipoDocumento'],
-                        body[pos]['cedula'],
+                    informeTipoServicio.push(new TipoServicioInforme(
+                        body[pos]['TipoDocumentovisitante'],
+                        body[pos]['Documentovisitante'],
                         body[pos]['nombres'],
                         body[pos]['apellidos'],
                         body[pos]['celular'],
                         body[pos]['email'],
-                        body[pos]['tratDatos'],
-                        body[pos]['estado'],
-                        body[pos]['createdAt'],
-                        body[pos]['updatedAt']
+                        body[pos]['nombreTipoServicio'],
+                        body[pos]['descripcionTipoServicio'],
+                        body[pos]['fechaHora'],
+                        body[pos]['tratDatos']
                     ));
                 }
             }).then(() => {
@@ -400,11 +382,16 @@ const Informes = () => {
                 console.log(body)
                 for (let pos = 0; pos < body.length; pos++) {
                     cursos.push(new CursoInforme(
+                        body[pos]['TipoDocumentovisitante'],
+                        body[pos]['Documentovisitante'],
+                        body[pos]['nombres'],
+                        body[pos]['apellidos'],
+                        body[pos]['celular'],
+                        body[pos]['email'],
                         body[pos]['codigo'],
                         body[pos]['nombreEvento'],
-                        body[pos]['tipoDocumentovisitante'],
-                        body[pos]['documentoVisitante'],
-                        body[pos]['nombreVisitante'],
+                        body[pos]['fechaHora'],
+                        body[pos]['tratDatos']
                     ));
                 }
             }).then(() => {
@@ -588,7 +575,7 @@ const Informes = () => {
                             <MenuItem key="2" value="Cursos" width="300">Registro de personas por evento</MenuItem>
                             <MenuItem key="3" value="TipoServicio" width="300">Tipo servicio</MenuItem>
                             <MenuItem key="4" value="Transacciones" width="300">Entradas y salidas</MenuItem>
-                            <MenuItem key="4" value="Empresas" width="300">Registro de empresas</MenuItem>
+                            <MenuItem key="5" value="Empresas" width="300">Registro de empresas</MenuItem>
                         </Select>
 
                     </Stack>
