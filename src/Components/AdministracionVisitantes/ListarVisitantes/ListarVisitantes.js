@@ -47,7 +47,7 @@ const ListarVisitantes = () => {
         console.log(body)
         let participantes = [];
         for (let pos = 0; pos < body.length; pos++) {
-          console.log(json)
+          console.log(body[pos])
           if (body[pos]['fechaNacimiento'] != null) {
             body[pos]['fechaNacimiento'] = (body[pos]['fechaNacimiento'])[2] + "/" + (body[pos]['fechaNacimiento'])[1] + "/" + (body[pos]['fechaNacimiento'])[0];
           }

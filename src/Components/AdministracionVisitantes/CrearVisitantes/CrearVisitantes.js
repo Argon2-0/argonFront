@@ -422,17 +422,18 @@ class CrearVisitantes extends React.Component {
                             console.log((jsonrequest[1])['id'])
                             console.log(this.state.fechaInicio)
                             console.log(this.state.fechaFin)
+                            console.log(this.state.curso)
+                            console.log(this.state.empresaId)
                             fetch(ReactSession.get("basicUri") + "visitavisitante/create", {
                                 mode: "cors",
                                 method: "POST",
                                 body: JSON.stringify({
                                     visitanteId: (jsonrequest[1])['id'],
-                                    cursoCodigo: this.state.curso,
+                                    curso: new Curso(this.state.curso),
                                     diaInicio: this.state.fechaInicio.toISOString().toString().split("T")[0],
                                     diaFin: this.state.fechaFin.toISOString().toString().split("T")[0],
-                                    tiposervicio: {
-                                        id: this.state.tiposervicio,
-                                    }
+                                    tiposervicio: new TipoServicio(this.state.tiposervicio),
+                                    
                                 }),
                                 headers: {
                                     "Content-Type": "application/json",
