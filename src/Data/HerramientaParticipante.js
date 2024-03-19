@@ -2,7 +2,7 @@ export class HerramientaParticipante{
     constructor(id,observacionEntrada, observacionSalida, estado, totHoras, createdAt, updatedAt, participante, herramienta) {
       console.log(id)
       console.log(participante)
-      console.log(participante['tiposervicio'])
+      console.log(participante['id'])
       this.id = id;
       this.observacionSalida = observacionSalida;
       this.observacionEntrada = observacionEntrada;
@@ -19,16 +19,6 @@ export class HerramientaParticipante{
         this.participante_celular = participante['celular'];
         this.participante_email = participante['email'];
         this.participante_tratDatos = participante['tratDatos'];
-        if (participante['tiposervicio'] !== null) {
-          this.tiposervicio_id = (participante['tiposervicio'])['id'];
-          this.tiposervicio_nombre = (participante['tiposervicio'])['nombre'];
-          this.tiposervicio_descripcion = (participante['tiposervicio'])['descripcion'];
-        }
-        else {
-          this.tiposervicio_id = null;
-          this.tiposervicio_nombre = null;
-          this.tiposervicio_descripcion = null;
-        }
       }
       else {
         this.participante_id = null;

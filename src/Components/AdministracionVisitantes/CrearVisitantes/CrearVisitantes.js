@@ -101,6 +101,7 @@ class CrearVisitantes extends React.Component {
         }
     }
     handleChange = (event) => {
+        console.log(new Date());
         console.log(event)
         event.preventDefault();
         const { name, value } = event.target;
