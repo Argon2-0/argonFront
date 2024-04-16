@@ -162,7 +162,7 @@ const Informes = () => {
         let empresas = [];
         fetch(
             ReactSession.get("basicUri") +
-            "visitavisitante/getByTimeAndEmpresa/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime(),
+            "visitavisitante/getByTimeAndEmpresa/" + new Date(fechaInicio.toISOString()).getTime() + "/" + new Date(fechaFin.toISOString()).getTime() + "/Todos",
             {
                 mode: "cors",
                 method: "GET",
